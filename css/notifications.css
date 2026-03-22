@@ -1,0 +1,42 @@
+/* Sistema de notificaciones */
+.notificacion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 9999;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    max-width: 350px;
+}
+
+.notificacion.show {
+    transform: translateX(0);
+}
+
+.notificacion i {
+    font-size: 1.2rem;
+}
+
+.notificacion-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.notificacion-error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.notificacion-info {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.notificacion-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}

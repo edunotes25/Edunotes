@@ -1,0 +1,453 @@
+<!-- components/header.html -->
+<style>
+    /* Header Styles */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        height: 80px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+    
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+    
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-decoration: none;
+    }
+    
+    .menu-toggle {
+        display: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: #667eea;
+        z-index: 1001;
+    }
+    
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
+    
+    .nav-links a {
+        text-decoration: none;
+        color: #4b5563;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .nav-links a:hover,
+    .nav-links a.active {
+        color: #667eea;
+    }
+    
+    .cart-icon {
+        position: relative;
+        cursor: pointer;
+    }
+    
+    .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #667eea;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+    }
+    
+    /* Carrito Sidebar */
+    .cart-sidebar {
+        position: fixed;
+        top: 0;
+        right: -400px;
+        width: 380px;
+        height: 100vh;
+        background: white;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        z-index: 1001;
+        transition: right 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .cart-sidebar.open {
+        right: 0;
+    }
+    
+    .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .cart-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+    
+    .close-cart {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #6b7280;
+    }
+    
+    .cart-items {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+    
+    .cart-empty {
+        text-align: center;
+        color: #9ca3af;
+        padding: 2rem;
+    }
+    
+    .cart-footer {
+        padding: 1rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    .cart-total {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+    }
+    
+    .btn-primary {
+        background: #667eea;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #5a67d8;
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+        background: transparent;
+        color: #ef4444;
+        border: 2px solid #ef4444;
+    }
+    
+    .btn-outline:hover {
+        background: #ef4444;
+        color: white;
+    }
+    
+    .btn-block {
+        width: 100%;
+    }
+    
+    .cart-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: none;
+    }
+    
+    .cart-overlay.active {
+        display: block;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+        }
+        
+        .nav-links {
+            position: fixed;
+            top: 80px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 80px);
+            background: white;
+            flex-direction: column;
+            gap: 0;
+            padding: 0;
+            transition: left 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-links.active {
+            left: 0;
+        }
+        
+        .nav-links a {
+            padding: 1rem;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 1.1rem;
+        }
+        
+        .cart-sidebar {
+            width: 320px;
+        }
+        
+        .logo {
+            font-size: 1.4rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .nav {
+            padding: 0 1rem;
+        }
+        
+        .cart-sidebar {
+            width: 100%;
+            right: -100%;
+        }
+    }
+</style>
+
+<!-- CARRITO SIDEBAR -->
+<div id="cart-sidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <h3>Mi Carrito</h3>
+        <button class="close-cart"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+        <p class="cart-empty">Tu carrito está vacío</p>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total:</span>
+            <span id="cart-total">0,00€</span>
+        </div>
+        <button class="btn btn-primary btn-block" id="procederPagoBtn">
+            Proceder al pago
+        </button>
+        <button class="btn btn-outline btn-block" id="vaciarCarritoBtn" style="margin-top: 10px;">
+            <i class="fas fa-trash"></i> Vaciar carrito
+        </button>
+    </div>
+</div>
+
+<!-- OVERLAY PARA EL CARRITO -->
+<div id="cart-overlay" class="cart-overlay"></div>
+
+<header class="header">
+    <nav class="nav">
+        <a href="index.html" class="logo">Edunotes</a>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Inicio</a>
+            <a href="proyectos.html">Proyectos</a>
+            <a href="recursos.html">Plantillas</a>
+            <a href="blog.html">Blog</a>
+            <a href="herramientas.html">Herramientas</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="#" class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<script>
+    // CARRITO DE COMPRAS - Versión funcional
+    let carrito = [];
+
+    function actualizarCarrito() {
+        const itemsDiv = document.getElementById('cart-items');
+        const totalSpan = document.getElementById('cart-total');
+        const contador = document.querySelector('.cart-count');
+        
+        if (!itemsDiv) return;
+        
+        if (carrito.length === 0) {
+            itemsDiv.innerHTML = '<p class="cart-empty">Tu carrito está vacío</p>';
+            if (totalSpan) totalSpan.textContent = '0,00€';
+            if (contador) contador.textContent = '0';
+            return;
+        }
+        
+        let total = 0;
+        let html = '';
+        carrito.forEach((item, i) => {
+            total += item.precio;
+            html += `<div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
+                <div><strong>${item.nombre}</strong><div style="font-size: 0.8rem; color: #667eea;">${item.precio.toFixed(2)}€</div></div>
+                <button onclick="eliminarDelCarrito(${i})" style="background: none; border: none; color: #ef4444; cursor: pointer;"><i class="fas fa-trash"></i></button>
+            </div>`;
+        });
+        
+        itemsDiv.innerHTML = html;
+        if (totalSpan) totalSpan.textContent = `${total.toFixed(2)}€`;
+        if (contador) contador.textContent = carrito.length;
+    }
+
+    function agregarAlCarrito(nombre, precio) {
+        carrito.push({ nombre, precio });
+        actualizarCarrito();
+        abrirCarrito();
+    }
+
+    function eliminarDelCarrito(index) {
+        carrito.splice(index, 1);
+        actualizarCarrito();
+    }
+
+    function limpiarCarritoCompleto() {
+        carrito = [];
+        actualizarCarrito();
+        cerrarCarrito();
+    }
+
+    function procederPago() {
+        if (carrito.length === 0) {
+            alert('❌ Tu carrito está vacío');
+            return;
+        }
+        const total = document.getElementById('cart-total');
+        alert('🛒 Procediendo al pago...\nTotal: ' + (total ? total.textContent : '0,00€'));
+        carrito = [];
+        actualizarCarrito();
+        cerrarCarrito();
+    }
+
+    function abrirCarrito() {
+        const sidebar = document.getElementById('cart-sidebar');
+        const overlay = document.getElementById('cart-overlay');
+        if (sidebar) sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+    }
+
+    function cerrarCarrito() {
+        const sidebar = document.getElementById('cart-sidebar');
+        const overlay = document.getElementById('cart-overlay');
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+    }
+
+    // Inicialización - se ejecuta cuando el script se carga
+    function initHeader() {
+        // Icono del carrito
+        const cartIcon = document.getElementById('cartIcon');
+        if (cartIcon) {
+            cartIcon.onclick = function(e) {
+                e.preventDefault();
+                abrirCarrito();
+            };
+        }
+        
+        // Botón cerrar carrito
+        const closeBtn = document.querySelector('.close-cart');
+        if (closeBtn) closeBtn.onclick = cerrarCarrito;
+        
+        // Overlay
+        const overlay = document.getElementById('cart-overlay');
+        if (overlay) overlay.onclick = cerrarCarrito;
+        
+        // Botón proceder pago
+        const pagoBtn = document.getElementById('procederPagoBtn');
+        if (pagoBtn) pagoBtn.onclick = procederPago;
+        
+        // Botón vaciar carrito
+        const vaciarBtn = document.getElementById('vaciarCarritoBtn');
+        if (vaciarBtn) vaciarBtn.onclick = limpiarCarritoCompleto;
+        
+        // Menú hamburguesa
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (menuToggle && navLinks) {
+            menuToggle.onclick = function(e) {
+                e.stopPropagation();
+                navLinks.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            };
+            
+            // Cerrar menú al hacer clic en un enlace
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.onclick = function() {
+                    navLinks.classList.remove('active');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                };
+            });
+        }
+        
+        // Marcar enlace activo
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage) {
+                link.classList.add('active');
+            }
+        });
+        
+        actualizarCarrito();
+    }
+    
+    // Ejecutar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeader);
+    } else {
+        initHeader();
+    }
+</script>

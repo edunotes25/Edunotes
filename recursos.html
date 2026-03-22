@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Plantillas educativas para proyectos digitales | Edunotes</title>
+    <meta name="description" content="Plantillas educativas profesionales listas para usar. Recursos digitales para profesores, creadores de cursos y proyectos educativos.">
+    <meta name="keywords" content="plantillas educativas, plantillas para profesores, recursos digitales educativos, plantillas profesionales">
+    <meta name="author" content="Edunotes">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Plantillas educativas | Edunotes">
+    <meta property="og:description" content="Recursos digitales profesionales para destacar tus proyectos educativos.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://edunotes.com/recursos.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    
+    <!-- Estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            background: white;
+        }
+        
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            height: 80px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        
+        /* Contenedor para iconos móvil - solo visible en móvil */
+        .mobile-icons {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #667eea;
+            z-index: 1001;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #667eea;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        main {
+            margin-top: 80px;
+        }
+        
+        /* Hero Section */
+        .hero-recursos {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .hero-recursos h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-recursos p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* Sección de ejemplos visuales */
+        .ejemplos-visuales {
+            padding: 4rem 0;
+            background: #f9fafb;
+        }
+        
+        .ejemplos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .ejemplo-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .ejemplo-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .ejemplo-img {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .ejemplo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .ejemplo-card:hover .ejemplo-img img {
+            transform: scale(1.05);
+        }
+        
+        .ejemplo-info {
+            padding: 1.5rem;
+        }
+        
+        .ejemplo-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        
+        .ejemplo-info p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        /* Qué incluyen los packs */
+        .que-incluye {
+            padding: 4rem 0;
+            background: white;
+        }
+        
+        .incluye-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .incluye-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .incluye-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .incluye-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .incluye-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .incluye-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        
+        .incluye-item p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        /* Para quién es */
+        .para-quien {
+            padding: 4rem 0;
+            background: #f9fafb;
+        }
+        
+        .para-quien-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .para-quien-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .para-quien-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .para-quien-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .para-quien-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .para-quien-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        
+        .para-quien-card p {
+            color: #6b7280;
+        }
+        
+        /* Packs de productos */
+        .packs-productos {
+            padding: 4rem 0;
+            background: white;
+        }
+        
+        .packs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .pack-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .pack-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .pack-popular {
+            border: 2px solid #f59e0b;
+            position: relative;
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f59e0b;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+        
+        .pack-img {
+            height: 220px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pack-img i {
+            font-size: 5rem;
+            color: white;
+        }
+        
+        .pack-info {
+            padding: 1.5rem;
+        }
+        
+        .pack-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        
+        .pack-descripcion {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .pack-caracteristicas {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        
+        .pack-caracteristicas li {
+            padding: 0.5rem 0;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .pack-caracteristicas li i {
+            color: #10b981;
+            font-size: 0.9rem;
+        }
+        
+        .pack-precio {
+            margin: 1.5rem 0;
+        }
+        
+        .precio-actual {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .precio-anterior {
+            font-size: 1rem;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+        }
+        
+        .btn-comprar {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-comprar:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        /* Prueba social */
+        .prueba-social {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .prueba-social h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prueba-social p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .social-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+        }
+        
+        .social-item i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .social-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .social-item p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        /* Carrito Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-sidebar.open {
+            right: 0;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cart-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            color: #9ca3af;
+            padding: 2rem;
+        }
+        
+        .cart-footer {
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .cart-overlay.active {
+            display: block;
+        }
+        
+        /* CTA Personalizado */
+        .cta-personalizado {
+            padding: 4rem 0;
+            background: #f9fafb;
+            text-align: center;
+        }
+        
+        .cta-personalizado-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .cta-personalizado h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .cta-personalizado p {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1f2937;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            /* En móvil, mostrar iconos móviles y ocultar el carrito del menú */
+            .mobile-icons {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            /* Ocultar el carrito dentro del menú en móvil */
+            .nav-links .cart-icon {
+                display: none;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                transition: left 0.3s ease;
+                z-index: 999;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                overflow-y: auto;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links a {
+                padding: 1rem;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid #e5e7eb;
+                font-size: 1.1rem;
+            }
+            
+            .hero-recursos h1 {
+                font-size: 1.8rem;
+                padding: 0 1rem;
+            }
+            
+            .hero-recursos p {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-buttons .btn {
+                width: 200px;
+                justify-content: center;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .ejemplos-grid,
+            .incluye-grid,
+            .para-quien-grid,
+            .packs-grid,
+            .social-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            .precio-actual {
+                font-size: 1.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .cart-sidebar {
+                width: 320px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav {
+                padding: 0 1rem;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- CARRITO SIDEBAR -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Mi Carrito</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="cart-empty">Tu carrito está vacío</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">0,00€</span>
+            </div>
+            <button class="btn btn-primary btn-block" id="procederPagoBtn">
+                Proceder al pago
+            </button>
+            <button class="btn btn-outline btn-block" id="vaciarCarritoBtn" style="margin-top: 10px;">
+                <i class="fas fa-trash"></i> Vaciar carrito
+            </button>
+        </div>
+    </div>
+    
+    <!-- OVERLAY PARA EL CARRITO -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">Edunotes</a>
+            <div class="mobile-icons">
+                <a href="#" class="cart-icon" id="cartIconMobile">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Inicio</a>
+                <a href="proyectos.html">Proyectos</a>
+                <a href="recursos.html" class="active">Plantillas</a>
+                <a href="blog.html">Blog</a>
+                <a href="herramientas.html">Plataformas</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="#" class="cart-icon" id="cartIconDesktop">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Principal -->
+        <section class="hero-recursos">
+            <div class="container">
+                <h1>Plantillas educativas para destacar tus proyectos</h1>
+                <p>Recursos digitales listos para usar que te ayudan a presentar materiales educativos y proyectos online de forma profesional.</p>
+                <div class="hero-buttons">
+                    <a href="#packs" class="btn btn-primary">Ver packs</a>
+                    <a href="#ejemplos" class="btn btn-secondary">Ver plantillas</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección visual de ejemplos -->
+        <section id="ejemplos" class="ejemplos-visuales">
+            <div class="container">
+                <h2 class="section-title">Nuestras Plantillas</h2>
+                <div class="ejemplos-grid">
+                    <div class="ejemplo-card">
+                        <div class="ejemplo-img">
+                            <img src="assets/images/recursos/mockup-educativo1.jpg" alt="Mockup educativo para proyectos escolares" loading="lazy">
+                        </div>
+                        <div class="ejemplo-info">
+                            <h3>Mockup para portafolio educativo</h3>
+                            <p>Presenta tus proyectos educativos con un diseño profesional y moderno.</p>
+                        </div>
+                    </div>
+                    <div class="ejemplo-card">
+                        <div class="ejemplo-img">
+                            <img src="assets/images/recursos/plantilla-presentacion.jpg" alt="Plantilla de presentación para cursos online" loading="lazy">
+                        </div>
+                        <div class="ejemplo-info">
+                            <h3>Plantilla para cursos online</h3>
+                            <p>Diseño limpio y profesional para promocionar tus cursos digitales.</p>
+                        </div>
+                    </div>
+                    <div class="ejemplo-card">
+                        <div class="ejemplo-img">
+                            <img src="assets/images/recursos/mockup-corporativo.jpg" alt="Mockup corporativo para proyectos educativos" loading="lazy">
+                        </div>
+                        <div class="ejemplo-info">
+                            <h3>Mockup para proyectos institucionales</h3>
+                            <p>Ideal para presentar proyectos educativos a instituciones.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Qué incluyen los packs -->
+        <section class="que-incluye">
+            <div class="container">
+                <h2 class="section-title">¿Qué incluyen los packs?</h2>
+                <div class="incluye-grid">
+                    <div class="incluye-item">
+                        <div class="incluye-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3>Mockups editables</h3>
+                        <p>Personaliza colores, textos y elementos fácilmente.</p>
+                    </div>
+                    <div class="incluye-item">
+                        <div class="incluye-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Archivos PSD / Figma</h3>
+                        <p>Formatos profesionales para editar sin límites.</p>
+                    </div>
+                    <div class="incluye-item">
+                        <div class="incluye-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Uso comercial</h3>
+                        <p>Utiliza las plantillas para tus proyectos profesionales.</p>
+                    </div>
+                    <div class="incluye-item">
+                        <div class="incluye-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3>Guía de uso</h3>
+                        <p>Instrucciones claras para sacar el máximo provecho.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Para quién es -->
+        <section class="para-quien">
+            <div class="container">
+                <h2 class="section-title">Para quién es</h2>
+                <div class="para-quien-grid">
+                    <div class="para-quien-card">
+                        <div class="para-quien-icon">
+                            <i class="fas fa-chalkboard-user"></i>
+                        </div>
+                        <h3>Profesores</h3>
+                        <p>Crea materiales educativos profesionales para tus alumnos.</p>
+                    </div>
+                    <div class="para-quien-card">
+                        <div class="para-quien-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3>Creadores de cursos online</h3>
+                        <p>Presenta tus cursos con un diseño que impacta.</p>
+                    </div>
+                    <div class="para-quien-card">
+                        <div class="para-quien-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Proyectos educativos</h3>
+                        <p>Da visibilidad profesional a tus iniciativas educativas.</p>
+                    </div>
+                    <div class="para-quien-card">
+                        <div class="para-quien-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3>Diseñadores educativos</h3>
+                        <p>Ahorra tiempo con plantillas listas para usar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Packs de productos -->
+        <section id="packs" class="packs-productos">
+            <div class="container">
+                <h2 class="section-title">Elige tu pack</h2>
+                <div class="packs-grid">
+                    
+                    <!-- Pack Básico -->
+                    <div class="pack-card">
+                        <div class="pack-img">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <div class="pack-info">
+                            <h3>Pack Básico</h3>
+                            <p class="pack-descripcion">Perfecto para empezar con plantillas educativas profesionales.</p>
+                            <ul class="pack-caracteristicas">
+                                <li><i class="fas fa-check-circle"></i> 5 mockups educativos</li>
+                                <li><i class="fas fa-check-circle"></i> Archivos PSD editables</li>
+                                <li><i class="fas fa-check-circle"></i> Guía de uso incluida</li>
+                                <li><i class="fas fa-check-circle"></i> Uso personal</li>
+                            </ul>
+                            <div class="pack-precio">
+                                <span class="precio-actual">29,99€</span>
+                            </div>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Pack Básico', 29.99)">
+                                Comprar ahora <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pack Profesional (Más popular) -->
+                    <div class="pack-card pack-popular">
+                        <div class="popular-badge">🔥 Más popular</div>
+                        <div class="pack-img">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="pack-info">
+                            <h3>Pack Profesional</h3>
+                            <p class="pack-descripcion">Ideal para creadores de contenido y proyectos educativos.</p>
+                            <ul class="pack-caracteristicas">
+                                <li><i class="fas fa-check-circle"></i> 15 mockups educativos</li>
+                                <li><i class="fas fa-check-circle"></i> Archivos PSD + Figma</li>
+                                <li><i class="fas fa-check-circle"></i> Plantillas de presentación</li>
+                                <li><i class="fas fa-check-circle"></i> Guía avanzada de uso</li>
+                                <li><i class="fas fa-check-circle"></i> Uso comercial incluido</li>
+                            </ul>
+                            <div class="pack-precio">
+                                <span class="precio-actual">69,99€</span>
+                                <span class="precio-anterior">90€</span>
+                            </div>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Pack Profesional', 69.99)">
+                                Comprar ahora <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pack Premium -->
+                    <div class="pack-card">
+                        <div class="pack-img">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="pack-info">
+                            <h3>Pack Premium</h3>
+                            <p class="pack-descripcion">Acceso completo a todas las plantillas y actualizaciones.</p>
+                            <ul class="pack-caracteristicas">
+                                <li><i class="fas fa-check-circle"></i> 30+ mockups educativos</li>
+                                <li><i class="fas fa-check-circle"></i> Todos los formatos (PSD, Figma, AI)</li>
+                                <li><i class="fas fa-check-circle"></i> Plantillas completas</li>
+                                <li><i class="fas fa-check-circle"></i> Actualizaciones gratuitas</li>
+                                <li><i class="fas fa-check-circle"></i> Uso comercial ilimitado</li>
+                                <li><i class="fas fa-check-circle"></i> Soporte prioritario</li>
+                            </ul>
+                            <div class="pack-precio">
+                                <span class="precio-actual">129,99€</span>
+                                <span class="precio-anterior">180€</span>
+                            </div>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Pack Premium', 129.99)">
+                                Comprar ahora <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prueba social -->
+        <section class="prueba-social">
+            <div class="container">
+                <h2>Plantillas diseñadas para resultados reales</h2>
+                <p>Miles de profesores y creadores ya confían en nuestras plantillas</p>
+                <div class="social-grid">
+                    <div class="social-item">
+                        <i class="fas fa-star"></i>
+                        <h3>+500</h3>
+                        <p>Plantillas descargadas</p>
+                    </div>
+                    <div class="social-item">
+                        <i class="fas fa-smile"></i>
+                        <h3>98%</h3>
+                        <p>de satisfacción</p>
+                    </div>
+                    <div class="social-item">
+                        <i class="fas fa-clock"></i>
+                        <h3>Entrega inmediata</h3>
+                        <p>Descarga al momento</p>
+                    </div>
+                    <div class="social-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Garantía 30 días</h3>
+                        <p>Devolución sin preguntas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Personalizado -->
+        <section class="cta-personalizado">
+            <div class="cta-personalizado-content">
+                <h2>¿Necesitas algo personalizado?</h2>
+                <p>Si buscas una solución adaptada a tu proyecto, puedo ayudarte a crear plantillas a medida con tus colores, branding y necesidades específicas.</p>
+                <a href="contacto.html" class="btn btn-outline">Solicitar presupuesto <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Edunotes</h3>
+                <p>Plantillas digitales profesionales para proyectos educativos.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="proyectos.html">Proyectos</a></li>
+                    <li><a href="recursos.html">Plantillas</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="herramientas.html">Plataformas</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="aviso-legal.html">Aviso legal</a></li>
+                    <li><a href="privacidad.html">Política de privacidad</a></li>
+                    <li><a href="cookies.html">Política de cookies</a></li>
+                    <li><a href="terminos.html">Términos y condiciones</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Edunotes. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // CARRITO DE COMPRAS
+        let carrito = [];
+
+        function actualizarCarrito() {
+            const itemsDiv = document.getElementById('cart-items');
+            const totalSpan = document.getElementById('cart-total');
+            const contadores = document.querySelectorAll('.cart-count');
+            
+            if (!itemsDiv) return;
+            
+            if (carrito.length === 0) {
+                itemsDiv.innerHTML = '<p class="cart-empty">Tu carrito está vacío</p>';
+                if (totalSpan) totalSpan.textContent = '0,00€';
+                contadores.forEach(c => { if (c) c.textContent = '0'; });
+                return;
+            }
+            
+            let total = 0;
+            let html = '';
+            carrito.forEach((item, i) => {
+                total += item.precio;
+                html += `<div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
+                    <div><strong>${item.nombre}</strong><div style="font-size: 0.8rem; color: #667eea;">${item.precio.toFixed(2)}€</div></div>
+                    <button onclick="eliminarDelCarrito(${i})" style="background: none; border: none; color: #ef4444; cursor: pointer;"><i class="fas fa-trash"></i></button>
+                </div>`;
+            });
+            
+            itemsDiv.innerHTML = html;
+            if (totalSpan) totalSpan.textContent = `${total.toFixed(2)}€`;
+            contadores.forEach(c => { if (c) c.textContent = carrito.length; });
+        }
+
+        function agregarAlCarrito(nombre, precio) {
+            carrito.push({ nombre, precio });
+            actualizarCarrito();
+            abrirCarrito();
+        }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarCarrito();
+        }
+
+        function limpiarCarritoCompleto() {
+            carrito = [];
+            actualizarCarrito();
+            cerrarCarrito();
+        }
+
+        function procederPago() {
+            if (carrito.length === 0) {
+                alert('❌ Tu carrito está vacío');
+                return;
+            }
+            const total = document.getElementById('cart-total');
+            alert('🛒 Procediendo al pago...\nTotal: ' + (total ? total.textContent : '0,00€'));
+            carrito = [];
+            actualizarCarrito();
+            cerrarCarrito();
+        }
+
+        function abrirCarrito() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (sidebar) sidebar.classList.add('open');
+            if (overlay) overlay.classList.add('active');
+        }
+
+        function cerrarCarrito() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        // Inicializar eventos cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inicializando carrito...');
+            
+            const cartIconDesktop = document.getElementById('cartIconDesktop');
+            const cartIconMobile = document.getElementById('cartIconMobile');
+            const closeBtn = document.querySelector('.close-cart');
+            const overlay = document.getElementById('cart-overlay');
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            const pagoBtn = document.getElementById('procederPagoBtn');
+            const vaciarBtn = document.getElementById('vaciarCarritoBtn');
+            
+            // Función para abrir carrito
+            const abrirCarritoHandler = function(e) {
+                e.preventDefault();
+                console.log('Abriendo carrito desde:', this.id);
+                abrirCarrito();
+            };
+            
+            // Asignar eventos a los iconos del carrito
+            if (cartIconDesktop) {
+                cartIconDesktop.addEventListener('click', abrirCarritoHandler);
+                console.log('✅ Evento asignado a cartIconDesktop');
+            } else {
+                console.error('❌ No se encontró cartIconDesktop');
+            }
+            
+            if (cartIconMobile) {
+                cartIconMobile.addEventListener('click', abrirCarritoHandler);
+                console.log('✅ Evento asignado a cartIconMobile');
+            }
+            
+            if (closeBtn) closeBtn.addEventListener('click', cerrarCarrito);
+            if (overlay) overlay.addEventListener('click', cerrarCarrito);
+            if (pagoBtn) pagoBtn.addEventListener('click', procederPago);
+            if (vaciarBtn) vaciarBtn.addEventListener('click', limpiarCarritoCompleto);
+            
+            // Menú hamburguesa
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('active');
+                    const icon = menuToggle.querySelector('i');
+                    if (navLinks.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Cerrar menú al hacer clic en un enlace
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        const icon = menuToggle.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+            
+            actualizarCarrito();
+        });
+    </script>
+    <script src="js/cookies.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada - Edunotes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .error-content {
+            max-width: 600px;
+            padding: 2rem;
+        }
+        
+        .error-content h1 {
+            font-size: 8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .error-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .error-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .error-content .btn {
+            background: white;
+            color: var(--gray-800);
+            font-size: 1.1rem;
+            padding: 1rem 3rem;
+        }
+        
+        .error-content .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-content">
+            <h1>404</h1>
+            <h2>Página no encontrada</h2>
+            <p>Lo sentimos, la página que buscas no existe o ha sido movida.</p>
+            <a href="index.html" class="btn btn-primary">Volver al inicio</a>
+        </div>
+    </div>
+    <!-- BANNER DE COOKIES - VERSIÓN SIMPLIFICADA -->
+    <div id="cookie-banner" class="cookie-banner" style="display: none;">
+        <div class="cookie-content">
+            <p>🍪 Utilizamos cookies para mejorar tu experiencia. Puedes aceptar, rechazar o configurarlas. Más información en nuestra <a href="cookies.html">Política de Cookies</a>.</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies" class="btn btn-primary btn-small">Aceptar</button>
+                <button id="reject-cookies" class="btn btn-outline btn-small">Rechazar</button>
+                <button id="config-cookies" class="btn btn-outline btn-small">Configurar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIGURACIÓN -->
+    <div id="cookie-modal" class="cookie-modal" style="display: none;">
+        <div class="cookie-modal-content">
+            <h3>Configuración de cookies</h3>
+            <div class="cookie-option">
+                <label>
+                    <input type="checkbox" id="cookies-tecnicas" checked disabled>
+                    <strong>Cookies técnicas</strong> (necesarias)
+                </label>
+            </div>
+            <div class="cookie-option">
+                <label>
+                    <input type="checkbox" id="cookies-analisis">
+                    <strong>Cookies de análisis</strong>
+                </label>
+            </div>
+            <div class="cookie-option">
+                <label>
+                    <input type="checkbox" id="cookies-publicitarias">
+                    <strong>Cookies publicitarias</strong>
+                </label>
+            </div>
+            <div class="cookie-modal-buttons">
+                <button id="save-cookies" class="btn btn-primary">Guardar</button>
+                <button id="close-modal" class="btn btn-outline">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/cookies.js"></script>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Edunotes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            background: white;
+        }
+        
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            height: 80px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        
+        /* Contenedor para iconos móvil - solo visible en móvil */
+        .mobile-icons {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #667eea;
+            z-index: 1001;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #667eea;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        main {
+            margin-top: 80px;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Contacto Grid - Centrado */
+        .contacto-grid {
+            padding: 4rem 0;
+            background: #f9fafb;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .contacto-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* Información de contacto */
+        .contacto-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2.5rem;
+            color: white;
+        }
+        
+        .contacto-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contacto-info > p {
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .info-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .info-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+        
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-icon i {
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        .info-content h3 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-content p {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-content small {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+        
+        /* Formulario de contacto */
+        .contacto-formulario {
+            padding: 2.5rem;
+            background: white;
+        }
+        
+        .contacto-formulario h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+        
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        
+        .form-group.checkbox {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .form-group.checkbox input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .form-group.checkbox label {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        .form-group.checkbox a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .form-group.checkbox a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Botones */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+        
+        .btn-outline:hover {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        /* Carrito Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-sidebar.open {
+            right: 0;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .cart-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            color: #9ca3af;
+            padding: 2rem;
+        }
+        
+        .cart-footer {
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .cart-overlay.active {
+            display: block;
+        }
+        
+        /* FAQ Section */
+        .faq {
+            padding: 4rem 0;
+            background: white;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1f2937;
+        }
+        
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .faq-item {
+            background: #f9fafb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: #f9fafb;
+        }
+        
+        .faq-question h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .faq-question i {
+            color: #667eea;
+            transition: transform 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .faq-item.active .faq-question {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            background: #667eea;
+            border-color: #667eea;
+        }
+        
+        .faq-item.active .faq-question h3 {
+            color: white;
+        }
+        
+        .faq-item.active .faq-question i {
+            color: white;
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: white;
+            border-left: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .faq-answer p {
+            margin: 0;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .contacto-wrapper {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+            
+            .contacto-info {
+                text-align: center;
+            }
+            
+            .info-card {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            /* En móvil, mostrar iconos móviles y ocultar el carrito del menú */
+            .mobile-icons {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            /* Ocultar el carrito dentro del menú en móvil */
+            .nav-links .cart-icon {
+                display: none;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                transition: left 0.3s ease;
+                z-index: 999;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                overflow-y: auto;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links a {
+                padding: 1rem;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid #e5e7eb;
+                font-size: 1.1rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+                padding: 0 1rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .contacto-wrapper {
+                margin: 0 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .cart-sidebar {
+                width: 320px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav {
+                padding: 0 1rem;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- CARRITO SIDEBAR -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Mi Carrito</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="cart-empty">Tu carrito está vacío</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">0,00€</span>
+            </div>
+            <button class="btn btn-primary btn-block" id="procederPagoBtn">
+                Proceder al pago
+            </button>
+            <button class="btn btn-outline btn-block" id="vaciarCarritoBtn" style="margin-top: 10px;">
+                <i class="fas fa-trash"></i> Vaciar carrito
+            </button>
+        </div>
+    </div>
+    
+    <!-- OVERLAY PARA EL CARRITO -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">Edunotes</a>
+            <div class="mobile-icons">
+                <a href="#" class="cart-icon" id="cartIconMobile">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Inicio</a>
+                <a href="proyectos.html">Proyectos</a>
+                <a href="recursos.html">Plantillas</a>
+                <a href="blog.html">Blog</a>
+                <a href="herramientas.html">Plataformas</a>
+                <a href="contacto.html" class="active">Contacto</a>
+                <a href="#" class="cart-icon" id="cartIconDesktop">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1>Hablemos de tu proyecto</h1>
+                <p>Cuéntame tu idea y la haremos realidad juntos</p>
+            </div>
+        </section>
+
+        <!-- Contacto Grid - Centrado -->
+        <section class="contacto-grid">
+            <div class="container">
+                <div class="contacto-wrapper">
+                    <!-- Información de contacto -->
+                    <div class="contacto-info">
+                        <h2>Información de contacto</h2>
+                        <p>Estoy aquí para ayudarte. Respondo en menos de 24 horas.</p>
+                        
+                        <div class="info-cards">
+                            <div class="info-card">
+                                <div class="info-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h3>Email</h3>
+                                    <p>edunotes25@gmail.com</p>
+                                    <small>Respuesta en 24h</small>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card">
+                                <div class="info-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h3>Horario de respuesta</h3>
+                                    <p>Lunes a Viernes</p>
+                                    <small>9:00 - 18:00</small>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card">
+                                <div class="info-icon">
+                                    <i class="fas fa-comment"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h3>Presupuestos</h3>
+                                    <p>Sin compromiso</p>
+                                    <small>Totalmente gratuitos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de contacto -->
+                    <div class="contacto-formulario">
+                        <h2>Envíame un mensaje</h2>
+                        <form id="contact-form" class="form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre completo *</label>
+                                    <input type="text" id="nombre" name="nombre" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="tel" id="telefono" name="telefono">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tipo-proyecto">Tipo de proyecto *</label>
+                                    <select id="tipo-proyecto" name="tipoProyecto" required>
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="web-educativa">Web educativa</option>
+                                        <option value="web-corporativa">Web corporativa</option>
+                                        <option value="ecommerce">Tienda online</option>
+                                        <option value="recursos">Plantillas educativas</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="presupuesto">Presupuesto estimado</label>
+                                <select id="presupuesto" name="presupuesto">
+                                    <option value="">Selecciona un rango</option>
+                                    <option value="500-1000">500€ - 1.000€</option>
+                                    <option value="1000-3000">1.000€ - 3.000€</option>
+                                    <option value="3000-5000">3.000€ - 5.000€</option>
+                                    <option value="5000+">Más de 5.000€</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mensaje">Cuéntame tu idea *</label>
+                                <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+                            </div>
+                            
+                            <div class="form-group checkbox">
+                                <input type="checkbox" id="privacidad" required>
+                                <label for="privacidad">He leído y acepto la <a href="privacidad.html">política de privacidad</a> y los <a href="terminos.html">términos y condiciones</a> *</label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Enviar mensaje
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq">
+            <div class="container">
+                <h2 class="section-title">Preguntas frecuentes</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>¿Cuánto tiempo tardan en responder?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Normalmente respondo en menos de 24 horas laborables. Todos los mensajes se envían a edunotes25@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>¿Cómo funcionan los presupuestos?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Realizo presupuestos personalizados sin compromiso. Analizo tu proyecto y te ofrezco la mejor solución adaptada a tus necesidades.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>¿Qué métodos de pago aceptan?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Acepto transferencia bancaria, PayPal y tarjeta de crédito. Para proyectos grandes, podemos fraccionar los pagos en varios plazos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Edunotes</h3>
+                <p>Desarrollo web profesional, plantillas educativas y herramientas digitales para la nueva era digital.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="proyectos.html">Proyectos</a></li>
+                    <li><a href="recursos.html">Plantillas</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="herramientas.html">Plataformas</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="aviso-legal.html">Aviso legal</a></li>
+                    <li><a href="privacidad.html">Política de privacidad</a></li>
+                    <li><a href="cookies.html">Política de cookies</a></li>
+                    <li><a href="terminos.html">Términos y condiciones</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Edunotes. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // CARRITO DE COMPRAS
+        let carrito = [];
+
+        function actualizarCarrito() {
+            const itemsDiv = document.getElementById('cart-items');
+            const totalSpan = document.getElementById('cart-total');
+            const contadores = document.querySelectorAll('.cart-count');
+            
+            if (!itemsDiv) return;
+            
+            if (carrito.length === 0) {
+                itemsDiv.innerHTML = '<p class="cart-empty">Tu carrito está vacío</p>';
+                if (totalSpan) totalSpan.textContent = '0,00€';
+                contadores.forEach(c => { if (c) c.textContent = '0'; });
+                return;
+            }
+            
+            let total = 0;
+            let html = '';
+            carrito.forEach((item, i) => {
+                total += item.precio;
+                html += `<div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
+                    <div><strong>${item.nombre}</strong><div style="font-size: 0.8rem; color: #667eea;">${item.precio.toFixed(2)}€</div></div>
+                    <button onclick="eliminarDelCarrito(${i})" style="background: none; border: none; color: #ef4444; cursor: pointer;"><i class="fas fa-trash"></i></button>
+                </div>`;
+            });
+            
+            itemsDiv.innerHTML = html;
+            if (totalSpan) totalSpan.textContent = `${total.toFixed(2)}€`;
+            contadores.forEach(c => { if (c) c.textContent = carrito.length; });
+        }
+
+        function agregarAlCarrito(nombre, precio) {
+            carrito.push({ nombre, precio });
+            actualizarCarrito();
+            abrirCarrito();
+        }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarCarrito();
+        }
+
+        function limpiarCarritoCompleto() {
+            carrito = [];
+            actualizarCarrito();
+            cerrarCarrito();
+        }
+
+        function procederPago() {
+            if (carrito.length === 0) {
+                alert('❌ Tu carrito está vacío');
+                return;
+            }
+            const total = document.getElementById('cart-total');
+            alert('🛒 Procediendo al pago...\nTotal: ' + (total ? total.textContent : '0,00€'));
+            carrito = [];
+            actualizarCarrito();
+            cerrarCarrito();
+        }
+
+        function abrirCarrito() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (sidebar) sidebar.classList.add('open');
+            if (overlay) overlay.classList.add('active');
+        }
+
+        function cerrarCarrito() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        // Inicializar eventos
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inicializando carrito...');
+            
+            const cartIconDesktop = document.getElementById('cartIconDesktop');
+            const cartIconMobile = document.getElementById('cartIconMobile');
+            const closeBtn = document.querySelector('.close-cart');
+            const overlay = document.getElementById('cart-overlay');
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            const pagoBtn = document.getElementById('procederPagoBtn');
+            const vaciarBtn = document.getElementById('vaciarCarritoBtn');
+            
+            // Función para abrir carrito
+            const abrirCarritoHandler = function(e) {
+                e.preventDefault();
+                console.log('Abriendo carrito desde:', this.id);
+                abrirCarrito();
+            };
+            
+            // Asignar eventos a los iconos del carrito
+            if (cartIconDesktop) {
+                cartIconDesktop.addEventListener('click', abrirCarritoHandler);
+                console.log('✅ Evento asignado a cartIconDesktop');
+            } else {
+                console.error('❌ No se encontró cartIconDesktop');
+            }
+            
+            if (cartIconMobile) {
+                cartIconMobile.addEventListener('click', abrirCarritoHandler);
+                console.log('✅ Evento asignado a cartIconMobile');
+            }
+            
+            if (closeBtn) closeBtn.addEventListener('click', cerrarCarrito);
+            if (overlay) overlay.addEventListener('click', cerrarCarrito);
+            if (pagoBtn) pagoBtn.addEventListener('click', procederPago);
+            if (vaciarBtn) vaciarBtn.addEventListener('click', limpiarCarritoCompleto);
+            
+            // Menú hamburguesa
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('active');
+                    const icon = menuToggle.querySelector('i');
+                    if (navLinks.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Cerrar menú al hacer clic en un enlace
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        const icon = menuToggle.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+            
+            actualizarCarrito();
+            
+            // FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                if (question) {
+                    question.addEventListener('click', () => {
+                        faqItems.forEach(otherItem => {
+                            if (otherItem !== item && otherItem.classList.contains('active')) {
+                                otherItem.classList.remove('active');
+                            }
+                        });
+                        item.classList.toggle('active');
+                    });
+                }
+            });
+        });
+        
+        // Formulario de contacto
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('✅ Mensaje enviado correctamente. Te responderé en menos de 24 horas.');
+                this.reset();
+            });
+        }
+    </script>
+</body>
+</html>
