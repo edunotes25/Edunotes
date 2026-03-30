@@ -787,6 +787,21 @@
                 right: -100%;
             }
         }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .btn-outline-cart {
+            background: transparent;
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+        
+        .btn-outline-cart:hover {
+            background: #ef4444;
+            color: white;
+        }
     </style>
 </head>
 
@@ -808,7 +823,7 @@
             <button class="btn btn-primary btn-block" id="procederPagoBtn">
                 Proceder al pago
             </button>
-            <button class="btn btn-outline btn-block" id="vaciarCarritoBtn" style="margin-top: 10px; background: transparent; color: #ef4444; border: 2px solid #ef4444;">
+            <button class="btn-outline-cart btn-block" id="vaciarCarritoBtn" style="margin-top: 10px;">
                 <i class="fas fa-trash"></i> Vaciar carrito
             </button>
         </div>
@@ -832,7 +847,6 @@
             <div class="nav-links" id="navLinks">
                 <a href="index.html" class="active">Inicio</a>
                 <a href="proyectos.html">Proyectos</a>
-                <a href="recursos.html">Plantillas</a>
                 <a href="blog.html">Blog</a>
                 <a href="herramientas.html">Plataformas</a>
                 <a href="contacto.html">Contacto</a>
@@ -865,12 +879,7 @@
                         <p>Diseño y desarrollo de páginas web modernas, rápidas y adaptadas a tus necesidades.</p>
                         <a href="proyectos.html" class="card-link">Ver proyectos <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <div class="servicio-card">
-                        <div class="servicio-icon"><i class="fas fa-paint-brush"></i></div>
-                        <h3>Plantillas</h3>
-                        <p>Plantillas educativas listas para usar, personalizables y diseñadas para profesores.</p>
-                        <a href="recursos.html" class="card-link">Ver plantillas <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                    
                     <div class="servicio-card">
                         <div class="servicio-icon"><i class="fas fa-graduation-cap"></i></div>
                         <h3>Asesoría Educativa</h3>
@@ -912,7 +921,7 @@
                 <h2 class="section-title">Proyectos Recientes</h2>
                 <div class="proyectos-grid-home">
                     <div class="proyecto-card-home">
-                        <div class="proyecto-img-home"><img src="assets/images/proyectos/edulearn.jpg" alt="EduLearn"></div>
+                        <div class="proyecto-img-home"><img src="assets/images/proyectos/edulearn.jpg" alt="EduLearn" onerror="this.src='https://placehold.co/600x400/667eea/white?text=EduLearn'"></div>
                         <div class="proyecto-info-home">
                             <h3>EduLearn</h3>
                             <p>Plataforma completa de e-learning para cursos online con gestión de usuarios y seguimiento de progreso.</p>
@@ -921,7 +930,7 @@
                         </div>
                     </div>
                     <div class="proyecto-card-home">
-                        <div class="proyecto-img-home"><img src="assets/images/proyectos/eduschool.jpg" alt="EduSmart School"></div>
+                        <div class="proyecto-img-home"><img src="assets/images/proyectos/eduschool.jpg" alt="EduSmart School" onerror="this.src='https://placehold.co/600x400/667eea/white?text=EduSmart+School'"></div>
                         <div class="proyecto-info-home">
                             <h3>EduSmart School</h3>
                             <p>Plataforma educativa interactiva para colegios con gestión de contenidos y seguimiento de alumnos.</p>
@@ -930,7 +939,7 @@
                         </div>
                     </div>
                     <div class="proyecto-card-home">
-                        <div class="proyecto-img-home"><img src="assets/images/proyectos/educorp.jpg" alt="Educorp"></div>
+                        <div class="proyecto-img-home"><img src="assets/images/proyectos/educorp.jpg" alt="Educorp" onerror="this.src='https://placehold.co/600x400/667eea/white?text=Educorp'"></div>
                         <div class="proyecto-info-home">
                             <h3>Educorp</h3>
                             <p>Portal corporativo profesional para servicios educativos con diseño moderno y catálogo de servicios.</p>
@@ -979,14 +988,13 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Edunotes</h3>
-                <p>Desarrollo web profesional, plantillas educativas y herramientas digitales para la nueva era digital.</p>
+                <p>Desarrollo web profesional y herramientas digitales para la nueva era digital.</p>
             </div>
             <div class="footer-section">
                 <h3>Enlaces rápidos</h3>
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="proyectos.html">Proyectos</a></li>
-                    <li><a href="recursos.html">Plantillas</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="herramientas.html">Plataformas</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
@@ -1008,7 +1016,42 @@
     </footer>
 
     <script>
-        // CARRITO DE COMPRAS
+        // ==================== SISTEMA DE SEGUIMIENTO PARA DASHBOARD ====================
+        
+        // Función para registrar visita a la página
+        function registrarVisitaPagina() {
+            const pagina = window.location.pathname || '/index.html';
+            const hoy = new Date().toISOString().split('T')[0];
+            
+            let statsData = localStorage.getItem('edunotes_admin_data');
+            if (statsData) {
+                statsData = JSON.parse(statsData);
+            } else {
+                statsData = {
+                    visitasDiarias: {},
+                    visitasPaginas: {},
+                    articulosVisitas: {},
+                    mensajes: [],
+                    compras: [],
+                    feedback: []
+                };
+            }
+            
+            if (!statsData.visitasDiarias[hoy]) statsData.visitasDiarias[hoy] = 0;
+            statsData.visitasDiarias[hoy]++;
+            
+            if (!statsData.visitasPaginas[pagina]) statsData.visitasPaginas[pagina] = 0;
+            statsData.visitasPaginas[pagina]++;
+            
+            localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+            
+            console.log('Visita registrada:', { pagina, fecha: hoy, total: statsData.visitasDiarias[hoy] });
+        }
+        
+        // Registrar la visita al cargar la página
+        registrarVisitaPagina();
+        
+        // ==================== CARRITO DE COMPRAS ====================
         let carrito = [];
 
         function actualizarCarrito() {
@@ -1063,6 +1106,34 @@
                 return;
             }
             const total = document.getElementById('cart-total');
+            
+            // Registrar las compras en el dashboard
+            let statsData = localStorage.getItem('edunotes_admin_data');
+            if (statsData) {
+                statsData = JSON.parse(statsData);
+            } else {
+                statsData = {
+                    visitasDiarias: {},
+                    visitasPaginas: {},
+                    articulosVisitas: {},
+                    mensajes: [],
+                    compras: [],
+                    feedback: []
+                };
+            }
+            
+            carrito.forEach(item => {
+                statsData.compras.unshift({
+                    id: Date.now(),
+                    fecha: new Date().toISOString(),
+                    producto: item.nombre,
+                    precio: item.precio,
+                    email: 'usuario@ejemplo.com'
+                });
+            });
+            
+            localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+            
             alert('🛒 Procediendo al pago...\nTotal: ' + (total ? total.textContent : '0,00€'));
             carrito = [];
             actualizarCarrito();
@@ -1141,8 +1212,10 @@
                     link.addEventListener('click', function() {
                         navLinks.classList.remove('active');
                         const icon = menuToggle.querySelector('i');
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
+                        if (icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
                     });
                 });
             }

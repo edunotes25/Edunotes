@@ -727,7 +727,6 @@
             <div class="nav-links" id="navLinks">
                 <a href="index.html">Inicio</a>
                 <a href="proyectos.html">Proyectos</a>
-                <a href="recursos.html">Plantillas</a>
                 <a href="blog.html">Blog</a>
                 <a href="herramientas.html">Plataformas</a>
                 <a href="contacto.html" class="active">Contacto</a>
@@ -820,7 +819,6 @@
                                         <option value="web-educativa">Web educativa</option>
                                         <option value="web-corporativa">Web corporativa</option>
                                         <option value="ecommerce">Tienda online</option>
-                                        <option value="recursos">Plantillas educativas</option>
                                         <option value="otro">Otro</option>
                                     </select>
                                 </div>
@@ -900,14 +898,13 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Edunotes</h3>
-                <p>Desarrollo web profesional, plantillas educativas y herramientas digitales para la nueva era digital.</p>
+                <p>Desarrollo web profesional y herramientas digitales para la nueva era digital.</p>
             </div>
             <div class="footer-section">
                 <h3>Enlaces rápidos</h3>
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="proyectos.html">Proyectos</a></li>
-                    <li><a href="recursos.html">Plantillas</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="herramientas.html">Plataformas</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
@@ -929,7 +926,74 @@
     </footer>
 
     <script>
-        // CARRITO DE COMPRAS
+        // ==================== SISTEMA DE SEGUIMIENTO PARA DASHBOARD ====================
+        
+        // Función para registrar visita a la página
+        function registrarVisitaPagina() {
+            const pagina = window.location.pathname;
+            const hoy = new Date().toISOString().split('T')[0];
+            
+            let statsData = localStorage.getItem('edunotes_admin_data');
+            if (statsData) {
+                statsData = JSON.parse(statsData);
+            } else {
+                statsData = {
+                    visitasDiarias: {},
+                    visitasPaginas: {},
+                    articulosVisitas: {},
+                    mensajes: [],
+                    compras: [],
+                    feedback: []
+                };
+            }
+            
+            if (!statsData.visitasDiarias[hoy]) statsData.visitasDiarias[hoy] = 0;
+            statsData.visitasDiarias[hoy]++;
+            
+            if (!statsData.visitasPaginas[pagina]) statsData.visitasPaginas[pagina] = 0;
+            statsData.visitasPaginas[pagina]++;
+            
+            localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+        }
+        
+        // Función para registrar mensaje de contacto
+        function registrarMensajeContacto(nombre, email, telefono, tipoProyecto, presupuesto, mensaje) {
+            let statsData = localStorage.getItem('edunotes_admin_data');
+            if (statsData) {
+                statsData = JSON.parse(statsData);
+            } else {
+                statsData = {
+                    visitasDiarias: {},
+                    visitasPaginas: {},
+                    articulosVisitas: {},
+                    mensajes: [],
+                    compras: [],
+                    feedback: []
+                };
+            }
+            
+            const nuevoMensaje = {
+                id: Date.now(),
+                fecha: new Date().toISOString(),
+                nombre: nombre,
+                email: email,
+                telefono: telefono || 'No especificado',
+                asunto: tipoProyecto,
+                presupuesto: presupuesto || 'No especificado',
+                mensaje: mensaje,
+                leido: false
+            };
+            
+            statsData.mensajes.unshift(nuevoMensaje);
+            localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+            
+            console.log('Mensaje registrado en dashboard:', nuevoMensaje);
+        }
+        
+        // Registrar la visita al cargar la página
+        registrarVisitaPagina();
+        
+        // ==================== CARRITO DE COMPRAS ====================
         let carrito = [];
 
         function actualizarCarrito() {
@@ -1089,13 +1153,34 @@
             });
         });
         
-        // Formulario de contacto
+        // ==================== FORMULARIO DE CONTACTO CON REGISTRO ====================
         const contactForm = document.getElementById('contact-form');
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                alert('✅ Mensaje enviado correctamente. Te responderé en menos de 24 horas.');
-                this.reset();
+                
+                // Obtener valores del formulario
+                const nombre = document.getElementById('nombre').value;
+                const email = document.getElementById('email').value;
+                const telefono = document.getElementById('telefono').value;
+                const tipoProyecto = document.getElementById('tipo-proyecto').value;
+                const presupuesto = document.getElementById('presupuesto').value;
+                const mensaje = document.getElementById('mensaje').value;
+                
+                // Validar campos requeridos
+                if (!nombre || !email || !tipoProyecto || !mensaje) {
+                    alert('❌ Por favor, completa todos los campos obligatorios.');
+                    return;
+                }
+                
+                // Registrar el mensaje en el dashboard
+                registrarMensajeContacto(nombre, email, telefono, tipoProyecto, presupuesto, mensaje);
+                
+                // Mostrar mensaje de éxito
+                alert('✅ ¡Mensaje enviado correctamente! Te responderé en menos de 24 horas.');
+                
+                // Limpiar formulario
+                contactForm.reset();
             });
         }
     </script>

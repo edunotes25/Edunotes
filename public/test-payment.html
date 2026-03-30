@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Pago - Tutorías</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { color: #4a90e2; text-align: center; }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4a90e2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Prueba de Compra Tutorías</h1>
+        <p style="text-align: center; color: #666;">Completa el formulario para simular una compra</p>
+        
+        <form id="paymentForm">
+            <div class="form-group">
+                <label>Nombre del colegio *</label>
+                <input type="text" id="schoolName" required placeholder="Ej: Colegio San José">
+            </div>
+            
+            <div class="form-group">
+                <label>Tu nombre completo *</label>
+                <input type="text" id="customerName" required placeholder="Ej: María García">
+            </div>
+            
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="email" required placeholder="tu@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label>Plan</label>
+                <select id="plan">
+                    <option value="99">Plan Básico - 99€ (hasta 100 usuarios)</option>
+                    <option value="199">Plan Pro - 199€ (hasta 500 usuarios)</option>
+                    <option value="299">Plan Premium - 299€ (usuarios ilimitados)</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="submitBtn">Simular Compra</button>
+        </form>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Procesando compra y creando organización...</p>
+        </div>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const schoolName = document.getElementById('schoolName').value;
+            const customerName = document.getElementById('customerName').value;
+            const email = document.getElementById('email').value;
+            const planPrice = document.getElementById('plan').value;
+            
+            if (!schoolName || !customerName || !email) {
+                alert('Completa todos los campos');
+                return;
+            }
+            
+            // Mostrar loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('submitBtn').disabled = true;
+            
+            try {
+                // 1. Crear orden (simulada o real con PayPal)
+                const orderResponse = await fetch('/api/payments/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        items: [{
+                            name: `Tutorías - ${schoolName}`,
+                            price: planPrice,
+                            quantity: 1
+                        }],
+                        total: planPrice,
+                        cliente: { email, nombre: customerName },
+                        schoolName: schoolName,
+                        subscriptionMonths: 12
+                    })
+                });
+                
+                const orderData = await orderResponse.json();
+                console.log('Orden creada:', orderData);
+                
+                // 2. Simular pago exitoso (o usar PayPal real)
+                // Para pruebas, simulamos el pago exitoso
+                const captureResponse = await fetch('/api/payments/capture-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        orderId: orderData.orderId || 'MOCK_ORDER_' + Date.now()
+                    })
+                });
+                
+                const result = await captureResponse.json();
+                console.log('Resultado:', result);
+                
+                // Mostrar resultado
+                const resultDiv = document.getElementById('result');
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h3>✅ ¡Compra exitosa!</h3>
+                        <p><strong>Colegio:</strong> ${schoolName}</p>
+                        <p><strong>Código de acceso:</strong> <code style="font-size: 18px; background: #fff; padding: 5px;">${result.accessCode}</code></p>
+                        <p><strong>ID Organización:</strong> ${result.organizationId}</p>
+                        <p>📧 Se ha enviado un email a <strong>${email}</strong> con las instrucciones.</p>
+                        <hr>
+                        <p><strong>Próximos pasos:</strong></p>
+                        <ol>
+                            <li>Revisa tu email (bandeja de entrada o spam)</li>
+                            <li>Comparte el código <strong>${result.accessCode}</strong> con los profesores y padres</li>
+                            <li>Accede a la SaaS: <a href="${result.saasUrl}" target="_blank">${result.saasUrl}</a></li>
+                            <li>Los usuarios deben registrarse usando este código</li>
+                        </ol>
+                        <p><strong>Credenciales de administrador:</strong></p>
+                        <p>Email: ${email}</p>
+                        <p>Contraseña: <code>Revisa tu email</code></p>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <h3>❌ Error en la compra</h3>
+                        <p>${result.error || result.details || 'Error desconocido'}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                const resultDiv = document.getElementById('result');
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error</h3>
+                    <p>${error.message}</p>
+                `;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

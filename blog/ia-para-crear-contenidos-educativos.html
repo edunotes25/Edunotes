@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo usar la IA para crear contenidos educativos increíbles | Edunotes</title>
+    <meta name="description" content="Descubre las mejores herramientas de inteligencia artificial para profesores. Crea materiales educativos, evaluaciones y recursos con IA en minutos.">
+    <meta name="keywords" content="IA educación, inteligencia artificial profesores, crear contenidos con IA, ChatGPT educación, herramientas IA docentes">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Mismos estilos que los artículos anteriores */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: #1f2937; background: #f8fafc; }
+        .header { position: fixed; top: 0; left: 0; right: 0; background: white; height: 80px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav { display: flex; justify-content: space-between; align-items: center; height: 80px; max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-decoration: none; }
+        .mobile-icons { display: none; align-items: center; gap: 1rem; }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; color: #667eea; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: #4b5563; font-weight: 500; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: #667eea; }
+        .cart-icon { position: relative; cursor: pointer; }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: #667eea; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+        main { margin-top: 80px; }
+        .article-container { max-width: 800px; margin: 0 auto; padding: 3rem 2rem; background: white; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .article-header { margin-bottom: 2rem; }
+        .article-category { display: inline-block; background: #e0e7ff; color: #667eea; padding: 0.3rem 1rem; border-radius: 30px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; }
+        .article-header h1 { font-size: 2.5rem; margin: 1rem 0 1rem; color: #1f2937; line-height: 1.3; }
+        .article-meta { display: flex; gap: 1.5rem; color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .article-meta i { margin-right: 0.3rem; color: #667eea; }
+        .article-featured-img { width: 100%; border-radius: 20px; margin: 1.5rem 0; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .article-content { line-height: 1.8; color: #374151; }
+        .article-content h2 { font-size: 1.8rem; margin: 2.5rem 0 1rem; color: #1f2937; }
+        .article-content h3 { font-size: 1.4rem; margin: 1.8rem 0 0.8rem; color: #1f2937; }
+        .article-content p { margin-bottom: 1.2rem; }
+        .article-content ul, .article-content ol { margin: 1rem 0 1rem 2rem; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .article-content blockquote { border-left: 4px solid #667eea; padding: 1rem 1.5rem; background: #f3f4f6; margin: 1.5rem 0; font-style: italic; border-radius: 0 12px 12px 0; }
+        .ai-card { background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid #667eea30; }
+        .ai-card h3 { display: flex; align-items: center; gap: 0.5rem; margin-top: 0; color: #667eea; }
+        .prompt-box { background: #1f2937; color: #e5e7eb; padding: 1rem; border-radius: 12px; font-family: monospace; margin: 1rem 0; overflow-x: auto; }
+        .back-to-blog { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 2rem; color: #667eea; text-decoration: none; font-weight: 500; transition: gap 0.3s; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
+        .footer { background: #0f172a; color: white; padding: 3rem 0 1rem; margin-top: 4rem; }
+        .footer-content { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .footer-section h3 { margin-bottom: 1rem; }
+        .footer-section p, .footer-section a { color: #94a3b8; text-decoration: none; }
+        .footer-section a:hover { color: #667eea; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #1e293b; color: #64748b; }
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: white; box-shadow: -2px 0 20px rgba(0,0,0,0.1); z-index: 1001; transition: right 0.3s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+        .close-cart { background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 1rem; }
+        .cart-empty { text-align: center; color: #9ca3af; padding: 2rem; }
+        .cart-footer { padding: 1rem; border-top: 1px solid #e5e7eb; }
+        .cart-total { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 1rem; }
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; }
+        .cart-overlay.active { display: block; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 0.8rem; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }
+        .btn-outline { background: transparent; color: #ef4444; border: 2px solid #ef4444; padding: 0.7rem; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 0.5rem; }
+        @media (max-width: 768px) {
+            .mobile-icons { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-links .cart-icon { display: none; }
+            .nav-links { position: fixed; top: 80px; left: -100%; width: 100%; height: calc(100vh - 80px); background: white; flex-direction: column; transition: left 0.3s; z-index: 999; }
+            .nav-links.active { left: 0; }
+            .nav-links a { padding: 1rem; width: 100%; text-align: center; border-bottom: 1px solid #e5e7eb; }
+            .article-container { padding: 1.5rem; margin: 0 1rem; }
+            .article-header h1 { font-size: 1.8rem; }
+            .logo { font-size: 1.4rem; }
+            .cart-sidebar { width: 320px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-bag"></i> Mi Carrito</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="cart-empty"><i class="fas fa-box-open"></i> Tu carrito está vacío</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span><span id="cart-total">0,00€</span></div>
+            <button class="btn-primary" id="procederPagoBtn">Proceder al pago</button>
+            <button class="btn-outline" id="vaciarCarritoBtn"><i class="fas fa-trash-alt"></i> Vaciar carrito</button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">Edunotes</a>
+            <div class="mobile-icons">
+                <a href="#" class="cart-icon" id="cartIconMobile"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="../index.html">Inicio</a>
+                <a href="../proyectos.html">Proyectos</a>
+                <a href="../blog.html" class="active">Blog</a>
+                <a href="../herramientas.html">Plataformas</a>
+                <a href="../contacto.html">Contacto</a>
+                <a href="#" class="cart-icon" id="cartIconDesktop"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <article class="article-container">
+                <div class="article-header">
+                    <span class="article-category"><i class="fas fa-robot"></i> Herramientas IA</span>
+                    <h1>Cómo usar la IA para crear contenidos educativos increíbles</h1>
+                    <div class="article-meta">
+                        <span><i class="far fa-calendar-alt"></i> 20 febrero 2026</span>
+                        <span><i class="far fa-clock"></i> 9 min de lectura</span>
+                        <span><i class="far fa-eye"></i> 6.789 visualizaciones</span>
+                    </div>
+                </div>
+                
+                <img src="../assets/images/blog/ia-educacion.jpg" alt="Inteligencia Artificial en educación" class="article-featured-img" onerror="this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop'">
+                
+                <div class="article-content">
+                    <p>La Inteligencia Artificial ha dejado de ser una tecnología del futuro para convertirse en una herramienta cotidiana que puede transformar radicalmente la forma en que los profesores creamos contenidos educativos. En 2026, utilizar IA no es solo una ventaja competitiva, es casi una necesidad para mantenernos eficientes y ofrecer experiencias de aprendizaje personalizadas.</p>
+                    
+                    <p>En este artículo, te mostraré las mejores herramientas de IA para educación y, lo más importante, cómo usarlas para crear materiales de calidad en una fracción del tiempo que te llevaría hacerlo manualmente.</p>
+                    
+                    <h2>🤖 Las mejores herramientas de IA para profesores</h2>
+                    
+                    <div class="ai-card">
+                        <h3><i class="fab fa-openai"></i> ChatGPT / Claude / Gemini</h3>
+                        <p><strong>Precio:</strong> Gratuito (versiones premium desde 20€/mes)</p>
+                        <p>Los grandes modelos de lenguaje son la base de la revolución educativa con IA. Pueden generar planes de clase, crear preguntas de evaluación, redactar explicaciones adaptadas a diferentes niveles y mucho más.</p>
+                        <p><strong>Usos principales:</strong></p>
+                        <ul>
+                            <li>Generar planes de clase detallados</li>
+                            <li>Crear preguntas de opción múltiple y respuestas abiertas</li>
+                            <li>Explicar conceptos complejos de forma sencilla</li>
+                            <li>Adaptar contenidos para diferentes niveles educativos</li>
+                            <li>Traducir materiales a otros idiomas</li>
+                        </ul>
+                        <div class="prompt-box">
+                            <strong>Ejemplo de prompt:</strong><br>
+                            "Actúa como un profesor experto en matemáticas. Crea un plan de clase de 45 minutos para enseñar ecuaciones de primer grado a estudiantes de 12 años. Incluye objetivo, materiales, desarrollo de la clase, 3 ejemplos prácticos y 5 ejercicios para practicar con soluciones."
+                        </div>
+                    </div>
+                    
+                    <div class="ai-card">
+                        <h3><i class="fas fa-image"></i> Midjourney / DALL-E / Leonardo AI</h3>
+                        <p><strong>Precio:</strong> Planes desde 10€/mes</p>
+                        <p>Estas herramientas generan imágenes desde descripciones de texto. Perfectas para crear ilustraciones personalizadas, infografías visuales y materiales atractivos sin preocuparte por derechos de autor.</p>
+                        <p><strong>Usos principales:</strong></p>
+                        <ul>
+                            <li>Crear ilustraciones para cuentos y lecturas</li>
+                            <li>Generar imágenes para flashcards y vocabulario</li>
+                            <li>Diseñar personajes para juegos educativos</li>
+                            <li>Crear portadas para materiales descargables</li>
+                            <li>Visualizar conceptos abstractos (átomos, células, etc.)</li>
+                        </ul>
+                        <div class="prompt-box">
+                            <strong>Ejemplo de prompt (Midjourney):</strong><br>
+                            "/imagine a colorful cartoon illustration of a friendly robot teaching math to children in a classroom, bright colors, educational style, high quality --ar 16:9"
+                        </div>
+                    </div>
+                    
+                    <div class="ai-card">
+                        <h3><i class="fas fa-chalkboard"></i> Canva Magic Studio</h3>
+                        <p><strong>Precio:</strong> Incluido en Canva Pro (12,99€/mes)</p>
+                        <p>Canva ha integrado potentes funcionalidades de IA que permiten generar presentaciones completas, editar imágenes con texto, crear videos automáticos y mucho más.</p>
+                        <p><strong>Usos principales:</strong></p>
+                        <ul>
+                            <li>Generar presentaciones completas con Magic Design</li>
+                            <li>Crear infografías con Magic Write</li>
+                            <li>Editar fondos y elementos con Magic Edit</li>
+                            <li>Generar videos educativos con Magic Media</li>
+                            <li>Traducir materiales a múltiples idiomas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="ai-card">
+                        <h3><i class="fas fa-file-alt"></i> Twee / QuestionWell</h3>
+                        <p><strong>Precio:</strong> Freemium (desde 5€/mes)</p>
+                        <p>Herramientas especializadas en crear preguntas y actividades a partir de textos o videos. Ideales para profesores de idiomas y áreas humanísticas.</p>
+                        <p><strong>Usos principales:</strong></p>
+                        <ul>
+                            <li>Generar preguntas de comprensión lectora</li>
+                            <li>Crear ejercicios de vocabulario a partir de textos</li>
+                            <li>Formular preguntas sobre videos de YouTube</li>
+                            <li>Generar discusiones y temas de debate</li>
+                            <li>Crear rúbricas de evaluación automáticas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="ai-card">
+                        <h3><i class="fas fa-music"></i> Suno / AIVA</h3>
+                        <p><strong>Precio:</strong> Freemium (desde 10€/mes)</p>
+                        <p>Herramientas de generación de música y audio con IA. Perfectas para crear canciones educativas, jingles o música de fondo para tus materiales.</p>
+                        <p><strong>Usos principales:</strong></p>
+                        <ul>
+                            <li>Crear canciones educativas personalizadas</li>
+                            <li>Generar música de fondo para videos didácticos</li>
+                            <li>Crear audios para ejercicios de listening</li>
+                            <li>Producir podcasts educativos con voces sintéticas</li>
+                        </ul>
+                    </div>
+                    
+                    <h2>📝 Estrategias prácticas para usar IA en tu día a día</h2>
+                    
+                    <h3>1. Genera planes de clase en minutos</h3>
+                    <p>En lugar de pasar horas diseñando una clase, utiliza ChatGPT con un prompt estructurado:</p>
+                    <div class="prompt-box">
+                        "Soy profesor de Historia. Crea un plan de clase de 50 minutos sobre la Revolución Industrial para estudiantes de 14 años. Incluye: objetivos de aprendizaje, materiales necesarios, introducción (5 min), desarrollo con 3 actividades prácticas (35 min), cierre con preguntas reflexivas (10 min), y una tarea para casa. Adapta el lenguaje para estudiantes con diferentes ritmos de aprendizaje."
+                    </div>
+                    
+                    <h3>2. Crea evaluaciones personalizadas</h3>
+                    <p>La IA puede generar evaluaciones adaptadas al nivel de cada estudiante, ahorrándote horas de corrección:</p>
+                    <div class="prompt-box">
+                        "Genera 10 preguntas de opción múltiple sobre el sistema solar para estudiantes de 10 años. Incluye 3 niveles de dificultad. Cada pregunta debe tener 4 opciones y la respuesta correcta. Además, crea 2 preguntas de respuesta abierta para estudiantes avanzados."
+                    </div>
+                    
+                    <h3>3. Diseña infografías con IA + Canva</h3>
+                    <p>Combina ChatGPT para generar el texto estructurado y Canva Magic Design para crear la infografía visual:</p>
+                    <ol>
+                        <li>Pide a ChatGPT que estructure la información en secciones claras</li>
+                        <li>Copia el texto en Canva y usa "Magic Design" para generar plantillas</li>
+                        <li>Ajusta colores, imágenes y tipografías al estilo de tu marca educativa</li>
+                    </ol>
+                    
+                    <h3>4. Adapta contenidos para diferentes niveles</h3>
+                    <p>Un mismo tema puede explicarse de formas muy diferentes según la edad del estudiante. La IA te ayuda a adaptar el lenguaje y la complejidad:</p>
+                    <div class="prompt-box">
+                        "Tengo este texto sobre fotosíntesis: [pega el texto]. Por favor, adáptalo para: a) estudiantes de 8 años (lenguaje simple, analogías), b) estudiantes de 14 años (términos técnicos básicos), y c) estudiantes de 18 años (conceptos avanzados, procesos bioquímicos)."
+                    </div>
+                    
+                    <h3>5. Crea imágenes personalizadas para tus materiales</h3>
+                    <p>Las imágenes genéricas de bancos de fotos no siempre representan exactamente lo que necesitas. Con DALL-E o Midjourney, puedes crear ilustraciones a tu medida:</p>
+                    <div class="prompt-box">
+                        "Crea una imagen de un niño y una niña de 10 años realizando un experimento científico en el aula. Estilo ilustración educativa, colores brillantes, fondo de laboratorio escolar, formato cuadrado."
+                    </div>
+                    
+                    <h2>⚠️ Consideraciones importantes al usar IA en educación</h2>
+                    
+                    <blockquote>
+                        "La IA es una herramienta poderosa, pero no reemplaza el criterio pedagógico del profesor. Siempre revisa y adapta los contenidos generados por IA antes de compartirlos con tus estudiantes."
+                    </blockquote>
+                    
+                    <ul>
+                        <li><strong>Verifica la información:</strong> Las IA pueden cometer errores. Siempre revisa datos y conceptos clave.</li>
+                        <li><strong>Mantén tu estilo personal:</strong> Usa la IA como asistente, no como sustituto. Añade tu toque personal a los materiales.</li>
+                        <li><strong>Protege la privacidad:</strong> No compartas información personal de estudiantes con herramientas de IA.</li>
+                        <li><strong>Fomenta el pensamiento crítico:</strong> Enseña a tus estudiantes a usar la IA de forma ética y responsable.</li>
+                        <li><strong>Transparencia:</strong> Sé honesto con tus estudiantes sobre cuándo y cómo utilizas IA en la creación de materiales.</li>
+                    </ul>
+                    
+                    <h2>🎓 El futuro: IA personalizada para cada estudiante</h2>
+                    <p>La próxima generación de herramientas educativas con IA permitirá crear itinerarios de aprendizaje completamente personalizados. Imagina un sistema que identifica las dificultades específicas de cada estudiante y genera automáticamente ejercicios adaptados a sus necesidades. Ese futuro ya está comenzando a llegar.</p>
+                    
+                    <div class="ai-card">
+                        <h3><i class="fas fa-lightbulb"></i> Mi recomendación para empezar</h3>
+                        <p>Si eres nuevo en el mundo de la IA, comienza con una sola herramienta. Te recomiendo empezar con ChatGPT (es gratuita y versátil). Dedica una semana a experimentar con ella: genera planes de clase, crea preguntas, adapta contenidos. Cuando te sientas cómodo, incorpora herramientas de imagen como Canva Magic Studio. La clave está en la práctica constante.</p>
+                    </div>
+                    
+                    <p><strong>¿Ya has probado alguna herramienta de IA en tus clases? Cuéntame tu experiencia en los comentarios. Si todavía no te has animado, ¿cuál de estas te gustaría probar primero?</strong></p>
+                </div>
+                
+                <a href="../blog.html" class="back-to-blog">
+                    <i class="fas fa-arrow-left"></i> Volver al blog
+                </a>
+                
+                </div>
+            </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Edunotes</h3>
+                <p>Blog especializado en educación digital, herramientas para profesores y recursos educativos innovadores.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="../proyectos.html">Proyectos</a></li>
+                    <li><a href="../blog.html">Blog</a></li>
+                    <li><a href="../herramientas.html">Plataformas</a></li>
+                    <li><a href="../contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="../aviso-legal.html">Aviso legal</a></li>
+                    <li><a href="../privacidad.html">Política de privacidad</a></li>
+                    <li><a href="../cookies.html">Política de cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Edunotes. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        let carrito = [];
+        function actualizarCarrito() {
+            const itemsDiv = document.getElementById('cart-items');
+            const totalSpan = document.getElementById('cart-total');
+            const contadores = document.querySelectorAll('.cart-count');
+            if (!itemsDiv) return;
+            if (carrito.length === 0) {
+                itemsDiv.innerHTML = '<p class="cart-empty"><i class="fas fa-box-open"></i> Tu carrito está vacío</p>';
+                if (totalSpan) totalSpan.textContent = '0,00€';
+                contadores.forEach(c => { if (c) c.textContent = '0'; });
+                return;
+            }
+            let total = 0;
+            let html = '';
+            carrito.forEach((item, i) => {
+                total += item.precio;
+                html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
+                    <div><strong>${item.nombre}</strong><div style="font-size: 0.8rem; color: #667eea;">${item.precio.toFixed(2)}€</div></div>
+                    <button onclick="eliminarDelCarrito(${i})" style="background: none; border: none; color: #ef4444; cursor: pointer;"><i class="fas fa-trash-alt"></i></button>
+                </div>`;
+            });
+            itemsDiv.innerHTML = html;
+            if (totalSpan) totalSpan.textContent = `${total.toFixed(2)}€`;
+            contadores.forEach(c => { if (c) c.textContent = carrito.length; });
+        }
+        function eliminarDelCarrito(index) { carrito.splice(index, 1); actualizarCarrito(); }
+        function limpiarCarritoCompleto() { carrito = []; actualizarCarrito(); cerrarCarrito(); }
+        function procederPago() {
+            if (carrito.length === 0) { alert('❌ Tu carrito está vacío'); return; }
+            alert('🛒 Gracias por tu interés!\nTotal: ' + document.getElementById('cart-total').textContent);
+            carrito = []; actualizarCarrito(); cerrarCarrito();
+        }
+        function abrirCarrito() { document.getElementById('cart-sidebar').classList.add('open'); document.getElementById('cart-overlay').classList.add('active'); }
+        function cerrarCarrito() { document.getElementById('cart-sidebar').classList.remove('open'); document.getElementById('cart-overlay').classList.remove('active'); }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('cartIconDesktop')?.addEventListener('click', (e) => { e.preventDefault(); abrirCarrito(); });
+            document.getElementById('cartIconMobile')?.addEventListener('click', (e) => { e.preventDefault(); abrirCarrito(); });
+            document.querySelector('.close-cart')?.addEventListener('click', cerrarCarrito);
+            document.getElementById('cart-overlay')?.addEventListener('click', cerrarCarrito);
+            document.getElementById('procederPagoBtn')?.addEventListener('click', procederPago);
+            document.getElementById('vaciarCarritoBtn')?.addEventListener('click', limpiarCarritoCompleto);
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+            }
+            actualizarCarrito();
+        });
+    </script>
+</body>
+</html>

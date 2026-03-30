@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Edunotes Dashboard</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- Google Identity Services (GIS) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f1f5f9; 
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .login-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .login-container.hidden { display: none; }
+        .login-box {
+            background: white; padding: 2.5rem; border-radius: 24px; width: 90%; max-width: 400px;
+            text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .login-box input { width: 100%; padding: 0.8rem 1rem; border: 2px solid #e2e8f0; border-radius: 12px; margin-bottom: 1rem; }
+        .login-box input:focus { outline: none; border-color: #667eea; }
+        .login-btn { width: 100%; padding: 0.8rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; }
+        .error-msg { color: #ef4444; margin-top: 1rem; font-size: 0.8rem; display: none; }
+        
+        .dashboard { display: none; }
+        .dashboard.active { display: block; }
+        
+        .sidebar {
+            position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
+            background: #0f172a; color: white; transition: all 0.3s; z-index: 100;
+            overflow-y: auto;
+        }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid #1e293b; }
+        .sidebar-nav { padding: 1rem; }
+        .nav-item {
+            display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1rem;
+            margin-bottom: 0.3rem; border-radius: 12px; cursor: pointer; transition: all 0.3s;
+            color: #94a3b8;
+        }
+        .nav-item:hover { background: #1e293b; color: white; }
+        .nav-item.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .nav-item i { width: 24px; }
+        
+        .main-content { margin-left: 280px; padding: 1.5rem; }
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;
+        }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+        .export-btn { background: #10b981; color: white; border: none; padding: 0.4rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; margin-left: 1rem; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.2rem; border-radius: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .stat-card .value { font-size: 1.8rem; font-weight: 700; color: #1e293b; }
+        .stat-card .label { color: #64748b; font-size: 0.8rem; }
+        
+        .charts-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .chart-card { background: white; padding: 1.5rem; border-radius: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        canvas { max-height: 250px; }
+        
+        .table-card { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { color: #64748b; font-weight: 600; font-size: 0.8rem; }
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fed7aa; color: #9b2c1d; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+        .badge-primary { background: #e0e7ff; color: #3730a3; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 20px; max-width: 700px; width: 90%; padding: 1.5rem; max-height: 85vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        
+        .btn-primary { background: #667eea; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; }
+        .btn-success { background: #10b981; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; }
+        .btn-warning { background: #f59e0b; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-danger { background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-info { background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-outline { background: white; border: 1px solid #e2e8f0; color: #475569; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; color: #374151; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        
+        .menu-toggle-dash { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: #0f172a; color: white; border: none; padding: 0.5rem; border-radius: 8px; cursor: pointer; }
+        
+        .alert-item { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin-bottom: 0.75rem; border-radius: 8px; }
+        .alert-item.urgent { background: #fee2e2; border-left-color: #ef4444; }
+        
+        .drive-file { background: #f8fafc; padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .drive-file:hover { background: #f1f5f9; }
+        
+        .message-card, .feedback-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        .message-card:hover, .feedback-card:hover {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .message-header, .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .message-subject {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .message-meta {
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+        
+        .view-modal-content {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+            .main-content { margin-left: 0; }
+            .charts-row { grid-template-columns: 1fr; }
+            .menu-toggle-dash { display: block; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+        .seccion { display: block; }
+    </style>
+</head>
+<body>
+    <div id="loginContainer" class="login-container">
+        <div class="login-box">
+            <i class="fas fa-chalkboard-user" style="font-size: 3rem; color: #667eea; margin-bottom: 1rem;"></i>
+            <h2>Panel de Administración</h2>
+            <p>Edunotes Dashboard</p>
+            <input type="email" id="adminEmail" placeholder="Email">
+            <input type="password" id="adminPassword" placeholder="Contraseña">
+            <button class="login-btn" onclick="login()">Acceder</button>
+            <div id="loginError" class="error-msg">Credenciales incorrectas</div>
+        </div>
+    </div>
+
+    <div id="dashboard" class="dashboard">
+        <button class="menu-toggle-dash" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header"><h2><i class="fas fa-chart-line"></i> Edunotes Admin</h2></div>
+            <div class="sidebar-nav">
+                <div class="nav-item active" onclick="cambiarSeccion('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
+                <div class="nav-item" onclick="cambiarSeccion('facturacion')"><i class="fas fa-file-invoice"></i> Facturación</div>
+                <div class="nav-item" onclick="cambiarSeccion('contratos')"><i class="fas fa-file-signature"></i> Contratos</div>
+                <div class="nav-item" onclick="cambiarSeccion('prereservas')"><i class="fas fa-shopping-cart"></i> Pre-reservas</div>
+                <div class="nav-item" onclick="cambiarSeccion('mensajes')"><i class="fas fa-envelope"></i> Mensajes <span id="mensajesNoLeidos" style="background:#ef4444; border-radius:20px; padding:0.1rem 0.5rem; font-size:0.7rem; margin-left:auto;">0</span></div>
+                <div class="nav-item" onclick="cambiarSeccion('feedback')"><i class="fas fa-comment-dots"></i> Feedback <span id="feedbackNoLeidos" style="background:#ef4444; border-radius:20px; padding:0.1rem 0.5rem; font-size:0.7rem; margin-left:auto;">0</span></div>
+                <div class="nav-item" onclick="cambiarSeccion('ingresos')"><i class="fas fa-euro-sign"></i> Ingresos</div>
+                <div class="nav-item" onclick="cambiarSeccion('roadmap')"><i class="fas fa-tasks"></i> Roadmap</div>
+                <div class="nav-item" onclick="cambiarSeccion('alertas')"><i class="fas fa-bell"></i> Alertas <span id="alertasCount" style="background:#ef4444; border-radius:20px; padding:0.1rem 0.5rem; font-size:0.7rem; margin-left:auto;">0</span></div>
+                <div class="nav-item" onclick="cambiarSeccion('drive')"><i class="fab fa-google-drive"></i> Google Drive</div>
+                <div class="nav-item" onclick="cambiarSeccion('configuracion')"><i class="fas fa-cog"></i> Configuración</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="top-bar">
+                <h1 id="seccionTitulo">Dashboard</h1>
+                <div>
+                    <button class="export-btn" onclick="exportarTodo()"><i class="fas fa-download"></i> Exportar todo</button>
+                    <button class="logout-btn" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar</button>
+                </div>
+            </div>
+            
+            <!-- Dashboard -->
+            <div id="seccionDashboard" class="seccion">
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="charts-row">
+                    <div class="chart-card"><h3>Ingresos mensuales</h3><canvas id="ingresosMensualesChart"></canvas></div>
+                    <div class="chart-card"><h3>Estado de facturas</h3><canvas id="estadoFacturasChart"></canvas></div>
+                </div>
+                <div class="table-card">
+                    <h3>Últimas actividades</h3>
+                    <div id="ultimasActividades"></div>
+                </div>
+            </div>
+            
+            <!-- Facturación -->
+            <div id="seccionFacturacion" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Facturas emitidas 
+                        <button class="btn-primary" onclick="abrirModalFactura()" style="margin-left:1rem;"><i class="fas fa-plus"></i> Nueva factura</button>
+                    </h3>
+                    <table id="facturasTable">
+                        <thead><th>Nº</th><th>Fecha</th><th>Cliente</th><th>Concepto</th><th>Total</th><th>Estado</th><th>Acciones</th></thead>
+                        <tbody id="facturasTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Contratos -->
+            <div id="seccionContratos" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Contratos 
+                        <button class="btn-primary" onclick="abrirModalContrato()" style="margin-left:1rem;"><i class="fas fa-plus"></i> Nuevo contrato</button>
+                    </h3>
+                    <table id="contratosTable">
+                        <thead><th>Cliente</th><th>Servicio</th><th>Importe</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Acciones</th></thead>
+                        <tbody id="contratosTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Pre-reservas -->
+            <div id="seccionPrereservas" class="seccion" style="display:none;">
+                <div class="stats-grid" id="prereservasStats"></div>
+                <div class="table-card">
+                    <h3>Lista de pre-reservas 
+                        <button class="btn-primary" onclick="abrirModalPrereserva()" style="margin-left:1rem;"><i class="fas fa-plus"></i> Nueva pre-reserva</button>
+                        <button class="btn-success" onclick="exportarPrereservas()" style="margin-left:0.5rem;"><i class="fas fa-file-excel"></i> Exportar CSV</button>
+                    </h3>
+                    <table id="prereservasTable">
+                        <thead>
+                            <th>ID</th><th>Fecha</th><th>Cliente</th><th>Email</th><th>Producto</th><th>Cantidad</th><th>Total</th><th>Estado</th><th>Acciones</th>
+                        </thead>
+                        <tbody id="prereservasTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Mensajes de contacto -->
+            <div id="seccionMensajes" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Mensajes de contacto</h3>
+                    <div id="mensajesList"></div>
+                </div>
+            </div>
+            
+            <!-- Feedback de plataformas -->
+            <div id="seccionFeedback" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Feedback de plataformas</h3>
+                    <div id="feedbackList"></div>
+                </div>
+            </div>
+            
+            <!-- Ingresos -->
+            <div id="seccionIngresos" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Historial de ingresos</h3>
+                    <table id="ingresosTable">
+                        <thead><th>Fecha</th><th>Concepto</th><th>Importe</th><th>Estado</th></thead>
+                        <tbody id="ingresosTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Roadmap -->
+            <div id="seccionRoadmap" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Roadmap de desarrollo 
+                        <button class="btn-primary" onclick="abrirModalTarea()" style="margin-left:1rem;"><i class="fas fa-plus"></i> Nueva tarea</button>
+                    </h3>
+                    <div id="roadmapList"></div>
+                </div>
+            </div>
+            
+            <!-- Alertas -->
+            <div id="seccionAlertas" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Alertas y notificaciones</h3>
+                    <div id="alertasList"></div>
+                </div>
+            </div>
+            
+            <!-- Google Drive -->
+            <div id="seccionDrive" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Google Drive 
+                        <button class="btn-primary" onclick="conectarGoogleDrive()" id="btnConectarDrive"><i class="fab fa-google"></i> Conectar Google Drive</button>
+                        <button class="btn-primary" onclick="sincronizarDrive()" style="margin-left:0.5rem;"><i class="fas fa-sync"></i> Sincronizar</button>
+                    </h3>
+                    <div id="driveStatus" style="margin-bottom: 1rem; padding: 1rem; background: #f8fafc; border-radius: 8px;"></div>
+                    <div id="driveFilesList"></div>
+                </div>
+                <div class="table-card">
+                    <h3>Subir archivo a Drive</h3>
+                    <input type="file" id="fileToUpload" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem;">
+                    <select id="driveFolderSelect" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem;">
+                        <option value="">Seleccionar carpeta</option>
+                    </select>
+                    <button class="btn-success" onclick="subirArchivoDrive()"><i class="fas fa-upload"></i> Subir archivo</button>
+                </div>
+            </div>
+            
+            <!-- Configuración -->
+            <div id="seccionConfiguracion" class="seccion" style="display:none;">
+                <div class="table-card">
+                    <h3>Configuración de la plataforma</h3>
+                    <div class="form-group"><label>Nombre de la empresa</label><input type="text" id="empresaNombre" placeholder="Edunotes"></div>
+                    <div class="form-group"><label>Email de contacto</label><input type="email" id="empresaEmail" placeholder="contacto@edunotes.com"></div>
+                    <div class="form-group"><label>CIF/NIF</label><input type="text" id="empresaCif" placeholder="12345678A"></div>
+                    <div class="form-group"><label>Dirección</label><input type="text" id="empresaDireccion" placeholder="C/ Ejemplo 123, Madrid"></div>
+                    <button class="btn-primary" onclick="guardarConfiguracion()">Guardar configuración</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modales -->
+    <div id="facturaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 id="facturaModalTitle">Nueva factura</h3><button class="close-modal" onclick="cerrarModal('facturaModal')">&times;</button></div>
+            <input type="hidden" id="facturaEditId">
+            <div class="form-group"><label>Cliente *</label><input type="text" id="facturaCliente"></div>
+            <div class="form-group"><label>Email *</label><input type="email" id="facturaEmail"></div>
+            <div class="form-group"><label>NIF/CIF</label><input type="text" id="facturaNIF"></div>
+            <div class="form-group"><label>Dirección</label><input type="text" id="facturaDireccion"></div>
+            <div class="form-group"><label>Concepto *</label><input type="text" id="facturaConcepto"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Base imponible (€)</label><input type="number" id="facturaBase" value="0" step="0.01"></div>
+                <div class="form-group"><label>IVA (%)</label><select id="facturaIVA"><option value="21">21%</option><option value="10">10%</option><option value="4">4%</option></select></div>
+            </div>
+            <div class="form-group"><label>Fecha vencimiento</label><input type="date" id="facturaVencimiento"></div>
+            <button class="btn-success" id="facturaSubmitBtn" onclick="guardarFactura()">Crear factura</button>
+        </div>
+    </div>
+    
+    <div id="verFacturaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Ver factura</h3><button class="close-modal" onclick="cerrarModal('verFacturaModal')">&times;</button></div>
+            <div id="verFacturaContent"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn-primary" onclick="cerrarModal('verFacturaModal')">Cerrar</button>
+                <button class="btn-success" id="verFacturaPdfBtn" onclick="">Descargar PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="contratoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 id="contratoModalTitle">Nuevo contrato</h3><button class="close-modal" onclick="cerrarModal('contratoModal')">&times;</button></div>
+            <input type="hidden" id="contratoEditId">
+            <div class="form-group"><label>Cliente *</label><input type="text" id="contratoCliente"></div>
+            <div class="form-group"><label>Email *</label><input type="email" id="contratoEmail"></div>
+            <div class="form-group"><label>Servicio</label><select id="contratoServicio"><option>Desarrollo web</option><option>Plataforma SaaS</option><option>Mantenimiento</option><option>Consultoría</option></select></div>
+            <div class="form-group"><label>Importe (€)</label><input type="number" id="contratoImporte" step="0.01"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Fecha inicio</label><input type="date" id="contratoFechaInicio"></div>
+                <div class="form-group"><label>Fecha fin</label><input type="date" id="contratoFechaFin"></div>
+            </div>
+            <div class="form-group"><label>Cláusulas adicionales</label><textarea id="contratoClausulas" rows="2"></textarea></div>
+            <button class="btn-success" id="contratoSubmitBtn" onclick="guardarContrato()">Crear contrato</button>
+        </div>
+    </div>
+    
+    <div id="verContratoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Ver contrato</h3><button class="close-modal" onclick="cerrarModal('verContratoModal')">&times;</button></div>
+            <div id="verContratoContent"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn-primary" onclick="cerrarModal('verContratoModal')">Cerrar</button>
+                <button class="btn-success" id="verContratoPdfBtn" onclick="">Descargar PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="prereservaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Nueva pre-reserva</h3><button class="close-modal" onclick="cerrarModal('prereservaModal')">&times;</button></div>
+            <div class="form-group"><label>Cliente *</label><input type="text" id="prereservaCliente"></div>
+            <div class="form-group"><label>Email *</label><input type="email" id="prereservaEmail"></div>
+            <div class="form-group"><label>Producto *</label><input type="text" id="prereservaProducto" placeholder="Nombre del producto/servicio"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Cantidad</label><input type="number" id="prereservaCantidad" value="1" min="1"></div>
+                <div class="form-group"><label>Precio unitario (€)</label><input type="number" id="prereservaPrecio" value="0" step="0.01"></div>
+            </div>
+            <div class="form-group"><label>Notas</label><textarea id="prereservaNotas" rows="2" placeholder="Requisitos especiales, fechas, etc."></textarea></div>
+            <button class="btn-success" onclick="crearPrereserva()">Guardar pre-reserva</button>
+        </div>
+    </div>
+    
+    <div id="verMensajeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Ver mensaje</h3><button class="close-modal" onclick="cerrarModal('verMensajeModal')">&times;</button></div>
+            <div id="verMensajeContent"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn-primary" onclick="cerrarModal('verMensajeModal')">Cerrar</button>
+                <button class="btn-success" id="responderMensajeBtn" onclick="">Responder</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="verFeedbackModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Ver feedback</h3><button class="close-modal" onclick="cerrarModal('verFeedbackModal')">&times;</button></div>
+            <div id="verFeedbackContent"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn-primary" onclick="cerrarModal('verFeedbackModal')">Cerrar</button>
+                <button class="btn-success" id="responderFeedbackBtn" onclick="">Responder</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="responderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Responder</h3><button class="close-modal" onclick="cerrarModal('responderModal')">&times;</button></div>
+            <div id="responderInfo"></div>
+            <div class="form-group"><label>Respuesta</label><textarea id="respuestaTexto" rows="5" placeholder="Escribe tu respuesta..."></textarea></div>
+            <button class="btn-success" onclick="enviarRespuesta()">Enviar respuesta</button>
+        </div>
+    </div>
+    
+    <div id="tareaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Nueva tarea</h3><button class="close-modal" onclick="cerrarModal('tareaModal')">&times;</button></div>
+            <div class="form-group"><label>Título *</label><input type="text" id="tareaTitulo"></div>
+            <div class="form-group"><label>Descripción</label><textarea id="tareaDescripcion" rows="2"></textarea></div>
+            <div class="form-row">
+                <div class="form-group"><label>Prioridad</label><select id="tareaPrioridad"><option>Alta</option><option>Media</option><option>Baja</option></select></div>
+                <div class="form-group"><label>Estado</label><select id="tareaEstado"><option>pendiente</option><option>progreso</option><option>completado</option></select></div>
+            </div>
+            <div class="form-group"><label>Fecha fin</label><input type="date" id="tareaFechaFin"></div>
+            <button class="btn-primary" onclick="guardarTarea()">Guardar tarea</button>
+        </div>
+    </div>
+    
+    <script>
+        // ========== CONFIGURACIÓN GOOGLE DRIVE ==========
+        const GOOGLE_CLIENT_ID = 'TU_CLIENT_ID_AQUI.apps.googleusercontent.com';
+        const GOOGLE_API_KEY = 'AIzaSyC7PGd9yZI_-Yc2uq6cM2WXNNMmIdC97UM';
+        const GOOGLE_SCOPES = 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly';
+        
+        // ========== VARIABLES GLOBALES ==========
+        let datos = { 
+            facturas: [], 
+            contratos: [], 
+            prereservas: [],
+            mensajes: [],
+            feedback: [],
+            ingresos: [], 
+            roadmap: [], 
+            alertas: [], 
+            configuracion: { 
+                empresaNombre: 'Edunotes', 
+                empresaEmail: 'contacto@edunotes.com', 
+                empresaCif: '12345678A', 
+                empresaDireccion: 'C/ Ejemplo 123, Madrid' 
+            } 
+        };
+        let tokenClient = null;
+        let driveAccessToken = null;
+        let charts = {};
+        let facturaActual = null;
+        let contratoActual = null;
+        let mensajeActual = null;
+        let feedbackActual = null;
+        
+        // ========== FUNCIÓN PARA CARGAR DATOS DESDE LOCALSTORAGE (CORREGIDA) ==========
+        function cargarDatosDesdeLocalStorage() {
+            // ========== CARGAR PRE-RESERVAS ==========
+            // Primero intentar cargar desde edunotes_prereservas (cambios hechos en el dashboard)
+            const prereservasGuardadas = localStorage.getItem('edunotes_prereservas');
+            if (prereservasGuardadas) {
+                try {
+                    datos.prereservas = JSON.parse(prereservasGuardadas);
+                    console.log('✅ Pre-reservas cargadas desde edunotes_prereservas:', datos.prereservas.length);
+                } catch (e) {
+                    console.error('Error al parsear edunotes_prereservas:', e);
+                }
+            }
+            
+            // Intentar cargar desde la clave unificada 'edunotes_admin_data' (usada por plataformas.html y contacto.html)
+            const adminData = localStorage.getItem('edunotes_admin_data');
+            if (adminData) {
+                try {
+                    const parsed = JSON.parse(adminData);
+                    console.log('📦 Datos encontrados en edunotes_admin_data:', parsed);
+                    
+                    // Convertir mensajes al formato esperado por el dashboard
+                    if (parsed.mensajes && Array.isArray(parsed.mensajes)) {
+                        datos.mensajes = parsed.mensajes.map(m => ({
+                            id: m.id,
+                            fecha: m.fecha,
+                            nombre: m.nombre,
+                            email: m.email,
+                            asunto: m.asunto || m.tipoProyecto || 'Consulta',
+                            mensaje: m.mensaje,
+                            leido: m.leido || false,
+                            respondido: false
+                        }));
+                    }
+                    
+                    // Convertir feedback al formato esperado por el dashboard
+                    if (parsed.feedback && Array.isArray(parsed.feedback)) {
+                        datos.feedback = parsed.feedback.map(f => ({
+                            id: f.id,
+                            fecha: f.fecha,
+                            plataforma: f.plataforma || 'Web',
+                            usuario: f.nombre,
+                            email: f.email,
+                            tipo: f.perfil || f.tipo || 'sugerencia',
+                            mensaje: f.sugerencia || f.mensaje,
+                            leido: false,
+                            respondido: false,
+                            valoracion: f.valoracion || 4
+                        }));
+                    }
+                    
+                    // Cargar pre-reservas SOLO si no hay datos en edunotes_prereservas
+                    if (parsed.compras && Array.isArray(parsed.compras) && datos.prereservas.length === 0) {
+                        datos.prereservas = parsed.compras.map(c => ({
+                            id: c.id,
+                            fecha: c.fecha ? c.fecha.split('T')[0] : new Date().toISOString().split('T')[0],
+                            cliente: c.email ? c.email.split('@')[0] : 'Cliente',
+                            email: c.email || 'usuario@ejemplo.com',
+                            producto: c.producto,
+                            cantidad: 1,
+                            precioUnitario: c.precio,
+                            total: c.precio,
+                            estado: 'pendiente',
+                            notas: ''
+                        }));
+                        console.log('✅ Pre-reservas cargadas desde compras:', datos.prereservas);
+                        // Guardar en edunotes_prereservas para persistencia
+                        localStorage.setItem('edunotes_prereservas', JSON.stringify(datos.prereservas));
+                    }
+                } catch (e) {
+                    console.error('Error al parsear edunotes_admin_data:', e);
+                }
+            } else {
+                console.log('⚠️ No se encontró edunotes_admin_data en localStorage');
+            }
+            
+            // ========== CARGAR FACTURAS ==========
+            const facturasData = localStorage.getItem('edunotes_facturas');
+            if (facturasData) {
+                try {
+                    datos.facturas = JSON.parse(facturasData);
+                } catch (e) {}
+            }
+            
+            // ========== CARGAR CONTRATOS ==========
+            const contratosData = localStorage.getItem('edunotes_contratos');
+            if (contratosData) {
+                try {
+                    datos.contratos = JSON.parse(contratosData);
+                } catch (e) {}
+            }
+            
+            // ========== CARGAR INGRESOS ==========
+            const ingresosData = localStorage.getItem('edunotes_ingresos');
+            if (ingresosData) {
+                try {
+                    datos.ingresos = JSON.parse(ingresosData);
+                } catch (e) {}
+            }
+            
+            // ========== CARGAR ROADMAP ==========
+            const roadmapData = localStorage.getItem('edunotes_roadmap');
+            if (roadmapData) {
+                try {
+                    datos.roadmap = JSON.parse(roadmapData);
+                } catch (e) {}
+            }
+            
+            // ========== CARGAR CONFIGURACIÓN ==========
+            const configData = localStorage.getItem('edunotes_configuracion');
+            if (configData) {
+                try {
+                    datos.configuracion = JSON.parse(configData);
+                } catch (e) {}
+            }
+        }
+        
+        // ========== AUTENTICACIÓN ==========
+        function login() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            if (email === 'admin@edunotes.com' && password === 'admin123') {
+                document.getElementById('loginContainer').classList.add('hidden');
+                document.getElementById('dashboard').classList.add('active');
+                cargarDatos();
+                registrarActividad('Inicio de sesión');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+        
+        function cerrarSesion() {
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginContainer').classList.remove('hidden');
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminEmail').value = '';
+        }
+        
+        // ========== GESTIÓN DE DATOS ==========
+        function cargarDatos() {
+            cargarDatosDesdeLocalStorage();
+            generarAlertas();
+            actualizarTodo();
+            cargarConfiguracion();
+        }
+        
+        function guardarTodo() {
+            localStorage.setItem('edunotes_facturas', JSON.stringify(datos.facturas));
+            localStorage.setItem('edunotes_contratos', JSON.stringify(datos.contratos));
+            localStorage.setItem('edunotes_prereservas', JSON.stringify(datos.prereservas));
+            localStorage.setItem('edunotes_mensajes', JSON.stringify(datos.mensajes));
+            localStorage.setItem('edunotes_feedback', JSON.stringify(datos.feedback));
+            localStorage.setItem('edunotes_ingresos', JSON.stringify(datos.ingresos));
+            localStorage.setItem('edunotes_roadmap', JSON.stringify(datos.roadmap));
+            localStorage.setItem('edunotes_configuracion', JSON.stringify(datos.configuracion));
+            generarAlertas();
+            actualizarTodo();
+        }
+        
+        function registrarActividad(descripcion) {
+            let actividades = JSON.parse(localStorage.getItem('edunotes_actividades') || '[]');
+            actividades.unshift({ fecha: new Date().toISOString(), descripcion });
+            if (actividades.length > 50) actividades.pop();
+            localStorage.setItem('edunotes_actividades', JSON.stringify(actividades));
+        }
+        
+        // ========== MENSAJES DE CONTACTO ==========
+        function verMensaje(id) {
+            const mensaje = datos.mensajes.find(m => m.id === id);
+            if (mensaje) {
+                mensajeActual = mensaje;
+                if (!mensaje.leido) {
+                    mensaje.leido = true;
+                    guardarTodo();
+                }
+                const contenido = `
+                    <div class="view-modal-content">
+                        <p><strong>De:</strong> ${mensaje.nombre} (${mensaje.email})</p>
+                        <p><strong>Fecha:</strong> ${new Date(mensaje.fecha).toLocaleString()}</p>
+                        <p><strong>Asunto:</strong> ${mensaje.asunto}</p>
+                        <p><strong>Mensaje:</strong></p>
+                        <p style="background: white; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">${mensaje.mensaje}</p>
+                        <p><strong>Estado:</strong> <span class="badge ${mensaje.respondido ? 'badge-success' : 'badge-warning'}">${mensaje.respondido ? 'Respondido' : 'Pendiente'}</span></p>
+                    </div>
+                `;
+                document.getElementById('verMensajeContent').innerHTML = contenido;
+                document.getElementById('responderMensajeBtn').onclick = () => abrirResponderMensaje(mensaje);
+                document.getElementById('verMensajeModal').classList.add('active');
+            }
+        }
+        
+        function abrirResponderMensaje(mensaje) {
+            cerrarModal('verMensajeModal');
+            document.getElementById('responderInfo').innerHTML = `
+                <p><strong>Para:</strong> ${mensaje.nombre} (${mensaje.email})</p>
+                <p><strong>Asunto:</strong> ${mensaje.asunto}</p>
+                <hr>
+                <p><strong>Mensaje original:</strong></p>
+                <p style="background: #f1f5f9; padding: 0.75rem; border-radius: 8px;">${mensaje.mensaje}</p>
+            `;
+            document.getElementById('respuestaTexto').value = '';
+            document.getElementById('responderModal').classList.add('active');
+            window.respuestaDestino = { tipo: 'mensaje', id: mensaje.id, email: mensaje.email, nombre: mensaje.nombre };
+        }
+        
+        function eliminarMensaje(id) {
+            if (confirm('¿Eliminar este mensaje?')) {
+                datos.mensajes = datos.mensajes.filter(m => m.id !== id);
+                guardarTodo();
+                alert('✅ Mensaje eliminado');
+                registrarActividad('Mensaje eliminado');
+            }
+        }
+        
+        // ========== FEEDBACK DE PLATAFORMAS ==========
+        function verFeedback(id) {
+            const feedback = datos.feedback.find(f => f.id === id);
+            if (feedback) {
+                feedbackActual = feedback;
+                if (!feedback.leido) {
+                    feedback.leido = true;
+                    guardarTodo();
+                }
+                const tipoColor = { sugerencia: 'badge-info', bug: 'badge-danger', mejora: 'badge-warning', elogio: 'badge-success', centro: 'badge-primary', profesor: 'badge-info', familia: 'badge-warning', interesado: 'badge-secondary' };
+                const contenido = `
+                    <div class="view-modal-content">
+                        <p><strong>Usuario:</strong> ${feedback.usuario} (${feedback.email})</p>
+                        <p><strong>Plataforma:</strong> ${feedback.plataforma}</p>
+                        <p><strong>Fecha:</strong> ${new Date(feedback.fecha).toLocaleString()}</p>
+                        <p><strong>Tipo:</strong> <span class="badge ${tipoColor[feedback.tipo] || 'badge-info'}">${feedback.tipo}</span></p>
+                        <p><strong>Mensaje:</strong></p>
+                        <p style="background: white; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">${feedback.mensaje}</p>
+                        <p><strong>Estado:</strong> <span class="badge ${feedback.respondido ? 'badge-success' : 'badge-warning'}">${feedback.respondido ? 'Respondido' : 'Pendiente'}</span></p>
+                    </div>
+                `;
+                document.getElementById('verFeedbackContent').innerHTML = contenido;
+                document.getElementById('responderFeedbackBtn').onclick = () => abrirResponderFeedback(feedback);
+                document.getElementById('verFeedbackModal').classList.add('active');
+            }
+        }
+        
+        function abrirResponderFeedback(feedback) {
+            cerrarModal('verFeedbackModal');
+            document.getElementById('responderInfo').innerHTML = `
+                <p><strong>Para:</strong> ${feedback.usuario} (${feedback.email})</p>
+                <p><strong>Asunto:</strong> Respuesta a tu feedback</p>
+                <hr>
+                <p><strong>Feedback original:</strong></p>
+                <p style="background: #f1f5f9; padding: 0.75rem; border-radius: 8px;">${feedback.mensaje}</p>
+            `;
+            document.getElementById('respuestaTexto').value = '';
+            document.getElementById('responderModal').classList.add('active');
+            window.respuestaDestino = { tipo: 'feedback', id: feedback.id, email: feedback.email, nombre: feedback.usuario };
+        }
+        
+        function eliminarFeedback(id) {
+            if (confirm('¿Eliminar este feedback?')) {
+                datos.feedback = datos.feedback.filter(f => f.id !== id);
+                guardarTodo();
+                alert('✅ Feedback eliminado');
+                registrarActividad('Feedback eliminado');
+            }
+        }
+        
+        function enviarRespuesta() {
+            const respuesta = document.getElementById('respuestaTexto').value;
+            if (!respuesta) return alert('Escribe una respuesta');
+            
+            const destino = window.respuestaDestino;
+            if (destino.tipo === 'mensaje') {
+                const mensaje = datos.mensajes.find(m => m.id === destino.id);
+                if (mensaje) {
+                    mensaje.respondido = true;
+                    mensaje.respuesta = respuesta;
+                    mensaje.fechaRespuesta = new Date().toISOString();
+                    guardarTodo();
+                    alert(`✅ Respuesta enviada a ${destino.nombre} (${destino.email})`);
+                    registrarActividad(`Respuesta enviada a mensaje de ${destino.nombre}`);
+                }
+            } else if (destino.tipo === 'feedback') {
+                const feedback = datos.feedback.find(f => f.id === destino.id);
+                if (feedback) {
+                    feedback.respondido = true;
+                    feedback.respuesta = respuesta;
+                    feedback.fechaRespuesta = new Date().toISOString();
+                    guardarTodo();
+                    alert(`✅ Respuesta enviada a ${destino.nombre} (${destino.email})`);
+                    registrarActividad(`Respuesta enviada a feedback de ${destino.nombre}`);
+                }
+            }
+            
+            cerrarModal('responderModal');
+        }
+        
+        // ========== FACTURACIÓN ==========
+        function generarNumeroFactura() {
+            const año = new Date().getFullYear();
+            const secuencial = datos.facturas.filter(f => f.numero && f.numero.startsWith(`F-${año}`)).length + 1;
+            return `F-${año}-${String(secuencial).padStart(4, '0')}`;
+        }
+        
+        function abrirModalFacturaEditar(id) {
+            const factura = datos.facturas.find(f => f.id === id);
+            if (factura) {
+                document.getElementById('facturaModalTitle').textContent = 'Editar factura';
+                document.getElementById('facturaEditId').value = factura.id;
+                document.getElementById('facturaCliente').value = factura.cliente;
+                document.getElementById('facturaEmail').value = factura.email;
+                document.getElementById('facturaNIF').value = factura.nif || '';
+                document.getElementById('facturaDireccion').value = factura.direccion || '';
+                document.getElementById('facturaConcepto').value = factura.concepto;
+                document.getElementById('facturaBase').value = factura.base;
+                document.getElementById('facturaIVA').value = factura.ivaPorcentaje || 21;
+                document.getElementById('facturaVencimiento').value = factura.vencimiento;
+                document.getElementById('facturaSubmitBtn').textContent = 'Actualizar factura';
+                document.getElementById('facturaModal').classList.add('active');
+            }
+        }
+        
+        function abrirModalFacturaNueva() {
+            document.getElementById('facturaModalTitle').textContent = 'Nueva factura';
+            document.getElementById('facturaEditId').value = '';
+            document.getElementById('facturaCliente').value = '';
+            document.getElementById('facturaEmail').value = '';
+            document.getElementById('facturaNIF').value = '';
+            document.getElementById('facturaDireccion').value = '';
+            document.getElementById('facturaConcepto').value = '';
+            document.getElementById('facturaBase').value = '0';
+            document.getElementById('facturaIVA').value = '21';
+            document.getElementById('facturaVencimiento').value = '';
+            document.getElementById('facturaSubmitBtn').textContent = 'Crear factura';
+            document.getElementById('facturaModal').classList.add('active');
+        }
+        
+        function guardarFactura() {
+            const id = document.getElementById('facturaEditId').value;
+            const cliente = document.getElementById('facturaCliente').value;
+            const email = document.getElementById('facturaEmail').value;
+            const concepto = document.getElementById('facturaConcepto').value;
+            const base = parseFloat(document.getElementById('facturaBase').value);
+            const ivaPorc = parseInt(document.getElementById('facturaIVA').value);
+            
+            if (!cliente || !email || !concepto || isNaN(base)) return alert('❌ Completa campos obligatorios');
+            
+            const iva = base * ivaPorc / 100;
+            const total = base + iva;
+            
+            if (id) {
+                const index = datos.facturas.findIndex(f => f.id == id);
+                if (index !== -1) {
+                    datos.facturas[index] = {
+                        ...datos.facturas[index],
+                        cliente, email, concepto, base, iva, total,
+                        ivaPorcentaje: ivaPorc,
+                        nif: document.getElementById('facturaNIF').value,
+                        direccion: document.getElementById('facturaDireccion').value,
+                        vencimiento: document.getElementById('facturaVencimiento').value || new Date().toISOString().split('T')[0]
+                    };
+                    guardarTodo();
+                    alert(`✅ Factura ${datos.facturas[index].numero} actualizada`);
+                    registrarActividad(`Factura ${datos.facturas[index].numero} actualizada`);
+                }
+            } else {
+                const numero = generarNumeroFactura();
+                const factura = {
+                    id: Date.now(), numero, fecha: new Date().toISOString().split('T')[0],
+                    vencimiento: document.getElementById('facturaVencimiento').value || new Date().toISOString().split('T')[0],
+                    cliente, email, nif: document.getElementById('facturaNIF').value,
+                    direccion: document.getElementById('facturaDireccion').value,
+                    concepto, base, iva, ivaPorcentaje: ivaPorc, total, estado: 'pendiente'
+                };
+                datos.facturas.unshift(factura);
+                datos.ingresos.unshift({ id: Date.now(), fecha: factura.fecha, concepto: `Factura ${numero}`, importe: total, estado: 'pendiente', facturaId: factura.id });
+                alert(`✅ Factura ${numero} creada por ${total.toFixed(2)}€`);
+                registrarActividad(`Factura ${numero} creada para ${cliente}`);
+            }
+            
+            cerrarModal('facturaModal');
+            guardarTodo();
+        }
+        
+        function verFactura(id) {
+            const factura = datos.facturas.find(f => f.id === id);
+            if (factura) {
+                facturaActual = factura;
+                const contenido = `
+                    <div class="view-modal-content">
+                        <p><strong>Nº Factura:</strong> ${factura.numero}</p>
+                        <p><strong>Fecha:</strong> ${factura.fecha}</p>
+                        <p><strong>Vencimiento:</strong> ${factura.vencimiento}</p>
+                        <p><strong>Cliente:</strong> ${factura.cliente}</p>
+                        <p><strong>Email:</strong> ${factura.email}</p>
+                        <p><strong>NIF:</strong> ${factura.nif || 'No especificado'}</p>
+                        <p><strong>Concepto:</strong> ${factura.concepto}</p>
+                        <p><strong>Base imponible:</strong> ${factura.base.toFixed(2)}€</p>
+                        <p><strong>IVA (${factura.ivaPorcentaje || 21}%):</strong> ${factura.iva.toFixed(2)}€</p>
+                        <p><strong>Total:</strong> <strong style="color:#10b981;">${factura.total.toFixed(2)}€</strong></p>
+                        <p><strong>Estado:</strong> <span class="badge ${factura.estado === 'pagada' ? 'badge-success' : 'badge-warning'}">${factura.estado}</span></p>
+                    </div>
+                `;
+                document.getElementById('verFacturaContent').innerHTML = contenido;
+                document.getElementById('verFacturaPdfBtn').onclick = () => generarPDFFactura(factura);
+                document.getElementById('verFacturaModal').classList.add('active');
+            }
+        }
+        
+        function eliminarFactura(id) {
+            if (confirm('¿Eliminar esta factura permanentemente?')) {
+                const factura = datos.facturas.find(f => f.id === id);
+                datos.facturas = datos.facturas.filter(f => f.id !== id);
+                datos.ingresos = datos.ingresos.filter(i => i.facturaId !== id);
+                guardarTodo();
+                alert(`✅ Factura ${factura?.numero} eliminada`);
+                registrarActividad(`Factura ${factura?.numero} eliminada`);
+            }
+        }
+        
+        function generarPDFFactura(factura) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(20);
+            doc.text(datos.configuracion.empresaNombre, 14, 22);
+            doc.setFontSize(10);
+            doc.text(`CIF: ${datos.configuracion.empresaCif}`, 14, 30);
+            doc.text(datos.configuracion.empresaDireccion, 14, 35);
+            doc.text(datos.configuracion.empresaEmail, 14, 40);
+            doc.setFontSize(16);
+            doc.text("FACTURA", 150, 22);
+            doc.text(`Nº: ${factura.numero}`, 150, 30);
+            doc.text(`Fecha: ${factura.fecha}`, 150, 35);
+            doc.text(`Vencimiento: ${factura.vencimiento}`, 150, 40);
+            doc.setFontSize(12);
+            doc.text("DATOS DEL CLIENTE", 14, 55);
+            doc.setFontSize(10);
+            doc.text(`Nombre: ${factura.cliente}`, 14, 63);
+            doc.text(`Email: ${factura.email}`, 14, 68);
+            doc.text(`NIF: ${factura.nif || 'No especificado'}`, 14, 73);
+            doc.autoTable({ startY: 85, head: [["Concepto", "Base", "IVA", "Total"]], body: [[factura.concepto, `${factura.base.toFixed(2)}€`, `${factura.iva.toFixed(2)}€`, `${factura.total.toFixed(2)}€`]], theme: 'striped', headStyles: { fillColor: [102, 126, 234] } });
+            const finalY = doc.lastAutoTable.finalY + 10;
+            doc.text(`TOTAL: ${factura.total.toFixed(2)}€`, 150, finalY);
+            doc.save(`factura_${factura.numero}.pdf`);
+            registrarActividad(`PDF factura ${factura.numero} generado`);
+        }
+        
+        function marcarPagada(id) {
+            const factura = datos.facturas.find(f => f.id === id);
+            if (factura && factura.estado !== 'pagada') {
+                factura.estado = 'pagada';
+                factura.fechaPago = new Date().toISOString().split('T')[0];
+                const ingreso = datos.ingresos.find(i => i.facturaId === id);
+                if (ingreso) { ingreso.estado = 'pagado'; ingreso.fechaPago = factura.fechaPago; }
+                guardarTodo();
+                alert(`✅ Factura ${factura.numero} pagada`);
+                registrarActividad(`Factura ${factura.numero} pagada por ${factura.total.toFixed(2)}€`);
+            }
+        }
+        
+        // ========== CONTRATOS ==========
+        function abrirModalContratoEditar(id) {
+            const contrato = datos.contratos.find(c => c.id === id);
+            if (contrato) {
+                document.getElementById('contratoModalTitle').textContent = 'Editar contrato';
+                document.getElementById('contratoEditId').value = contrato.id;
+                document.getElementById('contratoCliente').value = contrato.cliente;
+                document.getElementById('contratoEmail').value = contrato.email;
+                document.getElementById('contratoServicio').value = contrato.servicio;
+                document.getElementById('contratoImporte').value = contrato.importe;
+                document.getElementById('contratoFechaInicio').value = contrato.fechaInicio;
+                document.getElementById('contratoFechaFin').value = contrato.fechaFin || '';
+                document.getElementById('contratoClausulas').value = contrato.clausulas || '';
+                document.getElementById('contratoSubmitBtn').textContent = 'Actualizar contrato';
+                document.getElementById('contratoModal').classList.add('active');
+            }
+        }
+        
+        function abrirModalContratoNuevo() {
+            document.getElementById('contratoModalTitle').textContent = 'Nuevo contrato';
+            document.getElementById('contratoEditId').value = '';
+            document.getElementById('contratoCliente').value = '';
+            document.getElementById('contratoEmail').value = '';
+            document.getElementById('contratoServicio').value = 'Desarrollo web';
+            document.getElementById('contratoImporte').value = '0';
+            document.getElementById('contratoFechaInicio').value = new Date().toISOString().split('T')[0];
+            document.getElementById('contratoFechaFin').value = '';
+            document.getElementById('contratoClausulas').value = '';
+            document.getElementById('contratoSubmitBtn').textContent = 'Crear contrato';
+            document.getElementById('contratoModal').classList.add('active');
+        }
+        
+        function guardarContrato() {
+            const id = document.getElementById('contratoEditId').value;
+            const cliente = document.getElementById('contratoCliente').value;
+            if (!cliente) return alert('❌ Completa el cliente');
+            
+            const contratoData = {
+                cliente, email: document.getElementById('contratoEmail').value,
+                servicio: document.getElementById('contratoServicio').value,
+                importe: parseFloat(document.getElementById('contratoImporte').value) || 0,
+                fechaInicio: document.getElementById('contratoFechaInicio').value || new Date().toISOString().split('T')[0],
+                fechaFin: document.getElementById('contratoFechaFin').value || 'Indefinido',
+                clausulas: document.getElementById('contratoClausulas').value,
+                estado: 'activo'
+            };
+            
+            if (id) {
+                const index = datos.contratos.findIndex(c => c.id == id);
+                if (index !== -1) {
+                    datos.contratos[index] = { ...datos.contratos[index], ...contratoData };
+                    guardarTodo();
+                    alert(`✅ Contrato de ${cliente} actualizado`);
+                    registrarActividad(`Contrato de ${cliente} actualizado`);
+                }
+            } else {
+                const nuevoContrato = { id: Date.now(), ...contratoData, fechaCreacion: new Date().toISOString().split('T')[0] };
+                datos.contratos.unshift(nuevoContrato);
+                guardarTodo();
+                alert(`✅ Contrato creado para ${cliente}`);
+                registrarActividad(`Contrato creado para ${cliente} - ${contratoData.servicio}`);
+            }
+            cerrarModal('contratoModal');
+        }
+        
+        function verContrato(id) {
+            const contrato = datos.contratos.find(c => c.id === id);
+            if (contrato) {
+                contratoActual = contrato;
+                const contenido = `
+                    <div class="view-modal-content">
+                        <p><strong>Cliente:</strong> ${contrato.cliente}</p>
+                        <p><strong>Email:</strong> ${contrato.email}</p>
+                        <p><strong>Servicio:</strong> ${contrato.servicio}</p>
+                        <p><strong>Importe:</strong> ${contrato.importe.toFixed(2)}€</p>
+                        <p><strong>Fecha inicio:</strong> ${contrato.fechaInicio}</p>
+                        <p><strong>Fecha fin:</strong> ${contrato.fechaFin}</p>
+                        <p><strong>Estado:</strong> <span class="badge ${contrato.estado === 'activo' ? 'badge-success' : 'badge-warning'}">${contrato.estado}</span></p>
+                    </div>
+                `;
+                document.getElementById('verContratoContent').innerHTML = contenido;
+                document.getElementById('verContratoPdfBtn').onclick = () => generarPDFContrato(contrato);
+                document.getElementById('verContratoModal').classList.add('active');
+            }
+        }
+        
+        function eliminarContrato(id) {
+            if (confirm('¿Eliminar este contrato permanentemente?')) {
+                const contrato = datos.contratos.find(c => c.id === id);
+                datos.contratos = datos.contratos.filter(c => c.id !== id);
+                guardarTodo();
+                alert(`✅ Contrato de ${contrato?.cliente} eliminado`);
+                registrarActividad(`Contrato de ${contrato?.cliente} eliminado`);
+            }
+        }
+        
+        function generarPDFContrato(contrato) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text("CONTRATO DE PRESTACIÓN DE SERVICIOS", 105, 20, { align: 'center' });
+            doc.setFontSize(10);
+            let y = 40;
+            doc.text(`Entre ${datos.configuracion.empresaNombre} y ${contrato.cliente}`, 20, y);
+            y += 15;
+            doc.text("1. OBJETO DEL CONTRATO", 20, y);
+            y += 8;
+            doc.text(`   Prestación del servicio de ${contrato.servicio}.`, 20, y);
+            y += 12;
+            doc.text("2. IMPORTE", 20, y);
+            y += 8;
+            doc.text(`   El Cliente abonará ${contrato.importe.toFixed(2)}€.`, 20, y);
+            y += 12;
+            doc.text("3. DURACIÓN", 20, y);
+            y += 8;
+            doc.text(`   Inicio: ${contrato.fechaInicio}`, 20, y);
+            y += 6;
+            doc.text(`   Fin: ${contrato.fechaFin}`, 20, y);
+            y += 12;
+            doc.text("4. FORMA DE PAGO", 20, y);
+            y += 8;
+            doc.text("   50% al inicio, 50% a la entrega.", 20, y);
+            y += 12;
+            doc.text("5. PROPIEDAD INTELECTUAL", 20, y);
+            y += 8;
+            doc.text("   El Cliente recibe el producto final. Edunotes puede reutilizar partes no exclusivas.", 20, y);
+            y += 20;
+            doc.text("_________________________", 20, y);
+            y += 8;
+            doc.text("EL CLIENTE", 20, y);
+            doc.text("_________________________", 130, y);
+            doc.text("EDUNOTES", 130, y + 8);
+            doc.save(`contrato_${contrato.cliente.replace(/\s/g, '_')}.pdf`);
+            registrarActividad(`PDF contrato ${contrato.cliente} generado`);
+        }
+        
+        function finalizarContrato(id) {
+            const contrato = datos.contratos.find(c => c.id === id);
+            if (contrato && contrato.estado === 'activo') { 
+                contrato.estado = 'finalizado'; 
+                contrato.fechaFinReal = new Date().toISOString().split('T')[0]; 
+                guardarTodo(); 
+                alert(`✅ Contrato de ${contrato.cliente} finalizado`); 
+                registrarActividad(`Contrato de ${contrato.cliente} finalizado`);
+            }
+        }
+        
+        // ========== PRE-RESERVAS ==========
+        function crearPrereserva() {
+            const cliente = document.getElementById('prereservaCliente').value;
+            const email = document.getElementById('prereservaEmail').value;
+            const producto = document.getElementById('prereservaProducto').value;
+            const cantidad = parseInt(document.getElementById('prereservaCantidad').value) || 1;
+            const precioUnitario = parseFloat(document.getElementById('prereservaPrecio').value) || 0;
+            
+            if (!cliente || !email || !producto) return alert('❌ Completa campos obligatorios');
+            
+            const total = cantidad * precioUnitario;
+            const prereserva = {
+                id: Date.now(), fecha: new Date().toISOString().split('T')[0],
+                cliente, email, producto, cantidad, precioUnitario, total,
+                notas: document.getElementById('prereservaNotas').value,
+                estado: 'pendiente', fechaCreacion: new Date().toISOString()
+            };
+            datos.prereservas.unshift(prereserva);
+            guardarTodo();
+            cerrarModal('prereservaModal');
+            limpiarFormularioPrereserva();
+            alert(`✅ Pre-reserva creada para ${cliente} - ${producto}`);
+            registrarActividad(`Pre-reserva creada: ${producto} para ${cliente}`);
+        }
+        
+        function cambiarEstadoPrereserva(id, nuevoEstado) {
+            const prereserva = datos.prereservas.find(p => p.id === id);
+            if (prereserva) {
+                prereserva.estado = nuevoEstado;
+                if (nuevoEstado === 'confirmada') {
+                    const factura = {
+                        id: Date.now(), numero: generarNumeroFactura(), fecha: new Date().toISOString().split('T')[0],
+                        vencimiento: new Date().toISOString().split('T')[0], cliente: prereserva.cliente,
+                        email: prereserva.email, concepto: prereserva.producto, base: prereserva.total,
+                        iva: 0, ivaPorcentaje: 0, total: prereserva.total, estado: 'pendiente', prereservaId: id
+                    };
+                    datos.facturas.unshift(factura);
+                    registrarActividad(`Factura automática creada desde pre-reserva ${prereserva.producto}`);
+                }
+                guardarTodo();
+                alert(`✅ Pre-reserva ${prereserva.producto} marcada como ${nuevoEstado}`);
+            }
+        }
+        
+        function eliminarPrereserva(id) {
+            if (confirm('¿Eliminar esta pre-reserva?')) {
+                datos.prereservas = datos.prereservas.filter(p => p.id !== id);
+                guardarTodo();
+                alert('✅ Pre-reserva eliminada');
+            }
+        }
+        
+        function exportarPrereservas() {
+            let csv = "ID,Fecha,Cliente,Email,Producto,Cantidad,Precio Unitario,Total,Estado,Notas\n";
+            datos.prereservas.forEach(p => {
+                csv += `${p.id},${p.fecha},${p.cliente},${p.email},${p.producto},${p.cantidad},${p.precioUnitario},${p.total},${p.estado},"${p.notas || ''}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prereservas_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function limpiarFormularioPrereserva() {
+            document.getElementById('prereservaCliente').value = '';
+            document.getElementById('prereservaEmail').value = '';
+            document.getElementById('prereservaProducto').value = '';
+            document.getElementById('prereservaCantidad').value = '1';
+            document.getElementById('prereservaPrecio').value = '0';
+            document.getElementById('prereservaNotas').value = '';
+        }
+        
+        // ========== ROADMAP ==========
+        function guardarTarea() {
+            const titulo = document.getElementById('tareaTitulo').value;
+            if (!titulo) return alert('❌ Escribe un título');
+            datos.roadmap.unshift({ 
+                id: Date.now(), titulo, descripcion: document.getElementById('tareaDescripcion').value,
+                prioridad: document.getElementById('tareaPrioridad').value,
+                estado: document.getElementById('tareaEstado').value,
+                fechaFin: document.getElementById('tareaFechaFin').value,
+                fechaCreacion: new Date().toISOString().split('T')[0]
+            });
+            guardarTodo();
+            cerrarModal('tareaModal');
+            alert(`✅ Tarea "${titulo}" creada`);
+        }
+        
+        function cambiarEstadoTarea(id, nuevoEstado) {
+            const tarea = datos.roadmap.find(t => t.id === id);
+            if (tarea) { tarea.estado = nuevoEstado; guardarTodo(); }
+        }
+        
+        function eliminarTarea(id) {
+            if (confirm('¿Eliminar esta tarea?')) { 
+                datos.roadmap = datos.roadmap.filter(t => t.id !== id); 
+                guardarTodo(); 
+            }
+        }
+        
+        // ========== ALERTAS ==========
+        function generarAlertas() {
+            datos.alertas = [];
+            const hoy = new Date();
+            
+            datos.facturas.forEach(f => {
+                if (f.estado !== 'pagada') {
+                    const vencimiento = new Date(f.vencimiento);
+                    const dias = Math.ceil((vencimiento - hoy) / (1000*60*60*24));
+                    if (dias <= 7 && dias >= 0) {
+                        datos.alertas.push({ id: Date.now()+Math.random(), tipo: 'factura', titulo: `Factura próxima a vencer`, mensaje: `${f.numero} de ${f.cliente} - ${f.total.toFixed(2)}€ vence en ${dias} días`, leida: false });
+                    }
+                    if (dias < 0) {
+                        datos.alertas.push({ id: Date.now()+Math.random(), tipo: 'factura', titulo: `Factura vencida`, mensaje: `${f.numero} de ${f.cliente} - ${f.total.toFixed(2)}€ vencida hace ${Math.abs(dias)} días`, leida: false, prioridad: 'urgente' });
+                    }
+                }
+            });
+            
+            datos.contratos.forEach(c => {
+                if (c.estado === 'activo' && c.fechaFin && c.fechaFin !== 'Indefinido') {
+                    const fechaFin = new Date(c.fechaFin);
+                    const dias = Math.ceil((fechaFin - hoy) / (1000*60*60*24));
+                    if (dias <= 30 && dias >= 0) {
+                        datos.alertas.push({ id: Date.now()+Math.random(), tipo: 'contrato', titulo: `Contrato próximo a finalizar`, mensaje: `${c.cliente} - ${c.servicio} finaliza en ${dias} días`, leida: false });
+                    }
+                }
+            });
+            
+            datos.mensajes.forEach(m => {
+                if (!m.leido) {
+                    datos.alertas.push({ id: Date.now()+Math.random(), tipo: 'mensaje', titulo: `Nuevo mensaje de contacto`, mensaje: `${m.nombre}: ${m.asunto}`, leida: false });
+                }
+            });
+            
+            datos.feedback.forEach(f => {
+                if (!f.leido) {
+                    datos.alertas.push({ id: Date.now()+Math.random(), tipo: 'feedback', titulo: `Nuevo feedback de ${f.plataforma}`, mensaje: `${f.usuario}: ${f.mensaje.substring(0, 100)}...`, leida: false });
+                }
+            });
+        }
+        
+        function marcarAlertaLeida(id) {
+            const alerta = datos.alertas.find(a => a.id === id);
+            if (alerta) alerta.leida = true;
+            guardarTodo();
+        }
+        
+        // ========== GOOGLE DRIVE ==========
+        function conectarGoogleDrive() {
+            if (GOOGLE_CLIENT_ID === 'TU_CLIENT_ID_AQUI.apps.googleusercontent.com') {
+                document.getElementById('driveStatus').innerHTML = '<div class="alert-item urgent">⚠️ Configura tu Client ID de Google Drive en el código.</div>';
+                return;
+            }
+            document.getElementById('driveStatus').innerHTML = '<div class="alert-item">🔄 Conectando con Google Drive...</div>';
+            try {
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: GOOGLE_CLIENT_ID, scope: GOOGLE_SCOPES,
+                    callback: (tokenResponse) => {
+                        if (tokenResponse.access_token) {
+                            driveAccessToken = tokenResponse.access_token;
+                            localStorage.setItem('google_drive_token', driveAccessToken);
+                            document.getElementById('driveStatus').innerHTML = '<div class="alert-item success">✅ Conectado a Google Drive</div>';
+                            cargarArchivosDrive();
+                            cargarCarpetasDrive();
+                            registrarActividad('Conectado a Google Drive');
+                        }
+                    },
+                });
+                tokenClient.requestAccessToken();
+            } catch (error) {
+                document.getElementById('driveStatus').innerHTML = `<div class="alert-item urgent">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        function cargarArchivosDrive() {
+            if (!driveAccessToken) return;
+            fetch('https://www.googleapis.com/drive/v3/files?pageSize=20&orderBy=createdTime desc&fields=files(id,name,mimeType,size,createdTime)', {
+                headers: { 'Authorization': `Bearer ${driveAccessToken}` }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const files = data.files || [];
+                document.getElementById('driveFilesList').innerHTML = files.map(f => `
+                    <div class="drive-file"><span><i class="fab fa-google-drive"></i> ${f.name}</span>
+                    <button class="btn-primary" onclick="window.open('https://drive.google.com/file/d/${f.id}/view', '_blank')">Ver</button></div>
+                `).join('');
+            }).catch(err => console.error(err));
+        }
+        
+        function cargarCarpetasDrive() {
+            if (!driveAccessToken) return;
+            fetch('https://www.googleapis.com/drive/v3/files?q=mimeType="application/vnd.google-apps.folder"&fields=files(id,name)', {
+                headers: { 'Authorization': `Bearer ${driveAccessToken}` }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const folders = data.files || [];
+                const select = document.getElementById('driveFolderSelect');
+                select.innerHTML = '<option value="">Seleccionar carpeta</option>' + folders.map(f => `<option value="${f.id}">${f.name}</option>`).join('');
+            }).catch(err => console.error(err));
+        }
+        
+        function subirArchivoDrive() {
+            const fileInput = document.getElementById('fileToUpload');
+            const folderId = document.getElementById('driveFolderSelect').value;
+            if (!fileInput.files.length) return alert('Selecciona un archivo');
+            const file = fileInput.files[0];
+            const metadata = { name: file.name, mimeType: file.type, parents: folderId ? [folderId] : [] };
+            const form = new FormData();
+            form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+            form.append('file', file);
+            fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                method: 'POST', headers: { 'Authorization': `Bearer ${driveAccessToken}` }, body: form
+            })
+            .then(() => { alert('✅ Archivo subido'); cargarArchivosDrive(); registrarActividad(`Archivo ${file.name} subido a Drive`); })
+            .catch(err => alert('Error al subir archivo'));
+        }
+        
+        function sincronizarDrive() {
+            if (!driveAccessToken) return alert('Conecta con Google Drive primero');
+            alert('🔄 Sincronizando documentos con Drive...');
+            cargarArchivosDrive();
+        }
+        
+        // ========== CONFIGURACIÓN ==========
+        function cargarConfiguracion() {
+            document.getElementById('empresaNombre').value = datos.configuracion.empresaNombre;
+            document.getElementById('empresaEmail').value = datos.configuracion.empresaEmail;
+            document.getElementById('empresaCif').value = datos.configuracion.empresaCif;
+            document.getElementById('empresaDireccion').value = datos.configuracion.empresaDireccion;
+        }
+        
+        function guardarConfiguracion() {
+            datos.configuracion = { 
+                empresaNombre: document.getElementById('empresaNombre').value,
+                empresaEmail: document.getElementById('empresaEmail').value,
+                empresaCif: document.getElementById('empresaCif').value,
+                empresaDireccion: document.getElementById('empresaDireccion').value
+            };
+            guardarTodo();
+            alert('✅ Configuración guardada');
+        }
+        
+        // ========== ACTUALIZAR UI ==========
+        function actualizarTodo() { 
+            actualizarDashboard(); 
+            actualizarFacturas(); 
+            actualizarContratos(); 
+            actualizarPrereservas();
+            actualizarMensajes();
+            actualizarFeedback();
+            actualizarIngresos(); 
+            actualizarRoadmap(); 
+            actualizarAlertas(); 
+        }
+        
+        function actualizarDashboard() {
+            const pagadas = datos.facturas.filter(f => f.estado === 'pagada').length;
+            const totalIngresos = datos.facturas.filter(f => f.estado === 'pagada').reduce((a,b) => a + b.total, 0);
+            const alertasNoLeidas = datos.alertas.filter(a => !a.leida).length;
+            const prereservasPendientes = datos.prereservas.filter(p => p.estado === 'pendiente').length;
+            const prereservasTotal = datos.prereservas.reduce((a,b) => a + b.total, 0);
+            const mensajesNoLeidos = datos.mensajes.filter(m => !m.leido).length;
+            const feedbackNoLeidos = datos.feedback.filter(f => !f.leido).length;
+            
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value">${datos.facturas.length}</div><div class="label">Facturas</div></div>
+                <div class="stat-card"><div class="value">${pagadas}</div><div class="label">Pagadas</div></div>
+                <div class="stat-card"><div class="value">${totalIngresos.toFixed(2)}€</div><div class="label">Ingresos</div></div>
+                <div class="stat-card"><div class="value">${prereservasPendientes}</div><div class="label">Pre-reservas</div></div>
+                <div class="stat-card"><div class="value">${prereservasTotal.toFixed(2)}€</div><div class="label">Valor pre-reservas</div></div>
+                <div class="stat-card"><div class="value">${mensajesNoLeidos}</div><div class="label">Mensajes</div></div>
+                <div class="stat-card"><div class="value">${feedbackNoLeidos}</div><div class="label">Feedback</div></div>
+                <div class="stat-card"><div class="value">${alertasNoLeidas}</div><div class="label">Alertas</div></div>
+            `;
+            document.getElementById('mensajesNoLeidos').textContent = mensajesNoLeidos;
+            document.getElementById('feedbackNoLeidos').textContent = feedbackNoLeidos;
+            document.getElementById('alertasCount').textContent = alertasNoLeidas;
+            
+            const ingresosPorMes = {};
+            datos.facturas.filter(f => f.estado === 'pagada').forEach(f => { 
+                const mes = f.fechaPago?.substring(0,7) || f.fecha.substring(0,7); 
+                ingresosPorMes[mes] = (ingresosPorMes[mes] || 0) + f.total; 
+            });
+            const meses = Object.keys(ingresosPorMes).sort().slice(-6);
+            const ctx = document.getElementById('ingresosMensualesChart')?.getContext('2d');
+            if (ctx) { 
+                if (charts.ingresosMensuales) charts.ingresosMensuales.destroy(); 
+                charts.ingresosMensuales = new Chart(ctx, { 
+                    type: 'bar', data: { labels: meses, datasets: [{ label: 'Ingresos (€)', data: meses.map(m => ingresosPorMes[m] || 0), backgroundColor: '#667eea' }] } 
+                }); 
+            }
+            
+            const ctxEstado = document.getElementById('estadoFacturasChart')?.getContext('2d');
+            if (ctxEstado) { 
+                if (charts.estadoFacturas) charts.estadoFacturas.destroy(); 
+                charts.estadoFacturas = new Chart(ctxEstado, { 
+                    type: 'doughnut', data: { labels: ['Pagadas', 'Pendientes'], datasets: [{ data: [pagadas, datos.facturas.length - pagadas], backgroundColor: ['#10b981', '#f59e0b'] }] } 
+                }); 
+            }
+            
+            const actividades = JSON.parse(localStorage.getItem('edunotes_actividades') || '[]');
+            document.getElementById('ultimasActividades').innerHTML = actividades.slice(0,5).map(a => `
+                <div style="padding:0.5rem; border-bottom:1px solid #e2e8f0;">
+                    <small>${new Date(a.fecha).toLocaleString()}</small>
+                    <p>${a.descripcion}</p>
+                </div>
+            `).join('') || '<p>No hay actividades recientes</p>';
+        }
+        
+        function actualizarFacturas() {
+            document.getElementById('facturasTableBody').innerHTML = datos.facturas.map(f => `
+                <tr>
+                    <td><strong>${f.numero}</strong></td>
+                    <td>${f.fecha}</td>
+                    <td>${f.cliente}</td>
+                    <td>${f.concepto}</td>
+                    <td><strong>${f.total.toFixed(2)}€</strong></td>
+                    <td><span class="badge ${f.estado === 'pagada' ? 'badge-success' : 'badge-warning'}">${f.estado === 'pagada' ? 'Pagada' : 'Pendiente'}</span></td>
+                    <td>
+                        <button class="btn-info" onclick="verFactura(${f.id})" style="margin-right:5px;"><i class="fas fa-eye"></i></button>
+                        <button class="btn-warning" onclick="abrirModalFacturaEditar(${f.id})" style="margin-right:5px;"><i class="fas fa-edit"></i></button>
+                        <button class="btn-danger" onclick="eliminarFactura(${f.id})" style="margin-right:5px;"><i class="fas fa-trash"></i></button>
+                        <button class="btn-outline" onclick="generarPDFFactura(${JSON.stringify(f).replace(/"/g, '&quot;')})" style="margin-right:5px;"><i class="fas fa-file-pdf"></i></button>
+                        ${f.estado !== 'pagada' ? `<button class="btn-success" onclick="marcarPagada(${f.id})"><i class="fas fa-check"></i> Pagar</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function actualizarContratos() {
+            document.getElementById('contratosTableBody').innerHTML = datos.contratos.map(c => `
+                <tr>
+                    <td>${c.cliente}</td>
+                    <td>${c.servicio}</td>
+                    <td>${c.importe.toFixed(2)}€</td>
+                    <td>${c.fechaInicio}</td>
+                    <td>${c.fechaFin || '-'}</td>
+                    <td><span class="badge ${c.estado === 'activo' ? 'badge-success' : 'badge-warning'}">${c.estado}</span></td>
+                    <td>
+                        <button class="btn-info" onclick="verContrato(${c.id})" style="margin-right:5px;"><i class="fas fa-eye"></i></button>
+                        <button class="btn-warning" onclick="abrirModalContratoEditar(${c.id})" style="margin-right:5px;"><i class="fas fa-edit"></i></button>
+                        <button class="btn-danger" onclick="eliminarContrato(${c.id})" style="margin-right:5px;"><i class="fas fa-trash"></i></button>
+                        <button class="btn-outline" onclick="generarPDFContrato(${JSON.stringify(c).replace(/"/g, '&quot;')})" style="margin-right:5px;"><i class="fas fa-file-pdf"></i></button>
+                        ${c.estado === 'activo' ? `<button class="btn-warning" onclick="finalizarContrato(${c.id})"><i class="fas fa-check-circle"></i> Finalizar</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function actualizarPrereservas() {
+            const totalPrereservas = datos.prereservas.reduce((a,b) => a + b.total, 0);
+            const pendientes = datos.prereservas.filter(p => p.estado === 'pendiente').length;
+            document.getElementById('prereservasStats').innerHTML = `
+                <div class="stat-card"><div class="value">${datos.prereservas.length}</div><div class="label">Total pre-reservas</div></div>
+                <div class="stat-card"><div class="value">${pendientes}</div><div class="label">Pendientes</div></div>
+                <div class="stat-card"><div class="value">${totalPrereservas.toFixed(2)}€</div><div class="label">Valor total</div></div>
+            `;
+            
+            document.getElementById('prereservasTableBody').innerHTML = datos.prereservas.map(p => `
+                <tr>
+                    <td>${p.id}</td>
+                    <td>${p.fecha}</td>
+                    <td>${p.cliente}</td>
+                    <td>${p.email}</td>
+                    <td>${p.producto}</td>
+                    <td>${p.cantidad}</td>
+                    <td><strong>${p.total.toFixed(2)}€</strong></td>
+                    <td><span class="badge ${p.estado === 'confirmada' ? 'badge-success' : p.estado === 'pendiente' ? 'badge-warning' : 'badge-danger'}">${p.estado}</span></td>
+                    <td>
+                        ${p.estado === 'pendiente' ? `<button class="btn-success" onclick="cambiarEstadoPrereserva(${p.id}, 'confirmada')" style="margin-right:5px;">Confirmar</button>` : ''}
+                        ${p.estado !== 'cancelada' ? `<button class="btn-danger" onclick="cambiarEstadoPrereserva(${p.id}, 'cancelada')" style="margin-right:5px;">Cancelar</button>` : ''}
+                        <button class="btn-warning" onclick="eliminarPrereserva(${p.id})">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function actualizarMensajes() {
+            const mensajesNoLeidos = datos.mensajes.filter(m => !m.leido).length;
+            document.getElementById('mensajesNoLeidos').textContent = mensajesNoLeidos;
+            
+            document.getElementById('mensajesList').innerHTML = datos.mensajes.map(m => `
+                <div class="message-card" style="${!m.leido ? 'background: #e0e7ff; border-left: 4px solid #667eea;' : ''}">
+                    <div class="message-header">
+                        <span class="message-subject">${m.asunto}</span>
+                        <span class="message-meta">${new Date(m.fecha).toLocaleString()}</span>
+                    </div>
+                    <div><strong>${m.nombre}</strong> (${m.email})</div>
+                    <div style="margin-top: 0.5rem; color: #475569;">${m.mensaje.substring(0, 150)}${m.mensaje.length > 150 ? '...' : ''}</div>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                        <button class="btn-info" onclick="verMensaje(${m.id})">Ver</button>
+                        <button class="btn-danger" onclick="eliminarMensaje(${m.id})">Eliminar</button>
+                        ${!m.respondido ? `<button class="btn-success" onclick="abrirResponderMensaje(${JSON.stringify(m).replace(/"/g, '&quot;')})">Responder</button>` : '<span class="badge badge-success">Respondido</span>'}
+                    </div>
+                </div>
+            `).join('') || '<p>No hay mensajes de contacto</p>';
+        }
+        
+        function actualizarFeedback() {
+            const feedbackNoLeidos = datos.feedback.filter(f => !f.leido).length;
+            document.getElementById('feedbackNoLeidos').textContent = feedbackNoLeidos;
+            
+            const tipoColor = { sugerencia: 'badge-info', bug: 'badge-danger', mejora: 'badge-warning', elogio: 'badge-success', centro: 'badge-primary', profesor: 'badge-info', familia: 'badge-warning', interesado: 'badge-secondary' };
+            
+            document.getElementById('feedbackList').innerHTML = datos.feedback.map(f => `
+                <div class="feedback-card" style="${!f.leido ? 'background: #e0e7ff; border-left: 4px solid #667eea;' : ''}">
+                    <div class="message-header">
+                        <span><span class="badge ${tipoColor[f.tipo] || 'badge-info'}">${f.tipo}</span> <strong>${f.usuario}</strong> (${f.plataforma})</span>
+                        <span class="message-meta">${new Date(f.fecha).toLocaleString()}</span>
+                    </div>
+                    <div style="margin-top: 0.5rem; color: #475569;">${f.mensaje.substring(0, 150)}${f.mensaje.length > 150 ? '...' : ''}</div>
+                    <div style="margin-top: 0.25rem;">Valoración: ${'⭐'.repeat(f.valoracion || 4)}</div>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                        <button class="btn-info" onclick="verFeedback(${f.id})">Ver</button>
+                        <button class="btn-danger" onclick="eliminarFeedback(${f.id})">Eliminar</button>
+                        ${!f.respondido ? `<button class="btn-success" onclick="abrirResponderFeedback(${JSON.stringify(f).replace(/"/g, '&quot;')})">Responder</button>` : '<span class="badge badge-success">Respondido</span>'}
+                    </div>
+                </div>
+            `).join('') || '<p>No hay feedback</p>';
+        }
+        
+        function actualizarIngresos() {
+            document.getElementById('ingresosTableBody').innerHTML = datos.ingresos.map(i => `
+                <tr>
+                    <td>${i.fecha}</td>
+                    <td>${i.concepto}</td>
+                    <td><strong>${i.importe.toFixed(2)}€</strong></td>
+                    <td><span class="badge ${i.estado === 'pagado' ? 'badge-success' : 'badge-warning'}">${i.estado || 'pendiente'}</span></td>
+                </tr>
+            `).join('');
+        }
+        
+        function actualizarRoadmap() {
+            const estados = { pendiente: [], progreso: [], completado: [] };
+            datos.roadmap.forEach(t => { 
+                if (estados[t.estado]) estados[t.estado].push(t); 
+                else estados.pendiente.push(t); 
+            });
+            const prioridadColor = { 'Alta': '#ef4444', 'Media': '#f59e0b', 'Baja': '#10b981' };
+            document.getElementById('roadmapList').innerHTML = `
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;">
+                    <div><h4>📋 Pendiente</h4>${estados.pendiente.map(t => `
+                        <div style="background:white; padding:0.75rem; border-radius:8px; margin-bottom:0.5rem; border-left:3px solid ${prioridadColor[t.prioridad]}">
+                            <strong>${t.titulo}</strong>
+                            <p style="font-size:0.7rem">${t.descripcion || ''}</p>
+                            <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                                <button class="btn-warning" style="font-size:0.7rem" onclick="cambiarEstadoTarea(${t.id}, 'progreso')">→ Progreso</button>
+                                <button class="btn-danger" style="font-size:0.7rem" onclick="eliminarTarea(${t.id})">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('') || '<p>No hay tareas</p>'}</div>
+                    <div><h4>⚡ En progreso</h4>${estados.progreso.map(t => `
+                        <div style="background:white; padding:0.75rem; border-radius:8px; margin-bottom:0.5rem; border-left:3px solid ${prioridadColor[t.prioridad]}">
+                            <strong>${t.titulo}</strong>
+                            <p style="font-size:0.7rem">${t.descripcion || ''}</p>
+                            <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                                <button class="btn-success" style="font-size:0.7rem" onclick="cambiarEstadoTarea(${t.id}, 'completado')">✓ Completar</button>
+                                <button class="btn-danger" style="font-size:0.7rem" onclick="eliminarTarea(${t.id})">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('') || '<p>No hay tareas</p>'}</div>
+                    <div><h4>✅ Completado</h4>${estados.completado.map(t => `
+                        <div style="background:#f1f5f9; padding:0.75rem; border-radius:8px; margin-bottom:0.5rem; opacity:0.7">
+                            <strong>${t.titulo}</strong>
+                            <p style="font-size:0.7rem">${t.descripcion || ''}</p>
+                            <button class="btn-danger" style="font-size:0.7rem" onclick="eliminarTarea(${t.id})">🗑️</button>
+                        </div>
+                    `).join('') || '<p>No hay tareas</p>'}</div>
+                </div>`;
+        }
+        
+        function actualizarAlertas() {
+            document.getElementById('alertasList').innerHTML = datos.alertas.filter(a => !a.leida).slice(0,20).map(a => `
+                <div class="alert-item ${a.prioridad === 'urgente' ? 'urgent' : ''}">
+                    <strong>${a.titulo}</strong>
+                    <p>${a.mensaje}</p>
+                    <button class="btn-primary" onclick="marcarAlertaLeida(${a.id})">Marcar leída</button>
+                </div>
+            `).join('') || '<p>No hay alertas pendientes</p>';
+        }
+        
+        function exportarTodo() {
+            const exportData = { 
+                facturas: datos.facturas, 
+                contratos: datos.contratos, 
+                prereservas: datos.prereservas,
+                mensajes: datos.mensajes,
+                feedback: datos.feedback,
+                ingresos: datos.ingresos, 
+                roadmap: datos.roadmap, 
+                configuracion: datos.configuracion, 
+                fechaExportacion: new Date().toISOString() 
+            };
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `edunotes_export_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Datos exportados');
+        }
+        
+        // ========== UI ==========
+        function abrirModalFactura() { abrirModalFacturaNueva(); }
+        function abrirModalContrato() { abrirModalContratoNuevo(); }
+        function abrirModalPrereserva() { document.getElementById('prereservaModal').classList.add('active'); }
+        function abrirModalTarea() { document.getElementById('tareaModal').classList.add('active'); }
+        function cerrarModal(id) { document.getElementById(id).classList.remove('active'); }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+        
+        function cambiarSeccion(seccion) {
+            document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
+            document.getElementById(`seccion${seccion.charAt(0).toUpperCase() + seccion.slice(1)}`).style.display = 'block';
+            const titulos = { 
+                dashboard: 'Dashboard', 
+                facturacion: 'Facturación', 
+                contratos: 'Contratos', 
+                prereservas: 'Pre-reservas',
+                mensajes: 'Mensajes',
+                feedback: 'Feedback',
+                ingresos: 'Ingresos', 
+                roadmap: 'Roadmap', 
+                alertas: 'Alertas', 
+                drive: 'Google Drive', 
+                configuracion: 'Configuración' 
+            };
+            document.getElementById('seccionTitulo').textContent = titulos[seccion];
+            if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+        }
+        
+        // Exponer funciones globales
+        window.login = login; 
+        window.cerrarSesion = cerrarSesion; 
+        window.cambiarSeccion = cambiarSeccion; 
+        window.toggleSidebar = toggleSidebar;
+        window.exportarTodo = exportarTodo; 
+        window.abrirModalFactura = abrirModalFactura; 
+        window.abrirModalContrato = abrirModalContrato;
+        window.abrirModalPrereserva = abrirModalPrereserva;
+        window.abrirModalTarea = abrirModalTarea; 
+        window.cerrarModal = cerrarModal; 
+        
+        window.guardarFactura = guardarFactura;
+        window.abrirModalFacturaEditar = abrirModalFacturaEditar;
+        window.verFactura = verFactura;
+        window.eliminarFactura = eliminarFactura;
+        window.marcarPagada = marcarPagada;
+        window.generarPDFFactura = generarPDFFactura;
+        
+        window.guardarContrato = guardarContrato;
+        window.abrirModalContratoEditar = abrirModalContratoEditar;
+        window.verContrato = verContrato;
+        window.eliminarContrato = eliminarContrato;
+        window.finalizarContrato = finalizarContrato;
+        window.generarPDFContrato = generarPDFContrato;
+        
+        window.crearPrereserva = crearPrereserva;
+        window.cambiarEstadoPrereserva = cambiarEstadoPrereserva;
+        window.eliminarPrereserva = eliminarPrereserva;
+        window.exportarPrereservas = exportarPrereservas;
+        
+        window.verMensaje = verMensaje;
+        window.eliminarMensaje = eliminarMensaje;
+        window.abrirResponderMensaje = abrirResponderMensaje;
+        
+        window.verFeedback = verFeedback;
+        window.eliminarFeedback = eliminarFeedback;
+        window.abrirResponderFeedback = abrirResponderFeedback;
+        
+        window.enviarRespuesta = enviarRespuesta;
+        
+        window.guardarTarea = guardarTarea;
+        window.cambiarEstadoTarea = cambiarEstadoTarea;
+        window.eliminarTarea = eliminarTarea;
+        
+        window.marcarAlertaLeida = marcarAlertaLeida;
+        
+        window.conectarGoogleDrive = conectarGoogleDrive;
+        window.sincronizarDrive = sincronizarDrive;
+        window.subirArchivoDrive = subirArchivoDrive;
+        
+        window.guardarConfiguracion = guardarConfiguracion;
+        
+        // Cargar datos al iniciar
+        cargarDatos();
+    </script>
+</body>
+</html>

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Términos y Condiciones - Edunotes</title>
+    <meta name="description" content="Términos y condiciones de uso de Edunotes. Información sobre servicios, desarrollo web multitenant, licencias y propiedad intelectual.">
+    <meta name="robots" content="index, follow">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -147,6 +150,8 @@
             font-size: 1.5rem;
             margin: 2rem 0 1rem;
             color: #1f2937;
+            border-left: 3px solid #667eea;
+            padding-left: 1rem;
         }
         
         .legal-content h3 {
@@ -182,6 +187,14 @@
         .importante {
             background: #fef2f2;
             border-left: 4px solid #ef4444;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .modelo-negocio {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
             padding: 1.5rem;
             margin: 1.5rem 0;
             border-radius: 0 10px 10px 0;
@@ -374,7 +387,6 @@
         
         /* Responsive */
         @media (max-width: 768px) {
-            /* En móvil, mostrar iconos móviles y ocultar el carrito del menú */
             .mobile-icons {
                 display: flex;
             }
@@ -383,7 +395,6 @@
                 display: block;
             }
             
-            /* Ocultar el carrito dentro del menú en móvil */
             .nav-links .cart-icon {
                 display: none;
             }
@@ -575,7 +586,6 @@
             <div class="nav-links" id="navLinks">
                 <a href="index.html">Inicio</a>
                 <a href="proyectos.html">Proyectos</a>
-                <a href="recursos.html">Plantillas</a>
                 <a href="blog.html">Blog</a>
                 <a href="herramientas.html">Plataformas</a>
                 <a href="contacto.html">Contacto</a>
@@ -593,19 +603,31 @@
                 <h1>Términos y Condiciones</h1>
                 
                 <div class="fecha-actualizacion">
-                    <p>Última actualización: 22/03/2026</p>
+                    <p>Última actualización: 25 de marzo de 2026</p>
                 </div>
                 
-                <p>Al acceder y usar esta web, aceptas los siguientes términos:</p>
+                <p>Al acceder y usar esta web, aceptas los siguientes términos. Te recomendamos leerlos detenidamente antes de contratar cualquier servicio.</p>
                 
-                <h2>1. Servicios</h2>
-                <p>Edunotes ofrece:</p>
+                <h2>1. Servicios ofrecidos</h2>
+                <p>Edunotes ofrece los siguientes servicios:</p>
                 <ul>
-                    <li>Desarrollo web profesional</li>
-                    <li>Venta de recursos educativos y plantillas</li>
-                    <li>Contenido educativo y tutoriales</li>
-                    <li>Herramientas digitales para profesores</li>
+                    <li><strong>Desarrollo web profesional</strong> - Creación de páginas web y aplicaciones a medida.</li>
+                    <li><strong>Plataformas SaaS</strong> - Desarrollo de soluciones multitenant que pueden comercializarse como servicio.</li>
+                    <li><strong>Recursos educativos</strong> - Plantillas, guías y materiales descargables.</li>
+                    <li><strong>Contenido educativo</strong> - Artículos y tutoriales sobre educación digital.</li>
                 </ul>
+                
+                <div class="modelo-negocio">
+                    <h3 style="margin-top: 0; color: #b45309;">🚀 Modelo de negocio: Desarrollo multitenant y comercialización como SaaS</h3>
+                    <p>En Edunotes aplicamos un modelo de negocio innovador que beneficia tanto al cliente como al desarrollo del portfolio:</p>
+                    <ul>
+                        <li><strong>Desarrollo con arquitectura multitenant:</strong> Los proyectos que desarrollo para clientes se construyen con una base técnica que permite su reutilización y adaptación para otros usuarios.</li>
+                        <li><strong>Comercialización posterior como SaaS:</strong> Una vez finalizado el proyecto, reservo el derecho de adaptar la solución para ofrecerla como servicio SaaS (Software as a Service) en mi portfolio, bajo una licencia diferente y con funcionalidades estandarizadas.</li>
+                        <li><strong>Beneficio para el cliente:</strong> Este modelo permite ofrecer precios más competitivos en el desarrollo inicial, ya que parte de la inversión se recupera mediante la comercialización futura de la solución.</li>
+                        <li><strong>Confidencialidad garantizada:</strong> La versión comercializada como SaaS no incluirá datos específicos del cliente original, ni su marca, ni funcionalidades personalizadas que lo identifiquen.</li>
+                    </ul>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Ejemplo:</strong> Si un centro educativo me encarga una plataforma de gestión de horarios, desarrollo la solución con una arquitectura que permita su adaptación. Posteriormente, puedo ofrecer una versión estandarizada de esa plataforma a otros centros educativos, sin incluir los datos ni la identidad del cliente original.</p>
+                </div>
                 
                 <h2>2. Seguridad de cuentas y contraseñas</h2>
                 
@@ -625,53 +647,100 @@
                         <li>Revender los recursos</li>
                         <li>Redistribuirlos</li>
                         <li>Compartirlos públicamente como propios</li>
+                        <li>Utilizarlos con fines comerciales sin autorización expresa</li>
                     </ul>
                 </div>
                 
-                <h2>4. Pagos</h2>
+                <h2>4. Propiedad intelectual sobre desarrollos a medida</h2>
                 
-                <p>Los pagos de servicios o recursos digitales se realizan mediante <strong>PayPal</strong>.</p>
-                
-                <p>Edunotes no almacena datos bancarios ni tarjetas de crédito. Las transacciones se procesan directamente a través de PayPal.</p>
-                
-                <h2>5. Precios y pagos</h2>
+                <p>Para proyectos de desarrollo web personalizados, se aplican las siguientes condiciones:</p>
                 <ul>
-                    <li>Los precios de los recursos están indicados en la web</li>
-                    <li>Pagos a través de PayPal</li>
-                    <li>El pago confirma tu pedido y acceso a los recursos</li>
+                    <li><strong>Código fuente:</strong> El cliente recibe el código fuente del proyecto desarrollado, con las funcionalidades acordadas.</li>
+                    <li><strong>Diseño y marca:</strong> Los elementos de identidad visual (logo, colores, contenido) aportados por el cliente son de su propiedad.</li>
+                    <li><strong>Arquitectura base:</strong> La estructura técnica, patrones de código y funcionalidades reutilizables desarrolladas por Edunotes para el proyecto pueden ser utilizadas en futuros desarrollos, incluida la comercialización como SaaS.</li>
+                    <li><strong>Propiedad intelectual compartida:</strong> El cliente no podrá impedir que Edunotes desarrolle soluciones similares para otros clientes, siempre que no utilice su identidad corporativa o datos confidenciales.</li>
                 </ul>
                 
-                <h2>6. Condiciones para proyectos personalizados</h2>
+                <h2>5. Condiciones para proyectos personalizados</h2>
                 <p>Para desarrollar proyectos web, el cliente debe:</p>
                 <ul>
-                    <li>Crear cuentas necesarias en Firebase, GitHub y PayPal</li>
-                    <li>Facilitar permisos o contraseñas para el desarrollo</li>
-                    <li>Cambiar contraseñas posteriormente si lo desea</li>
+                    <li>Crear cuentas necesarias en Firebase, GitHub y servicios requeridos para el desarrollo.</li>
+                    <li>Facilitar permisos o contraseñas para el desarrollo (se recomienda cambiar contraseñas posteriormente).</li>
+                    <li>Proporcionar toda la información y contenido necesario en los plazos acordados.</li>
+                    <li>Realizar las pruebas oportunas antes de la entrega final.</li>
                 </ul>
                 
                 <div class="importante">
-                    <p><strong>Importante:</strong> Los precios de los proyectos se basan en paquetes de plantillas y personalizaciones adicionales. Cambios o extras no incluidos en el paquete serán presupuestados aparte.</p>
+                    <p><strong>Importante:</strong> Los precios de los proyectos se basan en paquetes de plantillas y personalizaciones adicionales. Cambios o extras no incluidos en el paquete serán presupuestados aparte. Cualquier funcionalidad no especificada en el presupuesto inicial será considerada como un adicional.</p>
                 </div>
                 
-                <h2>7. Responsabilidad</h2>
+                <h2>6. Pagos</h2>
+                
+                <p>Los pagos de servicios o recursos digitales se realizan mediante <strong>PayPal</strong> o transferencia bancaria.</p>
+                
+                <p>Edunotes no almacena datos bancarios ni tarjetas de crédito. Las transacciones se procesan directamente a través de PayPal o la entidad bancaria correspondiente.</p>
+                
+                <h3>Condiciones de pago para proyectos personalizados:</h3>
+                <ul>
+                    <li>Se requiere un <strong>50% de anticipo</strong> para iniciar el desarrollo del proyecto.</li>
+                    <li>El <strong>50% restante</strong> se abona en la entrega final, antes de la puesta en producción.</li>
+                    <li>Para proyectos de mayor envergadura, se puede acordar un plan de pagos escalonado.</li>
+                </ul>
+                
+                <h2>7. Plazos de entrega</h2>
+                
+                <p>Los plazos de entrega se acuerdan en el presupuesto y dependen de:</p>
+                <ul>
+                    <li>La complejidad del proyecto.</li>
+                    <li>La disponibilidad del cliente para proporcionar información y feedback.</li>
+                    <li>Posibles imprevistos técnicos, que se comunicarán oportunamente.</li>
+                </ul>
+                
+                <p>En caso de retrasos por causas imputables al cliente (falta de información, cambios en los requisitos, etc.), el plazo de entrega se ajustará en consecuencia.</p>
+                
+                <h2>8. Responsabilidad</h2>
                 <p>Edunotes no se hace responsable de:</p>
                 <ul>
-                    <li>Mal uso de las cuentas o datos proporcionados por el cliente</li>
-                    <li>Interrupciones de servicios externos (PayPal, Firebase, hosting)</li>
-                    <li>Errores menores de visualización en distintos navegadores</li>
+                    <li>Mal uso de las cuentas o datos proporcionados por el cliente.</li>
+                    <li>Interrupciones de servicios externos (PayPal, Firebase, hosting, etc.).</li>
+                    <li>Errores menores de visualización en distintos navegadores o dispositivos, siempre que se hayan realizado las pruebas oportunas.</li>
+                    <li>Pérdida de datos por causas ajenas a Edunotes.</li>
                 </ul>
                 
-                <h2>8. Propiedad intelectual</h2>
+                <h2>9. Garantía y soporte</h2>
+                
                 <ul>
-                    <li>Todo el contenido de la web (textos, imágenes, plantillas, herramientas) es propiedad de Edunotes</li>
-                    <li>Queda prohibida la copia, reproducción o uso comercial sin autorización expresa</li>
+                    <li><strong>Garantía de 30 días:</strong> Se corrigen gratuitamente los errores o bugs detectados en el proyecto durante los primeros 30 días posteriores a la entrega final.</li>
+                    <li><strong>Soporte técnico:</strong> Se incluye soporte básico para resolver dudas sobre el funcionamiento durante 30 días.</li>
+                    <li><strong>Mantenimiento posterior:</strong> Si el cliente desea mantenimiento continuo, se puede contratar un servicio de soporte con coste adicional.</li>
                 </ul>
                 
-                <h2>9. Modificaciones</h2>
-                <p>Edunotes puede actualizar precios, recursos, términos y condiciones en cualquier momento. Los cambios se aplicarán a futuras compras o proyectos.</p>
+                <h2>10. Propiedad intelectual general</h2>
+                <ul>
+                    <li>Todo el contenido de la web (textos, imágenes, plantillas, herramientas) es propiedad de Edunotes o de sus respectivos autores.</li>
+                    <li>Queda prohibida la copia, reproducción o uso comercial sin autorización expresa.</li>
+                    <li>Las demos de proyectos (EduLearn, EduSmart School, Educorp) se muestran únicamente a título informativo y no pueden ser copiadas o reproducidas sin autorización.</li>
+                </ul>
                 
-                <h2>10. Ley aplicable</h2>
-                <p>Estos términos se rigen por la legislación española. Cualquier disputa será resuelta en tribunales competentes de España.</p>
+                <h2>11. Modificaciones</h2>
+                <p>Edunotes puede actualizar precios, recursos, términos y condiciones en cualquier momento. Los cambios se aplicarán a futuras compras o proyectos. Los proyectos ya contratados se regirán por los términos vigentes en el momento de la contratación.</p>
+                
+                <h2>12. Ley aplicable</h2>
+                <p>Estos términos se rigen por la legislación española. Cualquier disputa será resuelta en los tribunales competentes de la localidad del titular del sitio web.</p>
+                
+                <h2>13. Contacto</h2>
+                <p>Para cualquier consulta sobre estos términos, puedes contactarnos en:</p>
+                <p><strong>Email:</strong> edunotes25@gmail.com</p>
+                
+                <div class="destacado" style="margin-top: 2rem;">
+                    <p><strong>📄 Documentos legales relacionados</strong></p>
+                    <p>Te recomendamos consultar también:</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><a href="aviso-legal.html">Aviso Legal</a> - Información sobre la titularidad del sitio.</li>
+                        <li><a href="privacidad.html">Política de Privacidad</a> - Información sobre el tratamiento de tus datos.</li>
+                        <li><a href="cookies.html">Política de Cookies</a> - Detalles sobre cookies y localStorage.</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </main>
@@ -687,7 +756,6 @@
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="proyectos.html">Proyectos</a></li>
-                    <li><a href="recursos.html">Plantillas</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="herramientas.html">Plataformas</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
@@ -733,23 +801,57 @@
             <div class="cookie-option">
                 <label>
                     <input type="checkbox" id="cookies-analisis">
-                    <strong>Cookies de análisis</strong>
+                    <strong>Cookies de análisis y estadísticas</strong>
+                    <small style="display: block; color: #6b7280;">Contamos visitas para mejorar el sitio</small>
                 </label>
             </div>
             <div class="cookie-option">
                 <label>
-                    <input type="checkbox" id="cookies-publicitarias">
-                    <strong>Cookies publicitarias</strong>
+                    <input type="checkbox" id="cookies-localstorage">
+                    <strong>Almacenamiento local (localStorage)</strong>
+                    <small style="display: block; color: #6b7280;">Guarda mensajes, feedback y carrito de compras</small>
                 </label>
             </div>
             <div class="cookie-modal-buttons">
-                <button id="save-cookies" class="btn btn-primary">Guardar</button>
+                <button id="save-cookies" class="btn btn-primary">Guardar preferencias</button>
                 <button id="close-modal" class="btn btn-outline">Cancelar</button>
             </div>
         </div>
     </div>
 
     <script>
+        // ==================== SISTEMA DE SEGUIMIENTO ====================
+        
+        function registrarVisitaPagina() {
+            const pagina = window.location.pathname || '/terminos.html';
+            const hoy = new Date().toISOString().split('T')[0];
+            
+            const cookiesAceptadas = localStorage.getItem('cookiesAccepted');
+            if (cookiesAceptadas === 'all' || cookiesAceptadas === 'analytics') {
+                let statsData = localStorage.getItem('edunotes_admin_data');
+                if (statsData) {
+                    statsData = JSON.parse(statsData);
+                } else {
+                    statsData = {
+                        visitasDiarias: {},
+                        visitasPaginas: {},
+                        articulosVisitas: {},
+                        mensajes: [],
+                        compras: [],
+                        feedback: []
+                    };
+                }
+                
+                if (!statsData.visitasDiarias[hoy]) statsData.visitasDiarias[hoy] = 0;
+                statsData.visitasDiarias[hoy]++;
+                
+                if (!statsData.visitasPaginas[pagina]) statsData.visitasPaginas[pagina] = 0;
+                statsData.visitasPaginas[pagina]++;
+                
+                localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+            }
+        }
+        
         // CARRITO DE COMPRAS
         let carrito = [];
 
@@ -838,32 +940,19 @@
             const pagoBtn = document.getElementById('procederPagoBtn');
             const vaciarBtn = document.getElementById('vaciarCarritoBtn');
             
-            // Función para abrir carrito
             const abrirCarritoHandler = function(e) {
                 e.preventDefault();
                 console.log('Abriendo carrito desde:', this.id);
                 abrirCarrito();
             };
             
-            // Asignar eventos a los iconos del carrito
-            if (cartIconDesktop) {
-                cartIconDesktop.addEventListener('click', abrirCarritoHandler);
-                console.log('✅ Evento asignado a cartIconDesktop');
-            } else {
-                console.error('❌ No se encontró cartIconDesktop');
-            }
-            
-            if (cartIconMobile) {
-                cartIconMobile.addEventListener('click', abrirCarritoHandler);
-                console.log('✅ Evento asignado a cartIconMobile');
-            }
-            
+            if (cartIconDesktop) cartIconDesktop.addEventListener('click', abrirCarritoHandler);
+            if (cartIconMobile) cartIconMobile.addEventListener('click', abrirCarritoHandler);
             if (closeBtn) closeBtn.addEventListener('click', cerrarCarrito);
             if (overlay) overlay.addEventListener('click', cerrarCarrito);
             if (pagoBtn) pagoBtn.addEventListener('click', procederPago);
             if (vaciarBtn) vaciarBtn.addEventListener('click', limpiarCarritoCompleto);
             
-            // Menú hamburguesa
             if (menuToggle && navLinks) {
                 menuToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -878,20 +967,22 @@
                     }
                 });
                 
-                // Cerrar menú al hacer clic en un enlace
                 navLinks.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', function() {
                         navLinks.classList.remove('active');
                         const icon = menuToggle.querySelector('i');
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
+                        if (icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
                     });
                 });
             }
             
             actualizarCarrito();
+            registrarVisitaPagina();
             
-            // Inicializar cookies
+            // Gestión de cookies
             const cookieBanner = document.getElementById('cookie-banner');
             const cookieModal = document.getElementById('cookie-modal');
             const acceptBtn = document.getElementById('accept-cookies');
@@ -920,13 +1011,29 @@
             
             if (configBtn && cookieModal) {
                 configBtn.onclick = function() {
+                    const saved = localStorage.getItem('cookiesAccepted');
+                    if (saved === 'all') {
+                        document.getElementById('cookies-analisis').checked = true;
+                        document.getElementById('cookies-localstorage')?.setAttribute('checked', 'checked');
+                    } else {
+                        document.getElementById('cookies-analisis').checked = false;
+                        document.getElementById('cookies-localstorage')?.removeAttribute('checked');
+                    }
                     cookieModal.style.display = 'flex';
                 };
             }
             
             if (saveBtn && cookieModal) {
                 saveBtn.onclick = function() {
-                    localStorage.setItem('cookiesAccepted', 'custom');
+                    const analytics = document.getElementById('cookies-analisis').checked;
+                    const localStorageOpt = document.getElementById('cookies-localstorage')?.checked;
+                    
+                    if (analytics || localStorageOpt) {
+                        localStorage.setItem('cookiesAccepted', 'custom');
+                    } else {
+                        localStorage.setItem('cookiesAccepted', 'necessary');
+                    }
+                    
                     cookieModal.style.display = 'none';
                     cookieBanner.style.display = 'none';
                 };
@@ -947,6 +1054,5 @@
             }
         });
     </script>
-    <script src="js/cookies.js"></script>
 </body>
 </html>

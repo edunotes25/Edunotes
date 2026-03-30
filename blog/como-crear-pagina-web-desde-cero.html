@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo crear una página web desde cero sin ser programador | Edunotes</title>
+    <meta name="description" content="Guía paso a paso para crear tu primera página web sin necesidad de saber programación. Aprende con WordPress, Elementor y recursos gratuitos.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Mismos estilos que los artículos anteriores */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: #1f2937; background: #f8fafc; }
+        .header { position: fixed; top: 0; left: 0; right: 0; background: white; height: 80px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav { display: flex; justify-content: space-between; align-items: center; height: 80px; max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-decoration: none; }
+        .mobile-icons { display: none; align-items: center; gap: 1rem; }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; color: #667eea; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: #4b5563; font-weight: 500; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: #667eea; }
+        .cart-icon { position: relative; cursor: pointer; }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: #667eea; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+        main { margin-top: 80px; }
+        .article-container { max-width: 800px; margin: 0 auto; padding: 3rem 2rem; background: white; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .article-header { margin-bottom: 2rem; }
+        .article-category { display: inline-block; background: #e0e7ff; color: #667eea; padding: 0.3rem 1rem; border-radius: 30px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; }
+        .article-header h1 { font-size: 2.5rem; margin: 1rem 0 1rem; color: #1f2937; line-height: 1.3; }
+        .article-meta { display: flex; gap: 1.5rem; color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .article-meta i { margin-right: 0.3rem; color: #667eea; }
+        .article-featured-img { width: 100%; border-radius: 20px; margin: 1.5rem 0; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .article-content { line-height: 1.8; color: #374151; }
+        .article-content h2 { font-size: 1.8rem; margin: 2.5rem 0 1rem; color: #1f2937; }
+        .article-content h3 { font-size: 1.4rem; margin: 1.8rem 0 0.8rem; color: #1f2937; }
+        .article-content p { margin-bottom: 1.2rem; }
+        .article-content ul, .article-content ol { margin: 1rem 0 1rem 2rem; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .article-content blockquote { border-left: 4px solid #667eea; padding: 1rem 1.5rem; background: #f3f4f6; margin: 1.5rem 0; font-style: italic; border-radius: 0 12px 12px 0; }
+        .step-box { background: #f9fafb; border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid #10b981; }
+        .step-box h3 { margin-top: 0; color: #10b981; }
+        .back-to-blog { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 2rem; color: #667eea; text-decoration: none; font-weight: 500; transition: gap 0.3s; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
+        .footer { background: #0f172a; color: white; padding: 3rem 0 1rem; margin-top: 4rem; }
+        .footer-content { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .footer-section h3 { margin-bottom: 1rem; }
+        .footer-section p, .footer-section a { color: #94a3b8; text-decoration: none; }
+        .footer-section a:hover { color: #667eea; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #1e293b; color: #64748b; }
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: white; box-shadow: -2px 0 20px rgba(0,0,0,0.1); z-index: 1001; transition: right 0.3s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+        .close-cart { background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 1rem; }
+        .cart-empty { text-align: center; color: #9ca3af; padding: 2rem; }
+        .cart-footer { padding: 1rem; border-top: 1px solid #e5e7eb; }
+        .cart-total { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 1rem; }
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; }
+        .cart-overlay.active { display: block; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 0.8rem; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }
+        .btn-outline { background: transparent; color: #ef4444; border: 2px solid #ef4444; padding: 0.7rem; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 0.5rem; }
+        @media (max-width: 768px) {
+            .mobile-icons { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-links .cart-icon { display: none; }
+            .nav-links { position: fixed; top: 80px; left: -100%; width: 100%; height: calc(100vh - 80px); background: white; flex-direction: column; transition: left 0.3s; z-index: 999; }
+            .nav-links.active { left: 0; }
+            .nav-links a { padding: 1rem; width: 100%; text-align: center; border-bottom: 1px solid #e5e7eb; }
+            .article-container { padding: 1.5rem; margin: 0 1rem; }
+            .article-header h1 { font-size: 1.8rem; }
+            .logo { font-size: 1.4rem; }
+            .cart-sidebar { width: 320px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-bag"></i> Mi Carrito</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="cart-empty"><i class="fas fa-box-open"></i> Tu carrito está vacío</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span><span id="cart-total">0,00€</span></div>
+            <button class="btn-primary" id="procederPagoBtn">Proceder al pago</button>
+            <button class="btn-outline" id="vaciarCarritoBtn"><i class="fas fa-trash-alt"></i> Vaciar carrito</button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">Edunotes</a>
+            <div class="mobile-icons">
+                <a href="#" class="cart-icon" id="cartIconMobile"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="../index.html">Inicio</a>
+                <a href="../proyectos.html">Proyectos</a>
+                <a href="../blog.html" class="active">Blog</a>
+                <a href="../herramientas.html">Plataformas</a>
+                <a href="../contacto.html">Contacto</a>
+                <a href="#" class="cart-icon" id="cartIconDesktop"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <article class="article-container">
+                <div class="article-header">
+                    <span class="article-category"><i class="fas fa-code"></i> Desarrollo web básico</span>
+                    <h1>Cómo crear una página web desde cero sin ser programador</h1>
+                    <div class="article-meta">
+                        <span><i class="far fa-calendar-alt"></i> 5 marzo 2026</span>
+                        <span><i class="far fa-clock"></i> 12 min de lectura</span>
+                        <span><i class="far fa-eye"></i> 4.567 visualizaciones</span>
+                    </div>
+                </div>
+                
+                <img src="../assets/images/blog/crear-web.jpg" alt="Persona creando página web" class="article-featured-img" onerror="this.src='https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=500&fit=crop'">
+                
+                <div class="article-content">
+                    <p>¿Alguna vez has pensado en tener tu propia página web pero crees que necesitas saber programación? ¡Nada más lejos de la realidad! Hoy en día, gracias a herramientas como WordPress y constructores visuales, cualquier persona puede crear un sitio web profesional en cuestión de horas, sin escribir una sola línea de código.</p>
+                    
+                    <p>En esta guía paso a paso, te mostraré exactamente cómo crear tu primera página web, ideal para profesores que quieren tener presencia online, compartir recursos o incluso vender sus materiales educativos.</p>
+                    
+                    <div class="step-box">
+                        <h3>📌 Lo que necesitarás:</h3>
+                        <ul>
+                            <li><strong>Un dominio</strong> (la dirección de tu web, ej: tudominio.com)</li>
+                            <li><strong>Un hosting</strong> (el espacio donde se aloja tu web)</li>
+                            <li><strong>WordPress</strong> (gratuito y fácil de usar)</li>
+                            <li><strong>Un constructor visual</strong> (Elementor o similar)</li>
+                            <li><strong>Ganas de aprender</strong> (y paciencia para los primeros pasos)</li>
+                        </ul>
+                    </div>
+                    
+                    <h2>🎯 Paso 1: Elige un nombre y compra tu dominio</h2>
+                    <p>El dominio es la dirección que los usuarios escribirán para encontrar tu web. Por ejemplo: www.edunotes.com. Algunos consejos para elegir un buen nombre:</p>
+                    <ul>
+                        <li><strong>Fácil de recordar</strong> y pronunciar</li>
+                        <li><strong>Corto</strong> (idealmente menos de 15 caracteres)</li>
+                        <li><strong>Relacionado</strong> con tu contenido (si eres profesor de matemáticas, incluye "math" o "mates")</li>
+                        <li><strong>Usa extensiones populares</strong> como .com, .es, .net o .edu (si estás en una institución educativa)</li>
+                    </ul>
+                    <p>Plataformas recomendadas para comprar dominios: <strong>Namecheap, GoDaddy, Dinahosting o Cloudflare Domains</strong>. Los precios suelen rondar entre 10€ y 20€ al año.</p>
+                    
+                    <h2>🖥️ Paso 2: Contrata un hosting (alojamiento web)</h2>
+                    <p>El hosting es como el "terreno" donde se construye tu web. Es el servicio que hace que tu página sea accesible las 24 horas del día. Para principiantes, recomiendo estos proveedores:</p>
+                    <ul>
+                        <li><strong>SiteGround:</strong> Excelente soporte, velocidad y facilidad de uso. Precios desde 3,99€/mes.</li>
+                        <li><strong>Webempresa:</strong> Hosting español con atención en castellano. Precios desde 4,99€/mes.</li>
+                        <li><strong>Hostinger:</strong> Muy económico y con instalación automática de WordPress. Precios desde 1,99€/mes.</li>
+                    </ul>
+                    <p>La mayoría de proveedores ofrecen instalación de WordPress con un solo clic. ¡Elige esa opción!</p>
+                    
+                    <h2>📀 Paso 3: Instala WordPress</h2>
+                    <p>WordPress es el gestor de contenidos (CMS) más popular del mundo, usado por más del 40% de todas las webs. Es gratuito, intuitivo y extremadamente potente.</p>
+                    <p>Si tu hosting tiene instalador automático (Softaculous o similar), solo tendrás que hacer clic en "Instalar WordPress". Si no, la mayoría de proveedores te ayudarán a hacerlo en menos de 10 minutos.</p>
+                    
+                    <div class="step-box">
+                        <h3>🎨 Después de instalar WordPress, tendrás acceso a:</h3>
+                        <ul>
+                            <li><strong>Panel de administración</strong> (tu escritorio de trabajo)</li>
+                            <li><strong>Temas</strong> (diseños prediseñados para tu web)</li>
+                            <li><strong>Plugins</strong> (extensiones que añaden funcionalidades)</li>
+                            <li><strong>Editor de entradas y páginas</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <h2>🎨 Paso 4: Elige un tema y un constructor visual</h2>
+                    <p>Lo primero que verás después de instalar WordPress es el tema por defecto. Puedes cambiarlo por uno que se adapte a tu estilo. Recomendaciones:</p>
+                    <ul>
+                        <li><strong>Astra:</strong> Ligero, rápido y con plantillas pre-diseñadas para educación.</li>
+                        <li><strong>GeneratePress:</strong> Excelente rendimiento y personalización.</li>
+                        <li><strong>Kadence:</strong> Muy completo y con constructor integrado.</li>
+                    </ul>
+                    <p>Además, instala un constructor visual como <strong>Elementor (gratuito)</strong>. Con Elementor podrás diseñar tus páginas arrastrando y soltando elementos, sin tocar código.</p>
+                    
+                    <h2>📄 Paso 5: Crea las páginas principales</h2>
+                    <p>Toda web educativa debería tener al menos estas páginas:</p>
+                    <ul>
+                        <li><strong>Inicio:</strong> Presentación de quién eres y qué ofreces.</li>
+                        <li><strong>Sobre mí / Sobre el proyecto:</strong> Tu experiencia, formación y valores.</li>
+                        <li><strong>Blog:</strong> Donde publicarás tus artículos y recursos.</li>
+                        <li><strong>Contacto:</strong> Formulario para que los usuarios puedan escribirte.</li>
+                        <li><strong>Recursos / Tienda:</strong> Si vas a vender materiales descargables.</li>
+                    </ul>
+                    <p>Con Elementor, crea cada página seleccionando "Editar con Elementor" y arrastra los bloques que necesites: texto, imágenes, botones, formularios, etc.</p>
+                    
+                    <h2>📝 Paso 6: Publica tu primer artículo</h2>
+                    <p>Ve a "Entradas > Añadir nueva" en el panel de WordPress. Escribe tu contenido, añade imágenes y haz clic en "Publicar". ¡Ya tienes tu primera entrada en el blog!</p>
+                    <p>Recuerda optimizar tus artículos con palabras clave relevantes para que aparezcan en Google (esto se llama SEO).</p>
+                    
+                    <h2>🔧 Paso 7: Instala plugins esenciales</h2>
+                    <p>Los plugins son como aplicaciones que añaden funcionalidades. Estos son imprescindibles para empezar:</p>
+                    <ul>
+                        <li><strong>Yoast SEO:</strong> Te ayuda a posicionar tu web en Google.</li>
+                        <li><strong>Elementor:</strong> Constructor visual para diseñar páginas.</li>
+                        <li><strong>WPForms:</strong> Crea formularios de contacto fácilmente.</li>
+                        <li><strong>UpdraftPlus:</strong> Realiza copias de seguridad automáticas.</li>
+                        <li><strong>Wordfence:</strong> Seguridad y protección contra ataques.</li>
+                    </ul>
+                    
+                    <h2>🚀 Paso 8: Optimiza velocidad y SEO</h2>
+                    <p>Para que tu web cargue rápido y sea encontrada en Google:</p>
+                    <ul>
+                        <li>Instala un plugin de caché como <strong>WP Rocket</strong> (pago) o <strong>W3 Total Cache</strong> (gratuito).</li>
+                        <li>Optimiza las imágenes con <strong>Smush</strong> o <strong>ShortPixel</strong>.</li>
+                        <li>Configura Yoast SEO con tus palabras clave principales.</li>
+                        <li>Conecta Google Search Console para monitorizar tu presencia en buscadores.</li>
+                    </ul>
+                    
+                    <blockquote>
+                        "Tu primera web no será perfecta, y eso está bien. Lo importante es empezar, aprender en el proceso y mejorar gradualmente. Cada semana aprenderás algo nuevo que hará tu sitio mejor."
+                    </blockquote>
+                    
+                    <h2>💰 Paso 9: Monetiza tu web (opcional)</h2>
+                    <p>Si quieres generar ingresos con tu web educativa, tienes varias opciones:</p>
+                    <ul>
+                        <li><strong>Vender materiales descargables:</strong> Usa WooCommerce o Easy Digital Downloads.</li>
+                        <li><strong>Publicidad:</strong> Google AdSense o anuncios directos.</li>
+                        <li><strong>Afiliados:</strong> Promociona productos de Amazon, Coursera, etc.</li>
+                        <li><strong>Servicios:</strong> Ofrece consultoría, tutorías o cursos online.</li>
+                    </ul>
+                    
+                    <h2>🎓 Conclusión: ¡Tu web ya está en marcha!</h2>
+                    <p>Crear una página web puede parecer un desafío al principio, pero con los pasos que te he dado, en menos de una semana puedes tener tu sitio funcionando. Lo más importante es dar el primer paso.</p>
+                    <p>Recuerda: la web no es un proyecto estático. Iras mejorándola con el tiempo, añadiendo contenido y ajustando detalles. Lo esencial es que refleje tu pasión por la educación y aporte valor a tus alumnos y seguidores.</p>
+                    <p><strong>¿Ya tienes pensado el nombre de tu web? Cuéntame en los comentarios y te ayudo a dar los primeros pasos.</strong></p>
+                </div>
+                
+                <a href="../blog.html" class="back-to-blog">
+                    <i class="fas fa-arrow-left"></i> Volver al blog
+                </a>
+                
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Edunotes</h3>
+                <p>Blog especializado en educación digital, herramientas para profesores y recursos educativos innovadores.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="../proyectos.html">Proyectos</a></li>
+                    <li><a href="../blog.html">Blog</a></li>
+                    <li><a href="../herramientas.html">Plataformas</a></li>
+                    <li><a href="../contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="../aviso-legal.html">Aviso legal</a></li>
+                    <li><a href="../privacidad.html">Política de privacidad</a></li>
+                    <li><a href="../cookies.html">Política de cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Edunotes. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        let carrito = [];
+        function actualizarCarrito() {
+            const itemsDiv = document.getElementById('cart-items');
+            const totalSpan = document.getElementById('cart-total');
+            const contadores = document.querySelectorAll('.cart-count');
+            if (!itemsDiv) return;
+            if (carrito.length === 0) {
+                itemsDiv.innerHTML = '<p class="cart-empty"><i class="fas fa-box-open"></i> Tu carrito está vacío</p>';
+                if (totalSpan) totalSpan.textContent = '0,00€';
+                contadores.forEach(c => { if (c) c.textContent = '0'; });
+                return;
+            }
+            let total = 0;
+            let html = '';
+            carrito.forEach((item, i) => {
+                total += item.precio;
+                html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
+                    <div><strong>${item.nombre}</strong><div style="font-size: 0.8rem; color: #667eea;">${item.precio.toFixed(2)}€</div></div>
+                    <button onclick="eliminarDelCarrito(${i})" style="background: none; border: none; color: #ef4444; cursor: pointer;"><i class="fas fa-trash-alt"></i></button>
+                </div>`;
+            });
+            itemsDiv.innerHTML = html;
+            if (totalSpan) totalSpan.textContent = `${total.toFixed(2)}€`;
+            contadores.forEach(c => { if (c) c.textContent = carrito.length; });
+        }
+        function eliminarDelCarrito(index) { carrito.splice(index, 1); actualizarCarrito(); }
+        function limpiarCarritoCompleto() { carrito = []; actualizarCarrito(); cerrarCarrito(); }
+        function procederPago() {
+            if (carrito.length === 0) { alert('❌ Tu carrito está vacío'); return; }
+            alert('🛒 Gracias por tu interés!\nTotal: ' + document.getElementById('cart-total').textContent);
+            carrito = []; actualizarCarrito(); cerrarCarrito();
+        }
+        function abrirCarrito() { document.getElementById('cart-sidebar').classList.add('open'); document.getElementById('cart-overlay').classList.add('active'); }
+        function cerrarCarrito() { document.getElementById('cart-sidebar').classList.remove('open'); document.getElementById('cart-overlay').classList.remove('active'); }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('cartIconDesktop')?.addEventListener('click', (e) => { e.preventDefault(); abrirCarrito(); });
+            document.getElementById('cartIconMobile')?.addEventListener('click', (e) => { e.preventDefault(); abrirCarrito(); });
+            document.querySelector('.close-cart')?.addEventListener('click', cerrarCarrito);
+            document.getElementById('cart-overlay')?.addEventListener('click', cerrarCarrito);
+            document.getElementById('procederPagoBtn')?.addEventListener('click', procederPago);
+            document.getElementById('vaciarCarritoBtn')?.addEventListener('click', limpiarCarritoCompleto);
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+            }
+            actualizarCarrito();
+        });
+    </script>
+</body>
+</html>

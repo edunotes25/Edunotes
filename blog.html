@@ -7,20 +7,20 @@
     <!-- SEO Meta Tags -->
     <title>Blog de educación digital y recursos para profesores | Edunotes</title>
     <meta name="description" content="Descubre artículos sobre educación digital, herramientas para profesores, desarrollo web básico y recursos educativos. Consejos prácticos para mejorar tu enseñanza.">
-    <meta name="keywords" content="blog educación, recursos para profesores, herramientas digitales, desarrollo web educativo">
+    <meta name="keywords" content="blog educación, recursos para profesores, herramientas digitales, desarrollo web educativo, inteligencia artificial educación">
     <meta name="author" content="Edunotes">
     <meta name="robots" content="index, follow">
     
-    <!-- Open Graph -->
+    <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Blog de educación digital | Edunotes">
     <meta property="og:description" content="Artículos sobre educación digital, herramientas para profesores y recursos educativos.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://edunotes.com/blog.html">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2380197028971922"
+         crossorigin="anonymous"></script>    
     
-    <!-- Estilos -->
+         <!-- Estilos -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -34,9 +34,10 @@
         body {
             font-family: 'Inter', sans-serif;
             color: #1f2937;
-            background: white;
+            background: #f8fafc;
         }
-  
+        
+        /* Header Styles */
         .header {
             position: fixed;
             top: 0;
@@ -68,7 +69,6 @@
             text-decoration: none;
         }
         
-        /* Contenedor para iconos móvil - solo visible en móvil */
         .mobile-icons {
             display: none;
             align-items: center;
@@ -132,13 +132,32 @@
         .page-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 4rem 0;
+            padding: 5rem 0;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="rgba(255,255,255,0.05)" d="M45.3,-77.2C58.7,-70.1,69.5,-55.3,76.2,-39.1C82.9,-22.9,85.4,-5.2,81.4,10.8C77.4,26.8,66.9,41.2,54.1,52.7C41.3,64.2,26.2,72.8,9.9,75.7C-6.4,78.6,-24,75.8,-38.7,67.2C-53.4,58.6,-65.3,44.2,-73.5,27.7C-81.7,11.2,-86.2,-7.4,-80.1,-21.9C-74,-36.4,-57.2,-46.8,-41.6,-54.5C-26,-62.2,-11.5,-67.2,4.1,-73.6C19.7,-80,36.2,-87.9,45.3,-77.2Z" transform="translate(100 100)"/></svg>') repeat;
+            opacity: 0.1;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 1;
         }
         
         .page-header h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
         }
         
         .page-header p {
@@ -146,12 +165,30 @@
             opacity: 0.95;
             max-width: 600px;
             margin: 0 auto;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* Categorías */
         .categorias {
             padding: 3rem 0;
-            background: #f9fafb;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 80px;
+            z-index: 99;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
         }
         
         .categorias-grid {
@@ -165,97 +202,197 @@
         }
         
         .categoria-btn {
-            padding: 0.5rem 1.5rem;
+            padding: 0.7rem 1.8rem;
             background: white;
             border: 2px solid #e5e7eb;
-            border-radius: 30px;
+            border-radius: 40px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
         }
         
-        .categoria-btn:hover,
-        .categoria-btn.active {
-            background: #667eea;
+        .categoria-btn:hover {
             border-color: #667eea;
-            color: white;
+            color: #667eea;
+            transform: translateY(-2px);
         }
         
-        /* Blog Grid */
+        .categoria-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+        
+        /* Blog Grid con AdSense */
         .blog-grid {
             padding: 4rem 0;
         }
         
         .posts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2.5rem;
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 2rem;
         }
         
+        /* AdSense containers */
+        .adsense-container {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+            min-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .adsense-label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* AdSense horizontal (entre artículos) */
+        .adsense-horizontal {
+            grid-column: 1 / -1;
+            margin: 1rem 0;
+        }
+        
+        .adsense-horizontal .adsense-container {
+            min-height: 120px;
+        }
+        
+        /* AdSense en sidebar (derecha) */
+        .blog-layout {
+            display: flex;
+            gap: 3rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .blog-main {
+            flex: 3;
+        }
+        
+        .blog-sidebar {
+            flex: 1;
+            position: sticky;
+            top: 200px;
+            height: fit-content;
+        }
+        
+        .sidebar-widget {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .sidebar-widget h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        
+        .sidebar-adsense {
+            margin-bottom: 1.5rem;
+        }
+        
+        .sidebar-adsense .adsense-container {
+            min-height: 600px;
+        }
+        
+        /* Post Card */
         .post-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
         }
         
         .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
         }
         
         .post-img {
-            height: 220px;
+            height: 240px;
             overflow: hidden;
+            position: relative;
         }
         
         .post-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.6s ease;
         }
         
         .post-card:hover .post-img img {
-            transform: scale(1.05);
+            transform: scale(1.08);
+        }
+        
+        .post-categoria-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
         .post-info {
-            padding: 1.5rem;
+            padding: 1.8rem;
         }
         
-        .post-categoria {
-            display: inline-block;
-            background: #e0e7ff;
-            color: #667eea;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-        
-        .post-fecha {
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
             font-size: 0.8rem;
             color: #9ca3af;
-            margin-bottom: 0.5rem;
+        }
+        
+        .post-meta i {
+            margin-right: 0.3rem;
+            color: #667eea;
         }
         
         .post-info h2 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
             color: #1f2937;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+        }
+        
+        .post-card:hover .post-info h2 {
+            color: #667eea;
         }
         
         .post-info p {
             color: #6b7280;
             line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
         
         .btn-leer {
@@ -265,52 +402,76 @@
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
-            transition: gap 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-leer i {
+            transition: transform 0.3s ease;
         }
         
         .btn-leer:hover {
-            gap: 0.75rem;
+            gap: 0.8rem;
         }
         
-        /* Botones del carrito */
-        .btn {
-            display: inline-flex;
-            align-items: center;
+        .btn-leer:hover i {
+            transform: translateX(4px);
+        }
+        
+        /* Newsletter Section */
+        .newsletter {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            padding: 4rem 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .newsletter h3 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter p {
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.8rem 1.2rem;
             border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
         }
         
         .btn-primary {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .btn-primary:hover {
-            background: #5a67d8;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: #ef4444;
-            border: 2px solid #ef4444;
-        }
-        
-        .btn-outline:hover {
-            background: #ef4444;
-            color: white;
-        }
-        
-        .btn-block {
-            width: 100%;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
         }
         
         /* Carrito Sidebar */
@@ -321,7 +482,7 @@
             width: 380px;
             height: 100vh;
             background: white;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: -2px 0 20px rgba(0,0,0,0.1);
             z-index: 1001;
             transition: right 0.3s ease;
             display: flex;
@@ -338,11 +499,6 @@
             align-items: center;
             padding: 1.5rem;
             border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .cart-header h3 {
-            margin: 0;
-            font-size: 1.2rem;
         }
         
         .close-cart {
@@ -392,24 +548,36 @@
             display: block;
         }
         
+        .btn-outline {
+            background: transparent;
+            color: #ef4444;
+            border: 2px solid #ef4444;
+            padding: 0.7rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
         .container {
             max-width: 1280px;
             margin: 0 auto;
         }
         
-        .section-title {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #1f2937;
-        }
-        
         /* Footer */
         .footer {
-            background: #1f2937;
+            background: #0f172a;
             color: white;
             padding: 3rem 0 1rem;
-            margin-top: 4rem;
         }
         
         .footer-content {
@@ -427,7 +595,7 @@
         }
         
         .footer-section p {
-            color: #9ca3af;
+            color: #94a3b8;
             line-height: 1.6;
         }
         
@@ -441,26 +609,40 @@
         }
         
         .footer-section a {
-            color: #9ca3af;
+            color: #94a3b8;
             text-decoration: none;
             transition: color 0.3s ease;
         }
         
         .footer-section a:hover {
-            color: white;
+            color: #667eea;
         }
         
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
             margin-top: 2rem;
-            border-top: 1px solid #374151;
-            color: #9ca3af;
+            border-top: 1px solid #1e293b;
+            color: #64748b;
         }
         
         /* Responsive */
+        @media (max-width: 1024px) {
+            .blog-layout {
+                flex-direction: column;
+            }
+            
+            .blog-sidebar {
+                position: static;
+                margin-top: 2rem;
+            }
+            
+            .sidebar-adsense .adsense-container {
+                min-height: 280px;
+            }
+        }
+        
         @media (max-width: 768px) {
-            /* En móvil, mostrar iconos móviles y ocultar el carrito del menú */
             .mobile-icons {
                 display: flex;
             }
@@ -469,7 +651,6 @@
                 display: block;
             }
             
-            /* Ocultar el carrito dentro del menú en móvil */
             .nav-links .cart-icon {
                 display: none;
             }
@@ -483,11 +664,9 @@
                 background: white;
                 flex-direction: column;
                 gap: 0;
-                padding: 0;
                 transition: left 0.3s ease;
                 z-index: 999;
                 box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-                overflow-y: auto;
             }
             
             .nav-links.active {
@@ -499,21 +678,29 @@
                 width: 100%;
                 text-align: center;
                 border-bottom: 1px solid #e5e7eb;
-                font-size: 1.1rem;
+            }
+            
+            .categorias {
+                top: 80px;
+                padding: 1.5rem 0;
+            }
+            
+            .categoria-btn {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.8rem;
             }
             
             .page-header h1 {
-                font-size: 1.8rem;
-                padding: 0 1rem;
-            }
-            
-            .page-header p {
-                font-size: 1rem;
-                padding: 0 1rem;
+                font-size: 2rem;
             }
             
             .posts-grid {
                 grid-template-columns: 1fr;
+                padding: 0 1rem;
+                gap: 1.5rem;
+            }
+            
+            .blog-layout {
                 padding: 0 1rem;
             }
             
@@ -521,18 +708,17 @@
                 font-size: 1.4rem;
             }
             
-            .section-title {
-                font-size: 1.5rem;
+            .cart-sidebar {
+                width: 320px;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
             }
             
             .footer-content {
                 grid-template-columns: 1fr;
                 text-align: center;
-                gap: 1.5rem;
-            }
-            
-            .cart-sidebar {
-                width: 320px;
             }
         }
         
@@ -553,27 +739,26 @@
     <!-- CARRITO SIDEBAR -->
     <div id="cart-sidebar" class="cart-sidebar">
         <div class="cart-header">
-            <h3>Mi Carrito</h3>
+            <h3><i class="fas fa-shopping-bag"></i> Mi Carrito</h3>
             <button class="close-cart"><i class="fas fa-times"></i></button>
         </div>
         <div class="cart-items" id="cart-items">
-            <p class="cart-empty">Tu carrito está vacío</p>
+            <p class="cart-empty"><i class="fas fa-box-open"></i> Tu carrito está vacío</p>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
                 <span>Total:</span>
                 <span id="cart-total">0,00€</span>
             </div>
-            <button class="btn btn-primary btn-block" id="procederPagoBtn">
+            <button class="btn-primary btn-block" id="procederPagoBtn" style="background: linear-gradient(135deg, #667eea, #764ba2); margin-bottom: 10px;">
                 Proceder al pago
             </button>
-            <button class="btn btn-outline btn-block" id="vaciarCarritoBtn" style="margin-top: 10px;">
-                <i class="fas fa-trash"></i> Vaciar carrito
+            <button class="btn-outline btn-block" id="vaciarCarritoBtn">
+                <i class="fas fa-trash-alt"></i> Vaciar carrito
             </button>
         </div>
     </div>
     
-    <!-- OVERLAY PARA EL CARRITO -->
     <div id="cart-overlay" class="cart-overlay"></div>
 
     <header class="header">
@@ -591,7 +776,6 @@
             <div class="nav-links" id="navLinks">
                 <a href="index.html">Inicio</a>
                 <a href="proyectos.html">Proyectos</a>
-                <a href="recursos.html">Plantillas</a>
                 <a href="blog.html" class="active">Blog</a>
                 <a href="herramientas.html">Plataformas</a>
                 <a href="contacto.html">Contacto</a>
@@ -606,106 +790,229 @@
     <main>
         <section class="page-header">
             <div class="container">
-                <h1>Blog de educación digital</h1>
-                <p>Consejos, herramientas y recursos para profesores y creadores de contenido educativo.</p>
+                <h1>📚 Blog de Educación Digital</h1>
+                <p>Artículos exclusivos para potenciar tu enseñanza con tecnología y creatividad</p>
             </div>
         </section>
 
         <section class="categorias">
             <div class="categorias-grid">
-                <button class="categoria-btn active" data-categoria="todos">Todos</button>
-                <button class="categoria-btn" data-categoria="recursos">Recursos educativos</button>
-                <button class="categoria-btn" data-categoria="herramientas">Herramientas para profesores</button>
-                <button class="categoria-btn" data-categoria="desarrollo">Desarrollo web básico</button>
-                <button class="categoria-btn" data-categoria="productividad">Productividad</button>
+                <button class="categoria-btn active" data-categoria="todos">✨ Todos</button>
+                <button class="categoria-btn" data-categoria="recursos">📚 Recursos educativos</button>
+                <button class="categoria-btn" data-categoria="herramientas">🛠️ Herramientas para profesores</button>
+                <button class="categoria-btn" data-categoria="desarrollo">💻 Desarrollo web básico</button>
+                <button class="categoria-btn" data-categoria="productividad">⚡ Productividad</button>
             </div>
         </section>
 
         <section class="blog-grid">
-            <div class="posts-grid" id="posts-container">
-                <!-- Post 1 -->
-                <div class="post-card" data-categoria="recursos">
-                    <div class="post-img">
-                        <img src="assets/images/blog/recursos-digitales.jpg" alt="Cómo crear recursos educativos digitales" loading="lazy">
-                    </div>
-                    <div class="post-info">
-                        <span class="post-categoria">Recursos educativos</span>
-                        <div class="post-fecha">15 marzo 2026</div>
-                        <h2>Cómo crear recursos educativos digitales</h2>
-                        <p>Aprende a diseñar materiales educativos digitales profesionales que enganchen a tus alumnos y mejoren el aprendizaje.</p>
-                        <a href="blog/como-crear-recursos-educativos-digitales.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
+            <div class="blog-layout">
+                <!-- Columna principal de artículos -->
+                <div class="blog-main">
+                    <div class="posts-grid" id="posts-container">
+                        <!-- Artículo 1 -->
+                        <article class="post-card" data-categoria="recursos" data-slug="como-crear-recursos-educativos-digitales">
+                            <div class="post-img">
+                                <img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&h=500&fit=crop" alt="Recursos educativos digitales">
+                                <span class="post-categoria-badge">📚 Recursos educativos</span>
+                            </div>
+                            <div class="post-info">
+                                <div class="post-meta">
+                                    <span><i class="far fa-calendar-alt"></i> 15 marzo 2026</span>
+                                    <span><i class="far fa-clock"></i> 8 min lectura</span>
+                                </div>
+                                <h2>Cómo crear recursos educativos digitales que enganchen a tus alumnos</h2>
+                                <p>Aprende a diseñar materiales educativos interactivos con Canva, Genially y herramientas de IA. Consejos prácticos para aumentar la participación en clase.</p>
+                                <a href="blog/como-crear-recursos-educativos-digitales.html" class="btn-leer" onclick="registrarClickArticulo('como-crear-recursos-educativos-digitales')">Leer artículo completo <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Artículo 2 -->
+                        <article class="post-card" data-categoria="herramientas" data-slug="mejores-herramientas-para-profesores">
+                            <div class="post-img">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=500&fit=crop" alt="Herramientas digitales para profesores">
+                                <span class="post-categoria-badge">🛠️ Herramientas</span>
+                            </div>
+                            <div class="post-info">
+                                <div class="post-meta">
+                                    <span><i class="far fa-calendar-alt"></i> 10 marzo 2026</span>
+                                    <span><i class="far fa-clock"></i> 6 min lectura</span>
+                                </div>
+                                <h2>Las 10 mejores herramientas para profesores en 2026</h2>
+                                <p>Descubre las aplicaciones que están transformando la enseñanza: desde plataformas de gamificación hasta sistemas de evaluación inteligente.</p>
+                                <a href="blog/mejores-herramientas-para-profesores.html" class="btn-leer" onclick="registrarClickArticulo('mejores-herramientas-para-profesores')">Leer artículo completo <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Artículo 3 -->
+                        <article class="post-card" data-categoria="desarrollo" data-slug="como-crear-pagina-web-desde-cero">
+                            <div class="post-img">
+                                <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=500&fit=crop" alt="Crear página web desde cero">
+                                <span class="post-categoria-badge">💻 Desarrollo web</span>
+                            </div>
+                            <div class="post-info">
+                                <div class="post-meta">
+                                    <span><i class="far fa-calendar-alt"></i> 5 marzo 2026</span>
+                                    <span><i class="far fa-clock"></i> 12 min lectura</span>
+                                </div>
+                                <h2>Cómo crear una página web desde cero sin ser programador</h2>
+                                <p>Guía paso a paso para crear tu sitio web educativo con WordPress, Elementor y recursos gratuitos. Ideal para profesores que quieren tener presencia online.</p>
+                                <a href="blog/como-crear-pagina-web-desde-cero.html" class="btn-leer" onclick="registrarClickArticulo('como-crear-pagina-web-desde-cero')">Leer artículo completo <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- [ANUNCIO] Banner horizontal entre artículos -->
+                        <div class="adsense-horizontal">
+                            <div class="adsense-label">PUBLICIDAD</div>
+                            <div class="adsense-container">
+                                <ins class="adsbygoogle"
+                                    style="display:block"
+                                    data-ad-client="ca-pub-TU_CODIGO_ADSENSE"
+                                    data-ad-slot="TU_SLOT_HORIZONTAL"
+                                    data-ad-format="auto"
+                                    data-full-width-responsive="true"></ins>
+                                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                            </div>
+                        </div>
+
+                        <!-- Artículo 4 -->
+                        <article class="post-card" data-categoria="productividad" data-slug="ganar-dinero-como-profesor-online">
+                            <div class="post-img">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=500&fit=crop" alt="Ganar dinero como profesor online">
+                                <span class="post-categoria-badge">⚡ Productividad</span>
+                            </div>
+                            <div class="post-info">
+                                <div class="post-meta">
+                                    <span><i class="far fa-calendar-alt"></i> 28 febrero 2026</span>
+                                    <span><i class="far fa-clock"></i> 10 min lectura</span>
+                                </div>
+                                <h2>7 formas de ganar dinero como profesor online en 2026</h2>
+                                <p>Descubre cómo monetizar tus conocimientos: cursos online, consultoría educativa, materiales descargables y más estrategias probadas.</p>
+                                <a href="blog/ganar-dinero-como-profesor-online.html" class="btn-leer" onclick="registrarClickArticulo('ganar-dinero-como-profesor-online')">Leer artículo completo <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Artículo 5 -->
+                        <article class="post-card" data-categoria="herramientas" data-slug="ia-para-crear-contenidos-educativos">
+                            <div class="post-img">
+                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop" alt="Inteligencia Artificial en educación">
+                                <span class="post-categoria-badge">🛠️ Herramientas</span>
+                            </div>
+                            <div class="post-info">
+                                <div class="post-meta">
+                                    <span><i class="far fa-calendar-alt"></i> 20 febrero 2026</span>
+                                    <span><i class="far fa-clock"></i> 7 min lectura</span>
+                                </div>
+                                <h2>Cómo usar la IA para crear contenidos educativos increíbles</h2>
+                                <p>Explora herramientas como ChatGPT, Midjourney y otras IAs que revolucionarán la forma de preparar tus clases y materiales.</p>
+                                <a href="blog/ia-para-crear-contenidos-educativos.html" class="btn-leer" onclick="registrarClickArticulo('ia-para-crear-contenidos-educativos')">Leer artículo completo <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- Artículo 6 -->
+                        <article class="post-card" data-categoria="recursos" data-slug="gamificacion-en-el-aula">
+                            <div class="post-img">
+                                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=500&fit=crop" alt="Gamificación en el aula">
+                                <span class="post-categoria-badge">📚 Recursos</span>
+                            </div>
+                            <div class="post-info">
+                                <div class="post-meta">
+                                    <span><i class="far fa-calendar-alt"></i> 12 febrero 2026</span>
+                                    <span><i class="far fa-clock"></i> 9 min lectura</span>
+                                </div>
+                                <h2>Gamificación en el aula: estrategias que funcionan</h2>
+                                <p>Implementa técnicas de juego en tus clases para aumentar la motivación y el aprendizaje significativo de tus estudiantes.</p>
+                                <a href="blog/gamificacion-en-el-aula.html" class="btn-leer" onclick="registrarClickArticulo('gamificacion-en-el-aula')">Leer artículo completo <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+
+                        <!-- [ANUNCIO] Segundo banner horizontal -->
+                        <div class="adsense-horizontal">
+                            <div class="adsense-label">PUBLICIDAD</div>
+                            <div class="adsense-container">
+                                <ins class="adsbygoogle"
+                                    style="display:block"
+                                    data-ad-client="ca-pub-TU_CODIGO_ADSENSE"
+                                    data-ad-slot="TU_SLOT_HORIZONTAL_2"
+                                    data-ad-format="auto"
+                                    data-full-width-responsive="true"></ins>
+                                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Post 2 -->
-                <div class="post-card" data-categoria="herramientas">
-                    <div class="post-img">
-                        <img src="assets/images/blog/herramientas-profesores.jpg" alt="Mejores herramientas para profesores" loading="lazy">
+                <!-- Sidebar con anuncios -->
+                <div class="blog-sidebar">
+                    <!-- Widget de búsqueda -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-search"></i> Buscar</h3>
+                        <input type="text" placeholder="Buscar artículos..." style="width:100%; padding:0.8rem; border:1px solid #e5e7eb; border-radius:12px;">
                     </div>
-                    <div class="post-info">
-                        <span class="post-categoria">Herramientas para profesores</span>
-                        <div class="post-fecha">10 marzo 2026</div>
-                        <h2>Mejores herramientas para profesores en 2026</h2>
-                        <p>Descubre las aplicaciones y plataformas que están revolucionando la enseñanza digital este año.</p>
-                        <a href="blog/mejores-herramientas-para-profesores.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
 
-                <!-- Post 3 -->
-                <div class="post-card" data-categoria="desarrollo">
-                    <div class="post-img">
-                        <img src="assets/images/blog/crear-web.jpg" alt="Cómo crear una página web desde cero" loading="lazy">
+                    <!-- Anuncio vertical grande (sidebar) -->
+                    <div class="sidebar-adsense">
+                        <div class="adsense-label">PUBLICIDAD</div>
+                        <div class="adsense-container" style="min-height: 600px;">
+                            <ins class="adsbygoogle"
+                                style="display:block"
+                                data-ad-client="ca-pub-TU_CODIGO_ADSENSE"
+                                data-ad-slot="TU_SLOT_VERTICAL"
+                                data-ad-format="rectangle"
+                                data-full-width-responsive="true"></ins>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div>
                     </div>
-                    <div class="post-info">
-                        <span class="post-categoria">Desarrollo web básico</span>
-                        <div class="post-fecha">5 marzo 2026</div>
-                        <h2>Cómo crear una página web desde cero</h2>
-                        <p>Guía paso a paso para crear tu primera página web sin necesidad de ser programador experto.</p>
-                        <a href="blog/como-crear-pagina-web-desde-cero.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
 
-                <!-- Post 4 -->
-                <div class="post-card" data-categoria="productividad">
-                    <div class="post-img">
-                        <img src="assets/images/blog/ganar-dinero-profesor.jpg" alt="Ganar dinero como profesor online" loading="lazy">
+                    <!-- Widget de artículos populares -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-fire"></i> Más leídos</h3>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.75rem;"><a href="#" style="color: #4b5563; text-decoration: none;">📖 Cómo crear recursos educativos digitales</a></li>
+                            <li style="margin-bottom: 0.75rem;"><a href="#" style="color: #4b5563; text-decoration: none;">📖 Las 10 mejores herramientas para profesores</a></li>
+                            <li style="margin-bottom: 0.75rem;"><a href="#" style="color: #4b5563; text-decoration: none;">📖 Cómo usar la IA en educación</a></li>
+                            <li><a href="#" style="color: #4b5563; text-decoration: none;">📖 Gamificación en el aula</a></li>
+                        </ul>
                     </div>
-                    <div class="post-info">
-                        <span class="post-categoria">Productividad</span>
-                        <div class="post-fecha">28 febrero 2026</div>
-                        <h2>Ideas para ganar dinero como profesor online</h2>
-                        <p>Descubre diferentes formas de monetizar tus conocimientos y generar ingresos adicionales desde casa.</p>
-                        <a href="blog/ganar-dinero-como-profesor-online.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
 
-                <!-- Post 5 -->
-                <div class="post-card" data-categoria="recursos">
-                    <div class="post-img">
-                        <img src="assets/images/blog/plantillas-educativas.jpg" alt="Plantillas educativas" loading="lazy">
+                    <!-- Segundo anuncio vertical (sidebar) -->
+                    <div class="sidebar-adsense">
+                        <div class="adsense-label">PUBLICIDAD</div>
+                        <div class="adsense-container" style="min-height: 280px;">
+                            <ins class="adsbygoogle"
+                                style="display:block"
+                                data-ad-client="ca-pub-TU_CODIGO_ADSENSE"
+                                data-ad-slot="TU_SLOT_VERTICAL_2"
+                                data-ad-format="rectangle"
+                                data-full-width-responsive="true"></ins>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div>
                     </div>
-                    <div class="post-info">
-                        <span class="post-categoria">Recursos educativos</span>
-                        <div class="post-fecha">20 febrero 2026</div>
-                        <h2>Plantillas educativas que todo profesor debería tener</h2>
-                        <p>Las mejores plantillas para crear materiales educativos de forma rápida y profesional.</p>
-                        <a href="blog/plantillas-educativas-profesores.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
 
-                <!-- Post 6 -->
-                <div class="post-card" data-categoria="herramientas">
-                    <div class="post-img">
-                        <img src="assets/images/blog/ia-educacion.jpg" alt="IA en educación" loading="lazy">
-                    </div>
-                    <div class="post-info">
-                        <span class="post-categoria">Herramientas para profesores</span>
-                        <div class="post-fecha">15 febrero 2026</div>
-                        <h2>Cómo usar la IA para crear contenidos educativos</h2>
-                        <p>Herramientas de inteligencia artificial que te ayudarán a crear materiales educativos en minutos.</p>
-                        <a href="blog/ia-para-crear-contenidos-educativos.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
+                    <!-- Widget de categorías -->
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-tags"></i> Categorías</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="background:#f1f5f9; padding:0.3rem 0.8rem; border-radius:20px; font-size:0.8rem;">📚 Recursos</span>
+                            <span style="background:#f1f5f9; padding:0.3rem 0.8rem; border-radius:20px; font-size:0.8rem;">🛠️ Herramientas</span>
+                            <span style="background:#f1f5f9; padding:0.3rem 0.8rem; border-radius:20px; font-size:0.8rem;">💻 Desarrollo web</span>
+                            <span style="background:#f1f5f9; padding:0.3rem 0.8rem; border-radius:20px; font-size:0.8rem;">⚡ Productividad</span>
+                            <span style="background:#f1f5f9; padding:0.3rem 0.8rem; border-radius:20px; font-size:0.8rem;">🤖 IA</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter" id="newsletter">
+            <div class="newsletter-content">
+                <h3><i class="fas fa-envelope"></i> No te pierdas ningún artículo</h3>
+                <p>Recibe las últimas novedades y recursos educativos directamente en tu correo</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit" class="btn-primary">Suscribirme <i class="fas fa-arrow-right"></i></button>
+                </form>
             </div>
         </section>
     </main>
@@ -714,14 +1021,13 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Edunotes</h3>
-                <p>Blog de educación digital, herramientas para profesores y recursos educativos.</p>
+                <p>Blog especializado en educación digital, herramientas para profesores y recursos educativos innovadores.</p>
             </div>
             <div class="footer-section">
                 <h3>Enlaces rápidos</h3>
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="proyectos.html">Proyectos</a></li>
-                    <li><a href="recursos.html">Plantillas</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="herramientas.html">Plataformas</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
@@ -733,17 +1039,98 @@
                     <li><a href="aviso-legal.html">Aviso legal</a></li>
                     <li><a href="privacidad.html">Política de privacidad</a></li>
                     <li><a href="cookies.html">Política de cookies</a></li>
-                    <li><a href="terminos.html">Términos y condiciones</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Edunotes. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Edunotes. Todos los derechos reservados. Hecho con <i class="fas fa-heart" style="color: #ef4444;"></i> para la comunidad educativa.</p>
         </div>
     </footer>
 
     <script>
-        // CARRITO DE COMPRAS
+        // ==================== SISTEMA DE SEGUIMIENTO PARA DASHBOARD ====================
+        
+        // Función para registrar visita a la página del blog
+        function registrarVisitaPagina() {
+            const pagina = window.location.pathname;
+            const hoy = new Date().toISOString().split('T')[0];
+            
+            let statsData = localStorage.getItem('edunotes_admin_data');
+            if (statsData) {
+                statsData = JSON.parse(statsData);
+            } else {
+                statsData = {
+                    visitasDiarias: {},
+                    visitasPaginas: {},
+                    articulosVisitas: {},
+                    mensajes: [],
+                    compras: [],
+                    feedback: []
+                };
+            }
+            
+            if (!statsData.visitasDiarias[hoy]) statsData.visitasDiarias[hoy] = 0;
+            statsData.visitasDiarias[hoy]++;
+            
+            if (!statsData.visitasPaginas[pagina]) statsData.visitasPaginas[pagina] = 0;
+            statsData.visitasPaginas[pagina]++;
+            
+            localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+        }
+        
+        // Función para registrar clic en artículo
+        function registrarClickArticulo(slug) {
+            let statsData = localStorage.getItem('edunotes_admin_data');
+            if (statsData) {
+                statsData = JSON.parse(statsData);
+            } else {
+                statsData = {
+                    visitasDiarias: {},
+                    visitasPaginas: {},
+                    articulosVisitas: {},
+                    mensajes: [],
+                    compras: [],
+                    feedback: []
+                };
+            }
+            
+            if (!statsData.articulosVisitas[slug]) statsData.articulosVisitas[slug] = 0;
+            statsData.articulosVisitas[slug]++;
+            
+            localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+            
+            return true;
+        }
+        
+        // Función para registrar suscripción a newsletter
+        function registrarSuscripcion(email) {
+            let suscriptores = localStorage.getItem('edunotes_suscriptores');
+            if (suscriptores) {
+                suscriptores = JSON.parse(suscriptores);
+            } else {
+                suscriptores = [];
+            }
+            suscriptores.push({
+                email: email,
+                fecha: new Date().toISOString(),
+                origen: 'blog'
+            });
+            localStorage.setItem('edunotes_suscriptores', JSON.stringify(suscriptores));
+            
+            // También registrar en el dashboard
+            let statsData = localStorage.getItem('edunotes_admin_data');
+            if (statsData) {
+                statsData = JSON.parse(statsData);
+                if (!statsData.suscriptores) statsData.suscriptores = [];
+                statsData.suscriptores.push({ email: email, fecha: new Date().toISOString() });
+                localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+            }
+        }
+        
+        // Registrar la visita al cargar la página
+        registrarVisitaPagina();
+        
+        // Carrito de compras
         let carrito = [];
 
         function actualizarCarrito() {
@@ -754,7 +1141,7 @@
             if (!itemsDiv) return;
             
             if (carrito.length === 0) {
-                itemsDiv.innerHTML = '<p class="cart-empty">Tu carrito está vacío</p>';
+                itemsDiv.innerHTML = '<p class="cart-empty"><i class="fas fa-box-open"></i> Tu carrito está vacío</p>';
                 if (totalSpan) totalSpan.textContent = '0,00€';
                 contadores.forEach(c => { if (c) c.textContent = '0'; });
                 return;
@@ -764,21 +1151,15 @@
             let html = '';
             carrito.forEach((item, i) => {
                 total += item.precio;
-                html += `<div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
+                html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb;">
                     <div><strong>${item.nombre}</strong><div style="font-size: 0.8rem; color: #667eea;">${item.precio.toFixed(2)}€</div></div>
-                    <button onclick="eliminarDelCarrito(${i})" style="background: none; border: none; color: #ef4444; cursor: pointer;"><i class="fas fa-trash"></i></button>
+                    <button onclick="eliminarDelCarrito(${i})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem;"><i class="fas fa-trash-alt"></i></button>
                 </div>`;
             });
             
             itemsDiv.innerHTML = html;
             if (totalSpan) totalSpan.textContent = `${total.toFixed(2)}€`;
             contadores.forEach(c => { if (c) c.textContent = carrito.length; });
-        }
-
-        function agregarAlCarrito(nombre, precio) {
-            carrito.push({ nombre, precio });
-            actualizarCarrito();
-            abrirCarrito();
         }
 
         function eliminarDelCarrito(index) {
@@ -798,68 +1179,63 @@
                 return;
             }
             const total = document.getElementById('cart-total');
-            alert('🛒 Procediendo al pago...\nTotal: ' + (total ? total.textContent : '0,00€'));
+            
+            carrito.forEach(item => {
+                let statsData = localStorage.getItem('edunotes_admin_data');
+                if (statsData) {
+                    statsData = JSON.parse(statsData);
+                } else {
+                    statsData = {
+                        visitasDiarias: {},
+                        visitasPaginas: {},
+                        articulosVisitas: {},
+                        mensajes: [],
+                        compras: [],
+                        feedback: []
+                    };
+                }
+                
+                statsData.compras.push({
+                    id: Date.now(),
+                    fecha: new Date().toISOString(),
+                    producto: item.nombre,
+                    precio: item.precio,
+                    email: 'usuario@ejemplo.com'
+                });
+                
+                localStorage.setItem('edunotes_admin_data', JSON.stringify(statsData));
+            });
+            
+            alert('🛒 Gracias por tu compra!\nTotal: ' + (total ? total.textContent : '0,00€') + '\nEste es un simulador de pago.');
             carrito = [];
             actualizarCarrito();
             cerrarCarrito();
         }
 
         function abrirCarrito() {
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            if (sidebar) sidebar.classList.add('open');
-            if (overlay) overlay.classList.add('active');
+            document.getElementById('cart-sidebar').classList.add('open');
+            document.getElementById('cart-overlay').classList.add('active');
         }
 
         function cerrarCarrito() {
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            if (sidebar) sidebar.classList.remove('open');
-            if (overlay) overlay.classList.remove('active');
+            document.getElementById('cart-sidebar').classList.remove('open');
+            document.getElementById('cart-overlay').classList.remove('active');
         }
 
-        // Inicializar eventos cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Inicializando carrito...');
-            
-            const cartIconDesktop = document.getElementById('cartIconDesktop');
-            const cartIconMobile = document.getElementById('cartIconMobile');
-            const closeBtn = document.querySelector('.close-cart');
-            const overlay = document.getElementById('cart-overlay');
-            const menuToggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
-            const pagoBtn = document.getElementById('procederPagoBtn');
-            const vaciarBtn = document.getElementById('vaciarCarritoBtn');
-            
-            // Función para abrir carrito
-            const abrirCarritoHandler = function(e) {
-                e.preventDefault();
-                console.log('Abriendo carrito desde:', this.id);
-                abrirCarrito();
-            };
-            
-            // Asignar eventos a los iconos del carrito
-            if (cartIconDesktop) {
-                cartIconDesktop.addEventListener('click', abrirCarritoHandler);
-                console.log('✅ Evento asignado a cartIconDesktop');
-            } else {
-                console.error('❌ No se encontró cartIconDesktop');
-            }
-            
-            if (cartIconMobile) {
-                cartIconMobile.addEventListener('click', abrirCarritoHandler);
-                console.log('✅ Evento asignado a cartIconMobile');
-            }
-            
-            if (closeBtn) closeBtn.addEventListener('click', cerrarCarrito);
-            if (overlay) overlay.addEventListener('click', cerrarCarrito);
-            if (pagoBtn) pagoBtn.addEventListener('click', procederPago);
-            if (vaciarBtn) vaciarBtn.addEventListener('click', limpiarCarritoCompleto);
+            // Carrito eventos
+            document.getElementById('cartIconDesktop')?.addEventListener('click', (e) => { e.preventDefault(); abrirCarrito(); });
+            document.getElementById('cartIconMobile')?.addEventListener('click', (e) => { e.preventDefault(); abrirCarrito(); });
+            document.querySelector('.close-cart')?.addEventListener('click', cerrarCarrito);
+            document.getElementById('cart-overlay')?.addEventListener('click', cerrarCarrito);
+            document.getElementById('procederPagoBtn')?.addEventListener('click', procederPago);
+            document.getElementById('vaciarCarritoBtn')?.addEventListener('click', limpiarCarritoCompleto);
             
             // Menú hamburguesa
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
             if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
+                menuToggle.addEventListener('click', () => {
                     navLinks.classList.toggle('active');
                     const icon = menuToggle.querySelector('i');
                     if (navLinks.classList.contains('active')) {
@@ -870,44 +1246,51 @@
                         icon.classList.add('fa-bars');
                     }
                 });
-                
-                // Cerrar menú al hacer clic en un enlace
                 navLinks.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', function() {
+                    link.addEventListener('click', () => {
                         navLinks.classList.remove('active');
-                        const icon = menuToggle.querySelector('i');
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
+                        if (menuToggle.querySelector('i')) {
+                            menuToggle.querySelector('i').classList.remove('fa-times');
+                            menuToggle.querySelector('i').classList.add('fa-bars');
+                        }
                     });
                 });
             }
             
-            actualizarCarrito();
-            
-            // Filtrado de categorías del blog
-            const categorias = document.querySelectorAll('.categoria-btn');
+            // Filtrado de categorías
+            const categoriaBtns = document.querySelectorAll('.categoria-btn');
             const posts = document.querySelectorAll('.post-card');
             
-            if (categorias.length > 0 && posts.length > 0) {
-                categorias.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const categoria = btn.dataset.categoria;
-                        
-                        categorias.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        
-                        posts.forEach(post => {
-                            if (categoria === 'todos' || post.dataset.categoria === categoria) {
-                                post.style.display = 'block';
-                            } else {
-                                post.style.display = 'none';
-                            }
-                        });
+            categoriaBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const categoria = btn.dataset.categoria;
+                    categoriaBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    posts.forEach(post => {
+                        if (categoria === 'todos' || post.dataset.categoria === categoria) {
+                            post.style.display = 'block';
+                        } else {
+                            post.style.display = 'none';
+                        }
                     });
+                });
+            });
+            
+            // Newsletter
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = newsletterForm.querySelector('input').value;
+                    if (email) {
+                        registrarSuscripcion(email);
+                        alert(`✅ ¡Gracias por suscribirte ${email}! Recibirás nuestros artículos cada semana.`);
+                        newsletterForm.reset();
+                    }
                 });
             }
         });
     </script>
-    <script src="js/cookies.js"></script>
 </body>
 </html>
