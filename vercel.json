@@ -1,33 +1,38 @@
 {
   "version": 2,
+  "public": true,
   "routes": [
     {
       "src": "/",
       "dest": "/index.html"
     },
     {
-      "src": "/blog.html",
+      "src": "/blog",
       "dest": "/blog.html"
     },
     {
-      "src": "/admin.html",
+      "src": "/admin",
       "dest": "/admin.html"
     },
     {
-      "src": "/herramientas.html",
+      "src": "/herramientas",
       "dest": "/herramientas.html"
     },
     {
-      "src": "/contacto.html",
+      "src": "/contacto",
       "dest": "/contacto.html"
     },
     {
-      "src": "/proyectos.html",
+      "src": "/proyectos",
       "dest": "/proyectos.html"
     },
     {
       "src": "/blog/(.*)",
       "dest": "/blog/$1"
+    },
+    {
+      "src": "/(.*)\\.html",
+      "dest": "/$1.html"
     },
     {
       "src": "/(.*)",
