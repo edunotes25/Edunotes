@@ -18,7 +18,7 @@
     
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2380197028971922"
-         crossorigin="anonymous"></script>    
+    crossorigin="anonymous"></script>    
     
          <!-- Estilos -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -734,7 +734,220 @@
         }
     </style>
 </head>
+<!-- Google AdSense Consent Management Platform (CMP) -->
+<script>
+    // Configuración de la CMP de Google
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Configurar el modo de consentimiento por defecto
+    gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'wait_for_update': 500
+    });
+    
+    // Verificar si ya hay consentimiento guardado
+    const consentimiento = localStorage.getItem('google_consent_mode');
+    if (consentimiento === 'aceptar') {
+        gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'analytics_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted'
+        });
+    } else if (consentimiento === 'rechazar') {
+        gtag('consent', 'update', {
+            'ad_storage': 'denied',
+            'analytics_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
+        });
+    }
+</script>
 
+<!-- Banner de consentimiento de cookies -->
+<div id="cookie-consent-banner" style="position: fixed; bottom: 0; left: 0; right: 0; background: #1f2937; color: white; padding: 1.5rem; z-index: 9999; box-shadow: 0 -4px 12px rgba(0,0,0,0.15); font-family: 'Inter', sans-serif; transform: translateY(100%); transition: transform 0.4s ease; display: none;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+            <div style="flex: 2; min-width: 250px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">🍪 Gestionar cookies</h3>
+                <p style="font-size: 0.85rem; opacity: 0.9; margin: 0;">
+                    Utilizamos cookies propias y de terceros (Google AdSense) para mejorar tu experiencia, 
+                    mostrar anuncios personalizados y analizar el tráfico. Puedes gestionar tus preferencias en cualquier momento.
+                </p>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-top: 0.5rem;">
+                    <a href="cookies.html" style="color: #667eea; text-decoration: underline;">Más información</a>
+                </p>
+            </div>
+            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                <button id="cookie-rechazar" style="background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">
+                    ❌ Rechazar
+                </button>
+                <button id="cookie-gestionar" style="background: transparent; border: 1px solid #667eea; color: #667eea; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">
+                    ⚙️ Gestionar
+                </button>
+                <button id="cookie-aceptar" style="background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; padding: 0.6rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">
+                    ✅ Aceptar todo
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de gestión de cookies -->
+<div id="cookie-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; display: none; justify-content: center; align-items: center; font-family: 'Inter', sans-serif;">
+    <div style="background: white; border-radius: 24px; max-width: 500px; width: 90%; padding: 1.8rem; max-height: 80vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="color: #1f2937;">⚙️ Configurar cookies</h3>
+            <button id="cerrar-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #9ca3af;">&times;</button>
+        </div>
+        
+        <div style="margin-bottom: 1.2rem; padding: 1rem; background: #f8fafc; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>Cookies necesarias</strong>
+                    <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">Siempre activas (necesarias para el funcionamiento)</p>
+                </div>
+                <span style="background: #10b981; color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem;">Siempre activas</span>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 1.2rem; padding: 1rem; background: #f8fafc; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>Cookies de publicidad (AdSense)</strong>
+                    <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">Muestran anuncios personalizados</p>
+                </div>
+                <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
+                    <input type="checkbox" id="cookie-ads" style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #cbd5e1; transition: 0.3s; border-radius: 24px;"></span>
+                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; transition: 0.3s; border-radius: 50%;"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f8fafc; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>Cookies de análisis</strong>
+                    <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">Nos ayudan a mejorar el sitio</p>
+                </div>
+                <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
+                    <input type="checkbox" id="cookie-analytics" style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #cbd5e1; transition: 0.3s; border-radius: 24px;"></span>
+                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; transition: 0.3s; border-radius: 50%;"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button id="guardar-preferencias" style="flex: 1; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 0.8rem; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                Guardar preferencias
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mostrar banner si no hay decisión guardada
+    const consentimientoGuardado = localStorage.getItem('google_consent_mode');
+    const banner = document.getElementById('cookie-consent-banner');
+    const modal = document.getElementById('cookie-modal');
+    
+    if (!consentimientoGuardado) {
+        banner.style.display = 'block';
+        setTimeout(() => {
+            banner.style.transform = 'translateY(0)';
+        }, 100);
+    }
+    
+    function aceptarCookies() {
+        localStorage.setItem('google_consent_mode', 'aceptar');
+        gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'analytics_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted'
+        });
+        banner.style.transform = 'translateY(100%)';
+        setTimeout(() => { banner.style.display = 'none'; }, 400);
+    }
+    
+    function rechazarCookies() {
+        localStorage.setItem('google_consent_mode', 'rechazar');
+        gtag('consent', 'update', {
+            'ad_storage': 'denied',
+            'analytics_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
+        });
+        banner.style.transform = 'translateY(100%)';
+        setTimeout(() => { banner.style.display = 'none'; }, 400);
+    }
+    
+    function gestionarCookies() {
+        modal.style.display = 'flex';
+    }
+    
+    function cerrarModal() {
+        modal.style.display = 'none';
+    }
+    
+    function guardarPreferencias() {
+        const ads = document.getElementById('cookie-ads').checked;
+        const analytics = document.getElementById('cookie-analytics').checked;
+        
+        if (ads) {
+            localStorage.setItem('google_consent_mode', 'aceptar');
+            gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted'
+            });
+        } else {
+            localStorage.setItem('google_consent_mode', 'rechazar');
+            gtag('consent', 'update', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied'
+            });
+        }
+        
+        if (analytics) {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        } else {
+            gtag('consent', 'update', { 'analytics_storage': 'denied' });
+        }
+        
+        cerrarModal();
+        banner.style.transform = 'translateY(100%)';
+        setTimeout(() => { banner.style.display = 'none'; }, 400);
+    }
+    
+    document.getElementById('cookie-aceptar')?.addEventListener('click', aceptarCookies);
+    document.getElementById('cookie-rechazar')?.addEventListener('click', rechazarCookies);
+    document.getElementById('cookie-gestionar')?.addEventListener('click', gestionarCookies);
+    document.getElementById('cerrar-modal')?.addEventListener('click', cerrarModal);
+    document.getElementById('guardar-preferencias')?.addEventListener('click', guardarPreferencias);
+    
+    // Cerrar modal al hacer clic fuera
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) cerrarModal();
+    });
+    
+    // Estilos para el toggle switch
+    const style = document.createElement('style');
+    style.textContent = `
+        #cookie-ads:checked + span { background: #667eea; }
+        #cookie-ads:checked + span + span { transform: translateX(26px); }
+        #cookie-analytics:checked + span { background: #667eea; }
+        #cookie-analytics:checked + span + span { transform: translateX(26px); }
+    `;
+    document.head.appendChild(style);
+</script>
 <body>
     <!-- CARRITO SIDEBAR -->
     <div id="cart-sidebar" class="cart-sidebar">
