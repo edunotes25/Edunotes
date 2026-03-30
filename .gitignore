@@ -62,5 +62,4 @@ package-lock.json
 yarn.lock
 node_modules
 backend/serviceAccountKey.json
-*.json
 backend/.env

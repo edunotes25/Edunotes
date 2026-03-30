@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/blog.html",
+      "dest": "/blog.html"
+    },
+    {
+      "src": "/admin.html",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "/herramientas.html",
+      "dest": "/herramientas.html"
+    },
+    {
+      "src": "/contacto.html",
+      "dest": "/contacto.html"
+    },
+    {
+      "src": "/proyectos.html",
+      "dest": "/proyectos.html"
+    },
+    {
+      "src": "/blog/(.*)",
+      "dest": "/blog/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
